@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { validateEmail } = require("../helpers/validation");
 
 const { ObjectId } = mongoose.Schema;
 
@@ -21,12 +22,15 @@ const userSchema = mongoose.Schema(
       required: [true, "username is required"],
       trim: true,
       text: true,
-      unique: true,
     },
     email: {
       type: String,
       required: [true, "email is required"],
       trim: true,
+      unique: true,
+      validate: [validateEmail, "Email you typed has wrong format"],
+      minlength: [6, "Your email must have at least 6 characters"],
+      maxlength: [100, "Your email can not have more than 20 characters"],
     },
     password: {
       type: String,
