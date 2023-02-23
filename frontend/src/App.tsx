@@ -1,23 +1,18 @@
-import { useEffect } from "react";
-import axios from "axios";
-import { ArrowDown, HomeActive } from "./svg";
+import { Routes, Route } from "react-router-dom";
+// Pages
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Home from "./pages/Home";
+import Profile from "./pages/Profile";
 
 function App() {
-  useEffect(() => {
-    (async () => {
-      const { data } = await axios.get("http://localhost:5000/api/v1");
-      console.log(data);
-    })();
-  }, []);
   return (
-    <h1 className="text-3xl font-bold underline">
-      <div className="flex gap-10 items-center">
-        <span>Hello world!</span>
-        <ArrowDown color="red" />
-        <HomeActive color="red" />
-        <i className="friends_requests_icon"></i>
-      </div>
-    </h1>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/profile" element={<Profile />} />
+    </Routes>
   );
 }
 

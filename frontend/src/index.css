@@ -22,6 +22,7 @@
     --bg-primary: #fff;
     --bg-secondary: #f0f2f5;
     --bg-third: #e4e6eb;
+    /*  */
     --bg-forth: #f0f2f5;
     --color-primary: #050505;
     --color-secondary: #65676b;
@@ -39,5 +40,40 @@
     --shadow-2: rgba(0, 0, 0, 0.1);
     --shadow-3: rgba(0, 0, 0, 0.3);
     --shadow-inset: rgba(255, 255, 255, 0.5);
+  }
+}
+
+@layer components {
+  .container {
+    @apply w-auto max-w-[980px] my-0 mx-[40px] lg:mx-auto;
+  }
+  .btn {
+    @apply cursor-pointer text-xl leading-[48px] py-0 px-[16px] text-white rounded-[6px];
+  }
+  .spacer {
+    @apply h-[0.5px] w-full bg-[#dadde1] my-[20px];
+  }
+  .link {
+    @apply text-[12px] text-[#737373];
+  }
+  .link:not(:first-child) {
+    @apply pl-[10px];
+  }
+  .input {
+    @apply w-full rounded-[6px] py-[14px] px-[16px] bg-white border border-solid border-[#dddfe2] text-[17px];
+  }
+  .input:focus-visible {
+    outline: none;
+    border-color: var(--blue-color);
+    box-shadow: 0 0 0 2px var(--light-blue-color);
+    caret-color: var(--blue-color);
+  }
+}
+@layer utilities {
+  .btn-blue {
+    @apply bg-[var(--blue-color)];
+  }
+  .btn-green {
+    @apply bg-[var(--green-color)];
   }
 }

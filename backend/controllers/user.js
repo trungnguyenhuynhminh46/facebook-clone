@@ -66,7 +66,7 @@ const login = async (req, res) => {
       StatusCodes.BAD_REQUEST
     );
   }
-  const passwordIsTrue = bcrypt.compare(password, user.password);
+  const passwordIsTrue = await bcrypt.compare(password, user.password);
   if (!passwordIsTrue) {
     throw new customError(
       "You have entered wrong password!",
