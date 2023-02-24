@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "/icons/facebook.svg";
 
 // Components
 import LoginForm from "./modules/login/LoginForm";
@@ -12,7 +11,7 @@ const Login: React.FC<Props> = (props: Props) => {
   return (
     <div>
       <LoginForm />
-      {/* <RegisterForm /> */}
+      <RegisterForm />
       <Footer />
     </div>
   );

@@ -1,5 +1,5 @@
-import React from "react";
-import TextInput from "../../../components/TextInput";
+import React, { useEffect } from "react";
+import LoginTextInput from "./LoginTextInput";
 import logo from "/icons/facebook.svg";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -9,7 +9,13 @@ type Props = {};
 
 const schema = yup
   .object({
-    email: yup.string().required("Please enter your email!"),
+    email: yup
+      .string()
+      .required("Please enter your email!")
+      .matches(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+        "Please enter a valid email!"
+      ),
     password: yup.string().required("Please enter your password!"),
   })
   .required();
@@ -25,6 +31,8 @@ const LoginForm: React.FC<Props> = () => {
       password: "",
     },
     resolver: yupResolver(schema),
+    mode: "onBlur",
+    reValidateMode: "onChange",
   });
   const onSubmit = async (data: any) => {
     console.log(data);
@@ -48,20 +56,20 @@ const LoginForm: React.FC<Props> = () => {
             className="pt-[10px] pb-[24px] px-[16px] rounded-lg shadow-lg bg-white mt-[40px] flex flex-col items-center w-[396px] mx-auto lg:mx-0"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <TextInput
+            <LoginTextInput
               type="text"
               placeholder="Email address or phone number"
-              errorPosition="bot"
               name="email"
               control={control}
+              errorPosition="bot"
               errorMessage={errors.email?.message || ""}
             />
-            <TextInput
+            <LoginTextInput
               type="password"
               placeholder="Password"
-              errorPosition="bot"
               name="password"
               control={control}
+              errorPosition="bot"
               errorMessage={errors.password?.message || ""}
             />
             <div className="w-full pt-[6px]">

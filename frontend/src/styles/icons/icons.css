@@ -739,10 +739,26 @@
   background-position: 0 -60px;
 }
 .error_icon {
-  background-image: url(../../../public/icons/icons10.png);
+  background-image: url(icons/icons10.png);
   background-size: auto;
   background-repeat: no-repeat;
   display: inline-block;
   height: 21px;
   width: 21px;
+}
+.eye_open_icon {
+  background-image: url(icons/eyeOpen.png);
+  background-size: auto;
+  background-repeat: no-repeat;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+}
+.eye_close_icon {
+  background-image: url(icons/eyeClose.png);
+  background-size: auto;
+  background-repeat: no-repeat;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
 }
