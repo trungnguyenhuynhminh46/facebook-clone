@@ -22,6 +22,7 @@
     --bg-primary: #fff;
     --bg-secondary: #f0f2f5;
     --bg-third: #e4e6eb;
+    --bg-error: #be4b49;
     /*  */
     --bg-forth: #f0f2f5;
     --color-primary: #050505;
@@ -62,11 +63,47 @@
   .input {
     @apply w-full rounded-[6px] py-[14px] px-[16px] bg-white border border-solid border-[#dddfe2] text-[17px];
   }
-  .input:focus-visible {
+  .input:focus {
     outline: none;
     border-color: var(--blue-color);
     box-shadow: 0 0 0 2px var(--light-blue-color);
     caret-color: var(--blue-color);
+  }
+  .error-box {
+    @apply text-[13px] max-w-[300px] p-[13px] bg-[var(--bg-error)] text-white border-0 rounded-[2px] relative;
+    box-shadow: 0 0 0 1px rgb(139 3 0 / 75%), 0 1px 10px rgb(0 0 0 / 35%);
+  }
+  .error-box::after {
+    content: "";
+    border: 10px solid transparent;
+  }
+  .error-box.error-box--bot::after {
+    border-bottom-color: var(--bg-error);
+    position: absolute;
+    top: 0;
+    left: 10px;
+    transform: translateY(-100%);
+  }
+  .error-box.error-box--top::after {
+    border-top-color: var(--bg-error);
+    position: absolute;
+    bottom: 0;
+    right: 10px;
+    transform: translateY(100%);
+  }
+  .error-box.error-box--left::after {
+    border-left-color: var(--bg-error);
+    position: absolute;
+    top: 40%;
+    right: 0;
+    transform: translate(100%, -50%);
+  }
+  .error-box.error-box--right::after {
+    border-right-color: var(--bg-error);
+    position: absolute;
+    top: 40%;
+    left: 0;
+    transform: translate(-100%, -50%);
   }
 }
 @layer utilities {

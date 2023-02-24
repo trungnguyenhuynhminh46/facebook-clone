@@ -1,10 +1,34 @@
 import React from "react";
 import TextInput from "../../../components/TextInput";
 import logo from "/icons/facebook.svg";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 type Props = {};
 
+const schema = yup
+  .object({
+    email: yup.string().required("Please enter your email!"),
+    password: yup.string().required("Please enter your password!"),
+  })
+  .required();
+
 const LoginForm: React.FC<Props> = () => {
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+  } = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    resolver: yupResolver(schema),
+  });
+  const onSubmit = async (data: any) => {
+    console.log(data);
+  };
   return (
     <div className="bg-[var(--bg-forth)]">
       <div className="container pt-[20px] pb-[164px] flex flex-col lg:flex-row lg:justify-between lg:gap-4 lg:pt-[72px] lg:pb-[206px]">
@@ -22,12 +46,24 @@ const LoginForm: React.FC<Props> = () => {
           <form
             action="#"
             className="pt-[10px] pb-[24px] px-[16px] rounded-lg shadow-lg bg-white mt-[40px] flex flex-col items-center w-[396px] mx-auto lg:mx-0"
+            onSubmit={handleSubmit(onSubmit)}
           >
             <TextInput
               type="text"
               placeholder="Email address or phone number"
+              errorPosition="bot"
+              name="email"
+              control={control}
+              errorMessage={errors.email?.message || ""}
             />
-            <TextInput type="password" placeholder="Password" />
+            <TextInput
+              type="password"
+              placeholder="Password"
+              errorPosition="bot"
+              name="password"
+              control={control}
+              errorMessage={errors.password?.message || ""}
+            />
             <div className="w-full pt-[6px]">
               <button className="btn bg-[var(--blue-color)] w-full">
                 Log in
