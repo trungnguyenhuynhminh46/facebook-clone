@@ -18,6 +18,14 @@
     text-decoration: none;
     color: inherit;
   }
+  option {
+    font-weight: normal;
+    display: block;
+    white-space: nowrap;
+    min-height: 1.2em;
+    padding: 0px 2px 1px;
+  }
+
   :root {
     --bg-primary: #fff;
     --bg-secondary: #f0f2f5;
@@ -65,11 +73,17 @@
   .input {
     @apply w-full rounded-[6px] py-[14px] px-[16px] bg-white border border-solid border-[#dddfe2] text-[17px];
   }
-  .input:focus {
+  .input:focus-visible {
     outline: none;
     border-color: var(--blue-color);
     box-shadow: 0 0 0 2px var(--light-blue-color);
     caret-color: var(--blue-color);
+  }
+  .register-input {
+    @apply p-[11px] bg-[#f5f6f7] border border-solid border-[#ccd0d5] rounded-[5px] text-[15px] leading-[16px] text-[#1c1e21] w-full;
+  }
+  .register-input:focus-visible {
+    @apply outline-none;
   }
   .error-box {
     @apply text-[13px] max-w-[300px] p-[13px] bg-[var(--bg-error)] text-white border-0 rounded-[2px] relative;

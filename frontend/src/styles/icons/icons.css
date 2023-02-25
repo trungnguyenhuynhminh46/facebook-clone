@@ -745,6 +745,7 @@
   display: inline-block;
   height: 21px;
   width: 21px;
+  scale: 0.8;
 }
 .eye_open_icon {
   background-image: url(icons/eyeOpen.png);

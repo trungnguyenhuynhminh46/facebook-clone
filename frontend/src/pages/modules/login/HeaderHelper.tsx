@@ -14,7 +14,7 @@ const HeaderHelper: React.FC<Props> = ({
   const [isShown, setIsShown] = useState(false);
   const contentRef = useRef(null);
   useOnClickOutside(contentRef, () => {
-    setIsShown(!isShown);
+    setIsShown(false);
   });
   return (
     <Tippy
@@ -22,7 +22,7 @@ const HeaderHelper: React.FC<Props> = ({
       visible={isShown}
       render={(attrs) => {
         return (
-          <div className="helper-box z-50" tabIndex={-1} {...attrs}>
+          <div className={`helper-box z-50 `} tabIndex={-1} {...attrs}>
             {children}
           </div>
         );

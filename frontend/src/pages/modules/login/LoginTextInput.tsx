@@ -6,7 +6,7 @@ import { Control } from "react-hook-form/dist/types";
 type Props = {
   type: string;
   placeholder: string;
-  errorPosition: "top" | "left" | "right" | "bot";
+  errorPosition: "top" | "left" | "right" | "bottom";
   name: "email" | "password";
   control: Control<{ email: string; password: string }>;
   errorMessage?: string;
@@ -62,7 +62,9 @@ const LoginTextInput: React.FC<Props> = ({
           ref={field.ref}
         />
         {errorMessage && !isFocus && (
-          <i className="error_icon absolute right-[16px] top-1/2 -translate-y-1/2 z-10"></i>
+          <span className="absolute right-[10px] top-1/2 -translate-y-1/2 z-10 flex justify-center items-center">
+            <i className="error_icon"></i>
+          </span>
         )}
         {field.value && isShowPassword && (
           <button
@@ -85,7 +87,7 @@ const LoginTextInput: React.FC<Props> = ({
           </div>
         )}
       </div>
-      {isFocus && errorPosition === "bot" && errorMessage && (
+      {isFocus && errorPosition === "bottom" && errorMessage && (
         <div className="w-full flex justify-start">
           <ErrorBox type="bot" className="mb-1 mt-3">
             {errorMessage}

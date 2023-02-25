@@ -17,7 +17,7 @@ const ErrorBox: React.FC<Props> = ({
     <div
       className={`
   ${type === "top" && "error-box error-box--top"} 
-  ${type === "bot" && "error-box error-box--bot"} 
+  ${type === "bottom" && "error-box error-box--bot"} 
   ${type === "left" && "error-box error-box--left"} 
   ${type === "right" && "error-box error-box--right"} 
   ${className}`}

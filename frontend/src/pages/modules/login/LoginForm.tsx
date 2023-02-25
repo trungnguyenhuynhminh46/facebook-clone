@@ -7,18 +7,16 @@ import * as yup from "yup";
 
 type Props = {};
 
-const schema = yup
-  .object({
-    email: yup
-      .string()
-      .required("Please enter your email!")
-      .matches(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-        "Please enter a valid email!"
-      ),
-    password: yup.string().required("Please enter your password!"),
-  })
-  .required();
+const schema = yup.object({
+  email: yup
+    .string()
+    .required("Please enter your email!")
+    .matches(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      "Please enter a valid email!"
+    ),
+  password: yup.string().required("Please enter your password!"),
+});
 
 const LoginForm: React.FC<Props> = () => {
   const {
@@ -61,7 +59,7 @@ const LoginForm: React.FC<Props> = () => {
               placeholder="Email address or phone number"
               name="email"
               control={control}
-              errorPosition="bot"
+              errorPosition="bottom"
               errorMessage={errors.email?.message || ""}
             />
             <LoginTextInput
@@ -69,7 +67,7 @@ const LoginForm: React.FC<Props> = () => {
               placeholder="Password"
               name="password"
               control={control}
-              errorPosition="bot"
+              errorPosition="bottom"
               errorMessage={errors.password?.message || ""}
             />
             <div className="w-full pt-[6px]">
