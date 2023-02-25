@@ -48,7 +48,7 @@ const RegisterDropDown: React.FC<Props> = ({
   });
   return (
     <Tippy
-      visible={isShownError}
+      visible={isShownError && !!errorMessage}
       placement={errorPosition}
       offset={[6, 10]}
       render={(attrs) => (
@@ -59,12 +59,7 @@ const RegisterDropDown: React.FC<Props> = ({
     >
       <div className="relative" ref={containerRef}>
         {errorMessage && !isShownError && (
-          <span
-            className="absolute right-[16px] top-1/2 -translate-y-1/2 z-10 flex justify-center items-center"
-            onClick={() => {
-              setIsShownError(!isShownError);
-            }}
-          >
+          <span className="absolute right-[16px] top-1/2 -translate-y-1/2 z-10 flex justify-center items-center">
             <i className="error_icon"></i>
           </span>
         )}

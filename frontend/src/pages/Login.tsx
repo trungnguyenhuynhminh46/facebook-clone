@@ -11,7 +11,7 @@ const Login: React.FC<Props> = (props: Props) => {
   return (
     <div>
       <LoginForm />
-      <RegisterForm />
+      {/* <RegisterForm /> */}
       <Footer />
     </div>
   );

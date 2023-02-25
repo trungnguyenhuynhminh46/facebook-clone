@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import useOnClickOutside from "../../../hooks/useOnClickOutside";
+import { useMediaQuery } from "react-responsive";
 import Tippy from "@tippyjs/react/headless";
 
 type Props = {
@@ -11,6 +12,9 @@ const HeaderHelper: React.FC<Props> = ({
   title = "Title",
   children = "Content",
 }) => {
+  const isNotLargeScreen = useMediaQuery({
+    query: "(max-width: 1024px)",
+  });
   const [isShown, setIsShown] = useState(false);
   const contentRef = useRef(null);
   useOnClickOutside(contentRef, () => {
@@ -18,7 +22,7 @@ const HeaderHelper: React.FC<Props> = ({
   });
   return (
     <Tippy
-      placement="left"
+      placement={isNotLargeScreen ? "top" : "left"}
       visible={isShown}
       render={(attrs) => {
         return (

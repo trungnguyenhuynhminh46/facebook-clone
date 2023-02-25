@@ -24,9 +24,9 @@ const GenderSelector: React.FC<Props> = ({
   });
   return (
     <Tippy
-      visible={isShownError}
+      visible={isShownError && !!errorMessage}
       placement={errorPosition}
-      offset={[18, -90]}
+      offset={errorPosition === "left" ? [18, -90] : [40, 0]}
       render={(attrs) => (
         <ErrorBox type={errorPosition} {...attrs}>
           {errorMessage}

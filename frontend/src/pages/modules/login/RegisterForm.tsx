@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { pronouns } from "../../../data/pronoun";
 import { useForm } from "react-hook-form";
+import { useMediaQuery } from "react-responsive";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
@@ -49,6 +50,9 @@ const schema = yup.object({
 });
 
 const RegisterForm: React.FC<Props> = () => {
+  const isNotLargeScreen = useMediaQuery({
+    query: "(max-width: 1024px)",
+  });
   // States, variables
   const [birthDayError, setBirthDayError] = useState("");
   useEffect(() => {
@@ -131,7 +135,7 @@ const RegisterForm: React.FC<Props> = () => {
                 name="first_name"
                 control={control}
                 errorMessage={errors.first_name?.message}
-                errorPosition="left"
+                errorPosition={isNotLargeScreen ? "bottom" : "left"}
               />
               <RegisterTextInput
                 type="text"
@@ -148,7 +152,7 @@ const RegisterForm: React.FC<Props> = () => {
               name="email"
               control={control}
               errorMessage={errors.email?.message}
-              errorPosition="left"
+              errorPosition={isNotLargeScreen ? "bottom" : "left"}
             />
             <RegisterTextInput
               type="password"
@@ -156,20 +160,20 @@ const RegisterForm: React.FC<Props> = () => {
               name="password"
               control={control}
               errorMessage={errors.password?.message}
-              errorPosition="left"
+              errorPosition={isNotLargeScreen ? "bottom" : "left"}
             />
             <DateSelector
               dayName="bDay"
               monthName="bMonth"
               yearName="bYear"
               control={control}
-              errorPosition="left"
+              errorPosition={isNotLargeScreen ? "bottom" : "left"}
               errorMessage={birthDayError}
               setBirthDayError={setBirthDayError}
             />
             <GenderSelector
               control={control}
-              errorPosition="left"
+              errorPosition={isNotLargeScreen ? "bottom" : "left"}
               errorMessage={errors.gender?.message}
             />
             {watchGender === "custom" && (
@@ -179,7 +183,7 @@ const RegisterForm: React.FC<Props> = () => {
                   defaultOption="Select your pronoun"
                   name="pronoun"
                   control={control}
-                  errorPosition="left"
+                  errorPosition={isNotLargeScreen ? "top" : "left"}
                   errorMessage={errors.pronoun?.message}
                 />
                 <p className="text-[#65676b] text-[13px] leading-[24px] mb-1">
@@ -191,7 +195,7 @@ const RegisterForm: React.FC<Props> = () => {
                   name="optional_gender"
                   control={control}
                   errorMessage=""
-                  errorPosition="left"
+                  errorPosition={isNotLargeScreen ? "bottom" : "left"}
                 />
               </div>
             )}

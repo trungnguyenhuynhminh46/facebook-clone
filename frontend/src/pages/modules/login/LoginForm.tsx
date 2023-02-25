@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import LoginTextInput from "./LoginTextInput";
 import logo from "/icons/facebook.svg";
 import { useForm } from "react-hook-form";
+import { useMediaQuery } from "react-responsive";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
@@ -19,6 +20,9 @@ const schema = yup.object({
 });
 
 const LoginForm: React.FC<Props> = () => {
+  const isNotLargeScreen = useMediaQuery({
+    query: "(max-width: 1024px)",
+  });
   const {
     control,
     formState: { errors },
@@ -59,7 +63,7 @@ const LoginForm: React.FC<Props> = () => {
               placeholder="Email address or phone number"
               name="email"
               control={control}
-              errorPosition="bottom"
+              errorPosition={isNotLargeScreen ? "bottom" : "left"}
               errorMessage={errors.email?.message || ""}
             />
             <LoginTextInput
@@ -67,7 +71,7 @@ const LoginForm: React.FC<Props> = () => {
               placeholder="Password"
               name="password"
               control={control}
-              errorPosition="bottom"
+              errorPosition={isNotLargeScreen ? "bottom" : "left"}
               errorMessage={errors.password?.message || ""}
             />
             <div className="w-full pt-[6px]">

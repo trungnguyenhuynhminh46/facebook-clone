@@ -89,7 +89,7 @@ const LoginTextInput: React.FC<Props> = ({
       </div>
       {isFocus && errorPosition === "bottom" && errorMessage && (
         <div className="w-full flex justify-start">
-          <ErrorBox type="bot" className="mb-1 mt-3">
+          <ErrorBox type="bottom" className="mb-1 mt-3">
             {errorMessage}
           </ErrorBox>
         </div>

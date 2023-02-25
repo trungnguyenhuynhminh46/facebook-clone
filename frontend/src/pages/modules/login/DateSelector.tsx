@@ -62,9 +62,9 @@ const DateSelector: React.FC<Props> = ({
   });
   return (
     <Tippy
-      visible={isShownError}
+      visible={isShownError && !!errorMessage}
       placement={errorPosition}
-      offset={[18, 10]}
+      offset={errorPosition === "left" ? [18, 10] : [-50, 10]}
       render={(attrs) => (
         <ErrorBox type={errorPosition} {...attrs}>
           {errorMessage}
