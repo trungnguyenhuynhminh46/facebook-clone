@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import ErrorBox from "../../../components/ErrorBox";
 import { useController } from "react-hook-form";
+import ErrorBox from "../../../components/ErrorBox";
 import Tippy from "@tippyjs/react/headless";
 // Types
 import { Control } from "react-hook-form/dist/types";
@@ -8,9 +8,9 @@ import { Control } from "react-hook-form/dist/types";
 type Props = {
   type: string;
   placeholder: string;
-  errorPosition: "top" | "left" | "right" | "bottom";
   name: string;
   control: Control<any>;
+  errorPosition: "top" | "left" | "right" | "bottom";
   errorMessage?: string;
 };
 
@@ -36,6 +36,13 @@ const RegisterTextInput: React.FC<Props> = ({
     <Tippy
       visible={!!isFocus && !!errorMessage}
       placement={errorPosition}
+      offset={
+        errorPosition === "left"
+          ? [5, 10]
+          : errorPosition === "bottom"
+          ? [-10, 10]
+          : [0, 0]
+      }
       render={(attrs) => (
         <ErrorBox type={errorPosition} {...attrs}>
           {errorMessage}

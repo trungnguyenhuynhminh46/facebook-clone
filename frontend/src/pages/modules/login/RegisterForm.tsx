@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { days, months, years } from "../../../data/date";
+import React, { useEffect, useState } from "react";
+import { pronouns } from "../../../data/pronoun";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -42,9 +42,15 @@ const schema = yup.object({
   gender: yup
     .string()
     .required("Please choose a gender. You can change who can see this later."),
+  pronoun: yup.string().when("gender", {
+    is: "custom",
+    then: (schema) => schema.required("Please select your pronoun"),
+  }),
 });
 
 const RegisterForm: React.FC<Props> = () => {
+  // States, variables
+  const [birthDayError, setBirthDayError] = useState("");
   useEffect(() => {
     document.documentElement.style.overflow = "hidden";
     return () => {
@@ -54,6 +60,7 @@ const RegisterForm: React.FC<Props> = () => {
   // React hook form
   const {
     control,
+    watch,
     handleSubmit,
     formState: { errors },
   } = useForm({
@@ -62,18 +69,42 @@ const RegisterForm: React.FC<Props> = () => {
       last_name: "",
       email: "",
       password: "",
-      gender: "",
       bYear: new Date().getFullYear(),
       bMonth: new Date().getMonth() + 1,
       bDay: new Date().getDate(),
+      gender: "",
+      pronoun: "",
+      optional_gender: "",
     },
     resolver: yupResolver(schema),
     mode: "onBlur",
     reValidateMode: "onChange",
   });
-  console.log(errors);
+  const watchGender = watch("gender");
+  const watchBDay = watch("bDay");
+  const watchBMonth = watch("bMonth");
+  const watchBYear = watch("bYear");
+  // console.log(errors);
   const onSubmit = (data: any) => {
     console.log(data);
+    console.log(birthDayError);
+  };
+  const validateBirthDay = () => {
+    const picked_date = new Date(watchBYear, watchBMonth - 1, watchBDay);
+    const ageDifMs = Date.now() - picked_date.getTime();
+    const ageDate = new Date(ageDifMs);
+    const age = Math.abs(ageDate.getUTCFullYear() - 1970);
+    if (age < 14) {
+      setBirthDayError(
+        "It looks like you've enetered the wrong info.Please make sure that you use your real date of birth."
+      );
+    } else if (age > 200) {
+      setBirthDayError(
+        "It looks like you've enetered the wrong info.Please make sure that you use your real date of birth."
+      );
+    } else {
+      setBirthDayError("");
+    }
   };
   return (
     <div className="fixed inset-0 bg-[var(--overlay-white)] z-40 flex justify-center items-center">
@@ -127,48 +158,43 @@ const RegisterForm: React.FC<Props> = () => {
               errorMessage={errors.password?.message}
               errorPosition="left"
             />
-            <div>
-              <HeaderHelper title="Date of birth">
-                <div className="text-[#65676b] text-[13px] leading-[16px]">
-                  <b>Providing your birthday</b> helps make sure that you get
-                  the right Facebook experience for your age. If you want to
-                  change who sees this, go to the About section of your profile.
-                  For more details, please visit our{" "}
-                  <a className="text-[var(--blue-color)]" href="#">
-                    Privacy Policy
-                  </a>
-                  .
-                </div>
-              </HeaderHelper>
-              <DateSelector
-                dayName="bDay"
-                monthName="bMonth"
-                yearName="bYear"
-              />
-            </div>
+            <DateSelector
+              dayName="bDay"
+              monthName="bMonth"
+              yearName="bYear"
+              control={control}
+              errorPosition="left"
+              errorMessage={birthDayError}
+              setBirthDayError={setBirthDayError}
+            />
             <GenderSelector
               control={control}
               errorPosition="left"
               errorMessage={errors.gender?.message}
             />
-            <div className="w-full">
-              <RegisterDropDown
-                items={days}
-                name="pronoun"
-                defaultOption="Select your pronoun"
-              />
-              <p className="text-[#65676b] text-[13px] leading-[24px] mb-1">
-                Your pronoun is visible to everyone
-              </p>
-              <RegisterTextInput
-                type="text"
-                placeholder="Gender (optional)"
-                name="optional_gender"
-                control={control}
-                errorMessage=""
-                errorPosition="left"
-              />
-            </div>
+            {watchGender === "custom" && (
+              <div className="w-full">
+                <RegisterDropDown
+                  items={pronouns}
+                  defaultOption="Select your pronoun"
+                  name="pronoun"
+                  control={control}
+                  errorPosition="left"
+                  errorMessage={errors.pronoun?.message}
+                />
+                <p className="text-[#65676b] text-[13px] leading-[24px] mb-1">
+                  Your pronoun is visible to everyone
+                </p>
+                <RegisterTextInput
+                  type="text"
+                  placeholder="Gender (optional)"
+                  name="optional_gender"
+                  control={control}
+                  errorMessage=""
+                  errorPosition="left"
+                />
+              </div>
+            )}
             <p className="text-[#65676b] text-[13px] leading-[16px]">
               People who use our service may have uploaded your contact
               information to Facebook.{" "}
@@ -186,7 +212,10 @@ const RegisterForm: React.FC<Props> = () => {
               time.
             </p>
             <div className="flex justify-center">
-              <button className="bg-[#00a400] text-white rounded-[6px] text-[18px] w-[194px] h-[36px] px-[32px] font-bold tracking-wide my-[10px]">
+              <button
+                className="bg-[#00a400] text-white rounded-[6px] text-[18px] w-[194px] h-[36px] px-[32px] font-bold tracking-wide my-[10px]"
+                onClick={validateBirthDay}
+              >
                 Sign Up
               </button>
             </div>
