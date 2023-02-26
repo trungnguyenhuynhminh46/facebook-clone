@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ErrorBox from "../../../components/ErrorBox";
+import ErrorBox from "../ErrorBox";
 import { useController } from "react-hook-form";
 import { Control } from "react-hook-form/dist/types";
 
@@ -21,7 +21,7 @@ const LoginTextInput: React.FC<Props> = ({
   errorMessage = "",
 }) => {
   const [isFocus, setIsFocus] = useState(false);
-  const [isShowPassword, setIsShowPassword] = useState(true);
+  const [isShowPassword, setIsShowPassword] = useState(false);
   // React-hook-form
   const {
     field,
@@ -60,13 +60,14 @@ const LoginTextInput: React.FC<Props> = ({
           value={field.value}
           name={field.name}
           ref={field.ref}
+          autoComplete="off"
         />
         {errorMessage && !isFocus && (
           <span className="absolute right-[10px] top-1/2 -translate-y-1/2 z-10 flex justify-center items-center">
             <i className="error_icon"></i>
           </span>
         )}
-        {field.value && isShowPassword && (
+        {field.value && isShowPassword && type === "password" && (
           <button
             className="cursor-pointer w-6 h-6 rounded-full hover:bg-[var(--color-eye-hover)] absolute right-[16px] top-1/2 -translate-y-1/2 flex justify-center items-center"
             onClick={() => {
@@ -76,7 +77,7 @@ const LoginTextInput: React.FC<Props> = ({
             <i className="eye_open_icon"></i>
           </button>
         )}
-        {field.value && !isShowPassword && (
+        {field.value && !isShowPassword && type === "password" && (
           <div
             className="cursor-pointer w-6 h-6 rounded-full hover:bg-[var(--color-eye-hover)] absolute right-[16px] top-1/2 -translate-y-1/2 flex justify-center items-center"
             onClick={() => {

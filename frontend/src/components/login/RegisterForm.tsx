@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { pronouns } from "../../../data/pronoun";
+import { pronouns } from "../../data/pronoun";
 import { useForm } from "react-hook-form";
 import { useMediaQuery } from "react-responsive";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useDispatch } from "react-redux";
+import { login } from "../../store/slices/user";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import { HashLoader } from "react-spinners";
 
 import RegisterTextInput from "./RegisterTextInput";
 import RegisterDropDown from "./RegisterDropDown";
 import DateSelector from "./DateSelector";
 import GenderSelector from "./GenderSelector";
+import axios from "axios";
 
 type Props = {
   className?: string;
@@ -57,14 +63,21 @@ const RegisterForm: React.FC<Props> = ({
   const isNotLargeScreen = useMediaQuery({
     query: "(max-width: 1024px)",
   });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   // States, variables
+  const [isLoading, setIsLoading] = useState(false);
+  const [successMsg, setSuccessMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const [birthDayError, setBirthDayError] = useState("");
   useEffect(() => {
-    document.documentElement.style.overflow = "hidden";
+    if (className.includes("fade-in")) {
+      document.documentElement.style.overflow = "hidden";
+    }
     return () => {
       document.documentElement.style.overflow = "unset";
     };
-  }, []);
+  }, [className]);
   // React hook form
   const {
     control,
@@ -93,9 +106,31 @@ const RegisterForm: React.FC<Props> = ({
   const watchBMonth = watch("bMonth");
   const watchBYear = watch("bYear");
   // console.log(errors);
-  const onSubmit = (data: any) => {
-    console.log(data);
-    console.log(birthDayError);
+  const onSubmit = async (inputData: any) => {
+    try {
+      setIsLoading(true);
+      const {
+        data: { message, user },
+      } = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/user/register`,
+        inputData
+      );
+      setSuccessMsg(message);
+      setErrorMsg("");
+      Cookies.set("user", JSON.stringify(user));
+      dispatch(login(user));
+      const timeOutID = setTimeout(() => {
+        setIsLoading(false);
+        navigate("/");
+      }, 2000);
+      return () => {
+        clearInterval(timeOutID);
+      };
+    } catch (err: any) {
+      setSuccessMsg("");
+      setErrorMsg(err.response.data.message);
+      setIsLoading(false);
+    }
   };
   const validateBirthDay = () => {
     const picked_date = new Date(watchBYear, watchBMonth - 1, watchBDay);
@@ -228,12 +263,31 @@ const RegisterForm: React.FC<Props> = ({
             </p>
             <div className="flex justify-center">
               <button
-                className="bg-[#00a400] text-white rounded-[6px] text-[18px] w-[194px] h-[36px] px-[32px] font-bold tracking-wide my-[10px]"
+                className="bg-[#00a400] text-white rounded-[6px] text-[18px] w-[194px] h-[36px] px-[32px] font-bold tracking-wide my-[10px] flex justify-center items-center"
                 onClick={validateBirthDay}
               >
-                Sign Up
+                {isLoading && (
+                  <HashLoader
+                    color="white"
+                    loading={isLoading}
+                    size={16}
+                    aria-label="Loading Spinner"
+                    data-testid="loader"
+                  />
+                )}
+                {!isLoading && "Sign Up"}
               </button>
             </div>
+            {errorMsg && (
+              <p className="text-center text-sm text-red-500 -mt-2">
+                {errorMsg}
+              </p>
+            )}
+            {successMsg && (
+              <p className="text-center text-sm text-green-500 -mt-2">
+                {successMsg}
+              </p>
+            )}
           </div>
         </div>
       </form>

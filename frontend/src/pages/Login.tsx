@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 // Components
-import LoginForm from "./modules/login/LoginForm";
-import RegisterForm from "./modules/login/RegisterForm";
-import Footer from "./modules/login/Footer";
+import LoginForm from "../components/login/LoginForm";
+import RegisterForm from "../components/login/RegisterForm";
+import Footer from "../components/login/Footer";
 
 type Props = {};
 

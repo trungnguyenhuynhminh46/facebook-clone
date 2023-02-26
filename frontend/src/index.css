@@ -1,3 +1,4 @@
+@import "./styles/fonts/index.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,7 +10,7 @@
     box-sizing: border-box;
   }
   body {
-    font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    font-family: "SFProDisplay", Helvetica, Arial, sans-serif;
   }
   html {
     overflow-y: scroll;

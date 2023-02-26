@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useController } from "react-hook-form";
-import ErrorBox from "../../../components/ErrorBox";
+import ErrorBox from "../ErrorBox";
 import Tippy from "@tippyjs/react/headless";
 // Types
 import { Control } from "react-hook-form/dist/types";
@@ -36,13 +36,7 @@ const RegisterTextInput: React.FC<Props> = ({
     <Tippy
       visible={!!isFocus && !!errorMessage}
       placement={errorPosition}
-      offset={
-        errorPosition === "left"
-          ? [5, 10]
-          : errorPosition === "bottom"
-          ? [-10, 10]
-          : [0, 0]
-      }
+      offset={errorPosition === "left" ? [5, 10] : [40, 10]}
       render={(attrs) => (
         <ErrorBox type={errorPosition} {...attrs}>
           {errorMessage}
@@ -69,6 +63,7 @@ const RegisterTextInput: React.FC<Props> = ({
           value={field.value}
           name={field.name}
           ref={field.ref}
+          autoComplete="off"
         />
         {errorMessage && !isFocus && (
           <span className="absolute right-[10px] top-1/2 -translate-y-1/2 z-10 flex justify-center items-center">

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import useOnClickOutside from "../../../hooks/useOnClickOutside";
+import useOnClickOutside from "../../hooks/useOnClickOutside";
 import { useMediaQuery } from "react-responsive";
 import Tippy from "@tippyjs/react/headless";
 

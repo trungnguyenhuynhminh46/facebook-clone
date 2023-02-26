@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { days, months, years } from "../../../data/date";
-import useOnClickOutside from "../../../hooks/useOnClickOutside";
+import { days, months, years } from "../../data/date";
+import useOnClickOutside from "../../hooks/useOnClickOutside";
 // Components
 import RegisterDropDown from "./RegisterDropDown";
 import HeaderHelper from "./HeaderHelper";
 import Tippy from "@tippyjs/react/headless";
-import ErrorBox from "../../../components/ErrorBox";
+import ErrorBox from "../ErrorBox";
 import { useWatch, Control } from "react-hook-form";
 type Props = {
   dayName: string;
@@ -31,7 +31,7 @@ const DateSelector: React.FC<Props> = ({
   const watchBMonth = useWatch({ control, name: "bMonth" });
   const watchBYear = useWatch({ control, name: "bYear" });
 
-  const onChange = () => {
+  const validateError = () => {
     if (
       !(watchBDay === now.getDate()) ||
       !(watchBMonth === now.getMonth() + 1) ||
@@ -58,6 +58,7 @@ const DateSelector: React.FC<Props> = ({
   const containerRef = useRef(null);
   const [isShownError, setIsShownError] = useState(false);
   useOnClickOutside(containerRef, () => {
+    validateError();
     setIsShownError(false);
   });
   return (
@@ -99,21 +100,18 @@ const DateSelector: React.FC<Props> = ({
             items={days}
             name={dayName}
             control={control}
-            onChange={onChange}
             borderRed={!!errorMessage && !isShownError}
           />
           <RegisterDropDown
             items={months}
             name={monthName}
             control={control}
-            onChange={onChange}
             borderRed={!!errorMessage && !isShownError}
           />
           <RegisterDropDown
             items={years}
             name={yearName}
             control={control}
-            onChange={onChange}
             borderRed={!!errorMessage && !isShownError}
           />
         </div>

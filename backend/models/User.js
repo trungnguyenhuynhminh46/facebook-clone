@@ -66,6 +66,14 @@ const userSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
+    pronoun: {
+      type: String,
+      default: "",
+    },
+    optional_gender: {
+      type: String,
+      default: "",
+    },
     verified: {
       type: Boolean,
       default: false,

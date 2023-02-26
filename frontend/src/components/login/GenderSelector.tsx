@@ -1,10 +1,10 @@
 import React, { useRef, useState } from "react";
 import RegisterCheckbox from "./RegisterCheckbox";
-import ErrorBox from "../../../components/ErrorBox";
+import ErrorBox from "../ErrorBox";
 import { Control } from "react-hook-form";
 import Tippy from "@tippyjs/react/headless";
 import HeaderHelper from "./HeaderHelper";
-import useOnClickOutside from "../../../hooks/useOnClickOutside";
+import useOnClickOutside from "../../hooks/useOnClickOutside";
 
 type Props = {
   control: Control<any>;

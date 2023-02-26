@@ -8,28 +8,15 @@ const sendVerificationEmail = require("../helpers/mailer");
 const { BASE_URL } = process.env;
 
 const register = async (req, res) => {
-  const {
-    first_name,
-    last_name,
-    email,
-    password,
-    gender,
-    bDay,
-    bMonth,
-    bYear,
-  } = req.body;
+  const { first_name, last_name, password, ...rest } = req.body;
   const salt = bcrypt.genSaltSync(10);
   const hashedPassword = password ? bcrypt.hashSync(password, salt) : "";
   let user = await User.create({
     first_name,
     last_name,
     username: last_name + " " + first_name || "",
-    email,
     password: hashedPassword,
-    gender,
-    bDay,
-    bMonth,
-    bYear,
+    ...rest,
   });
   const token = generateToken({ id: user._id }, "30m");
   sendVerificationEmail(
@@ -37,10 +24,19 @@ const register = async (req, res) => {
     user.first_name,
     `${BASE_URL}/verify/${token}`
   );
-  let { password: userPassword, _id, ...userInfo } = user._doc;
   return res.status(StatusCodes.OK).json({
     message: "Register sucessfully, please check your email to verify!",
-    user: userInfo,
+    user: {
+      id: user._id,
+      username: user.username,
+      picture: user.picture,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      pronoun: user.pronoun,
+      optional_gender: user.optional_gender,
+      token: token,
+      verified: user.verified,
+    },
   });
 };
 const verify = async (req, res) => {
@@ -53,9 +49,20 @@ const verify = async (req, res) => {
     user.verified = true;
     user.save();
   }
-  return res
-    .status(StatusCodes.OK)
-    .json({ message: "The user is verified successfully", user });
+  return res.status(StatusCodes.OK).json({
+    message: "The user is verified successfully",
+    user: {
+      id: user._id,
+      username: user.username,
+      picture: user.picture,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      pronoun: user.pronoun,
+      optional_gender: user.optional_gender,
+      token: token,
+      verified: user.verified,
+    },
+  });
 };
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -74,11 +81,20 @@ const login = async (req, res) => {
     );
   }
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-  let { password: userPassword, _id, ...userInfo } = user._doc;
   return res.status(StatusCodes.OK).json({
     message: `Welcome ${user.first_name}, you have login successfully!`,
     token,
-    user: userInfo,
+    user: {
+      id: user._id,
+      username: user.username,
+      picture: user.picture,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      pronoun: user.pronoun,
+      optional_gender: user.optional_gender,
+      token: token,
+      verified: user.verified,
+    },
   });
 };
 module.exports = { register, verify, login };

@@ -1,9 +1,9 @@
 import React, { useRef, useState } from "react";
-import useOnClickOutside from "../../../hooks/useOnClickOutside";
+import useOnClickOutside from "../../hooks/useOnClickOutside";
 import { Control } from "react-hook-form/dist/types/form";
 import { useController } from "react-hook-form";
 import Tippy from "@tippyjs/react/headless";
-import ErrorBox from "../../../components/ErrorBox";
+import ErrorBox from "../ErrorBox";
 
 type Item = {
   content: string;
