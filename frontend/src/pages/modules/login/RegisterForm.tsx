@@ -6,13 +6,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 import RegisterTextInput from "./RegisterTextInput";
-import HeaderHelper from "./HeaderHelper";
 import RegisterDropDown from "./RegisterDropDown";
-import RegisterCheckbox from "./RegisterCheckbox";
 import DateSelector from "./DateSelector";
 import GenderSelector from "./GenderSelector";
 
-type Props = {};
+type Props = {
+  className?: string;
+  setRegisterIsShown: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 const schema = yup.object({
   first_name: yup
@@ -49,7 +50,10 @@ const schema = yup.object({
   }),
 });
 
-const RegisterForm: React.FC<Props> = () => {
+const RegisterForm: React.FC<Props> = ({
+  className = "",
+  setRegisterIsShown,
+}) => {
   const isNotLargeScreen = useMediaQuery({
     query: "(max-width: 1024px)",
   });
@@ -111,13 +115,20 @@ const RegisterForm: React.FC<Props> = () => {
     }
   };
   return (
-    <div className="fixed inset-0 bg-[var(--overlay-white)] z-40 flex justify-center items-center">
+    <div
+      className={`fixed inset-0 bg-[var(--overlay-white)] z-40 flex justify-center items-center ${className}`}
+    >
       <form
         onSubmit={handleSubmit(onSubmit)}
         action=""
         className="w-[432px] m-5 text-left rounded-lg bg-white shadow-lg relative"
       >
-        <i className="exit_icon absolute top-4 right-4 cursor-pointer"></i>
+        <i
+          className="exit_icon absolute top-4 right-4 cursor-pointer"
+          onClick={() => {
+            setRegisterIsShown(false);
+          }}
+        ></i>
         <div className="py-[10px] px-[16px] border-b border-solid border-b-[#dadde1]">
           <h1 className="text-[#1c1e21] text-[32px] leading-[38px] font-bold">
             Sign Up

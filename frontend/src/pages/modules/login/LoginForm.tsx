@@ -6,7 +6,9 @@ import { useMediaQuery } from "react-responsive";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-type Props = {};
+type Props = {
+  setRegisterIsShown: any;
+};
 
 const schema = yup.object({
   email: yup
@@ -19,7 +21,7 @@ const schema = yup.object({
   password: yup.string().required("Please enter your password!"),
 });
 
-const LoginForm: React.FC<Props> = () => {
+const LoginForm: React.FC<Props> = ({ setRegisterIsShown }) => {
   const isNotLargeScreen = useMediaQuery({
     query: "(max-width: 1024px)",
   });
@@ -87,7 +89,13 @@ const LoginForm: React.FC<Props> = () => {
             </a>
             <div className="spacer"></div>
             <div className="w-full pt-[6px] flex justify-center">
-              <button className="btn bg-[var(--green-color)] inline-block text-[17px]">
+              <button
+                type="button"
+                className="btn bg-[var(--green-color)] inline-block text-[17px]"
+                onClick={() => {
+                  setRegisterIsShown(true);
+                }}
+              >
                 Create new account
               </button>
             </div>
