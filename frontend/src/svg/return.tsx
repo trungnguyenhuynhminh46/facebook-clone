@@ -3,7 +3,7 @@ interface Props {
   color?: string;
 }
 
-const Return: React.FC<Props> = ({ color }) => {
+const Return: React.FC<Props> = ({ color = "#65676B" }) => {
   return (
     <svg width="20" height="20" viewBox="0 0 20 20" fill={color}>
       <g fillRule="nonzero">

@@ -2,8 +2,11 @@ import Logo from "./logo";
 import HomeActive from "./homeActive";
 import Friends from "./friends.js";
 import Watch from "./watch";
+import WatchActive from "./WatchActive";
 import Market from "./market";
+import MarketActive from "./MarketActive";
 import Gaming from "./gaming";
+import GamingActive from "./GamingActive";
 import Menu from "./menu";
 import Messenger from "./messenger";
 import ArrowDown from "./arrowDown";
@@ -21,14 +24,19 @@ import Public from "./public";
 import NewRoom from "./newRoom";
 import Home from "./home";
 import FriendsActive from "./friendsActive";
+import Groups from "./Groups";
+import GroupsActive from "./GroupsActive";
 
 export {
   Logo,
   HomeActive,
   Friends,
   Watch,
+  WatchActive,
   Market,
+  MarketActive,
   Gaming,
+  GamingActive,
   Menu,
   Messenger,
   Notifications,
@@ -46,4 +54,6 @@ export {
   NewRoom,
   Home,
   FriendsActive,
+  Groups,
+  GroupsActive,
 };

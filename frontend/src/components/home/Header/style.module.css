@@ -1,0 +1,42 @@
+.header-left {
+  @apply flex justify-start items-center gap-2;
+}
+.header-middle {
+  @apply flex items-center max-w-[558px] gap-[14px];
+}
+.header-right {
+  @apply flex justify-start items-center gap-2;
+}
+.avatar {
+  position: relative;
+}
+.avatar:hover::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgb(185, 185, 185);
+  opacity: 0.2;
+}
+.header-nav-item {
+  @apply relative h-[48px] flex justify-center items-center px-[39px] rounded-xl;
+}
+.header-nav-item:hover {
+  @apply bg-[var(--bg-secondary)];
+}
+.header-nav-item.active:hover {
+  @apply bg-transparent;
+}
+.header-nav-item.active:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transform: translateY(calc(100% + 1px));
+
+  height: 3px;
+  background: var(--blue-color);
+}
