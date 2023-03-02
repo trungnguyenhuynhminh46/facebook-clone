@@ -21,16 +21,39 @@ import {
 import { Link, NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../../../store/selectors/user";
+import useOnClickOutside from "../../../hooks/useOnClickOutside";
 // Components
 import ToolTip from "./ToolTip";
-import SearchMenu from "../SearchMenu";
+import SearchMenu from "./Menu/SearchMenu";
+import AllMenu from "./Menu/AllMenu";
 
 type Props = {};
 
 const Header: React.FC<Props> = (props: Props) => {
   const user = useSelector(selectCurrentUser);
   // States, href
+  const searchRef = useRef(null);
+  const allMenuRef = useRef(null);
+  const messengerRef = useRef(null);
+  const notificationsRef = useRef(null);
+  const accountRef = useRef(null);
   const [currentMenu, setCurrentMenu] = useState("");
+  // Use click outside
+  useOnClickOutside(searchRef, () => {
+    if (currentMenu === "search") setCurrentMenu("");
+  });
+  useOnClickOutside(allMenuRef, () => {
+    if (currentMenu === "menu") setCurrentMenu("");
+  });
+  useOnClickOutside(messengerRef, () => {
+    if (currentMenu === "messenger") setCurrentMenu("");
+  });
+  useOnClickOutside(notificationsRef, () => {
+    if (currentMenu === "notifications") setCurrentMenu("");
+  });
+  useOnClickOutside(accountRef, () => {
+    if (currentMenu === "account") setCurrentMenu("");
+  });
 
   return (
     <header className="fixed w-full top-0 left-0 px-4 py-1 flex justify-between shadow-md">
@@ -43,6 +66,7 @@ const Header: React.FC<Props> = (props: Props) => {
           className={`cursor-pointer rounded-full flex justify-center items-center bg-[var(--bg-secondary)] fixed top-[8px] right-[1215px] transition-all duration-150 delay-100 ease-linear z-40 ${
             currentMenu === "search" ? "left-[52px]" : "left-[64px]"
           }`}
+          ref={searchRef}
         >
           {!(currentMenu === "search") && (
             <div className={`p-3`}>
@@ -58,13 +82,6 @@ const Header: React.FC<Props> = (props: Props) => {
             }}
           />
         </div>
-        {currentMenu === "search" && (
-          <SearchMenu
-            setHideMenu={() => {
-              setCurrentMenu("");
-            }}
-          />
-        )}
       </div>
       {/* middle */}
       <div className={`${headerStyles["header-middle"]} translate-x-[58.5px]`}>
@@ -82,7 +99,17 @@ const Header: React.FC<Props> = (props: Props) => {
             }}
           >
             {({ isActive }) => {
-              return isActive ? <HomeActive /> : <Home />;
+              return isActive ? (
+                <>
+                  <HomeActive />
+                  {true && <div className={headerStyles["number"]}>9</div>}
+                </>
+              ) : (
+                <>
+                  <Home />;
+                  {true && <div className={headerStyles["number"]}>9</div>}
+                </>
+              );
             }}
           </NavLink>
         </ToolTip>
@@ -100,7 +127,17 @@ const Header: React.FC<Props> = (props: Props) => {
             }}
           >
             {({ isActive }) => {
-              return isActive ? <WatchActive /> : <Watch />;
+              return isActive ? (
+                <>
+                  <WatchActive />
+                  {false && <div className={headerStyles["number"]}>9</div>}
+                </>
+              ) : (
+                <>
+                  <Watch />
+                  {false && <div className={headerStyles["number"]}>9</div>}
+                </>
+              );
             }}
           </NavLink>
         </ToolTip>
@@ -118,7 +155,17 @@ const Header: React.FC<Props> = (props: Props) => {
             }}
           >
             {({ isActive }) => {
-              return isActive ? <MarketActive /> : <Market />;
+              return isActive ? (
+                <>
+                  <MarketActive />
+                  {false && <div className={headerStyles["number"]}>9</div>}
+                </>
+              ) : (
+                <>
+                  <Market />
+                  {false && <div className={headerStyles["number"]}>9</div>}
+                </>
+              );
             }}
           </NavLink>
         </ToolTip>
@@ -136,7 +183,17 @@ const Header: React.FC<Props> = (props: Props) => {
             }}
           >
             {({ isActive }) => {
-              return isActive ? <GroupsActive /> : <Groups />;
+              return isActive ? (
+                <>
+                  <GroupsActive />
+                  {false && <div className={headerStyles["number"]}>9</div>}
+                </>
+              ) : (
+                <>
+                  <Groups />
+                  {false && <div className={headerStyles["number"]}>9</div>}
+                </>
+              );
             }}
           </NavLink>
         </ToolTip>
@@ -154,7 +211,17 @@ const Header: React.FC<Props> = (props: Props) => {
             }}
           >
             {({ isActive }) => {
-              return isActive ? <GamingActive /> : <Gaming />;
+              return isActive ? (
+                <>
+                  <GamingActive />
+                  {false && <div className={headerStyles["number"]}>9</div>}
+                </>
+              ) : (
+                <>
+                  <Gaming />
+                  {false && <div className={headerStyles["number"]}>9</div>}
+                </>
+              );
             }}
           </NavLink>
         </ToolTip>
@@ -162,28 +229,81 @@ const Header: React.FC<Props> = (props: Props) => {
       {/* right */}
       <div className={headerStyles["header-right"]}>
         <ToolTip title="Menu">
-          <button className="w-[40px] h-[40px] rounded-full bg-gray-200 hover:bg-gray-300 flex justify-center items-center">
-            <Menu />
+          <button
+            className="relative w-[40px] h-[40px] rounded-full bg-gray-200 hover:bg-gray-300 flex justify-center items-center"
+            onClick={() => {
+              if (currentMenu === "menu") {
+                setCurrentMenu("");
+              } else {
+                setCurrentMenu("menu");
+              }
+            }}
+            ref={allMenuRef}
+          >
+            <>
+              <Menu />
+              {false && <div className={headerStyles["number"]}>9</div>}
+              {currentMenu === "menu" && (
+                <AllMenu
+                  setHideMenu={() => {
+                    setCurrentMenu("");
+                  }}
+                />
+              )}
+            </>
           </button>
         </ToolTip>
         <ToolTip title="Messenger">
-          <button className="w-[40px] h-[40px] rounded-full bg-gray-200 hover:bg-gray-300 flex justify-center items-center">
-            <Messenger />
+          <button
+            className="relative w-[40px] h-[40px] rounded-full bg-gray-200 hover:bg-gray-300 flex justify-center items-center"
+            onClick={() => {
+              setCurrentMenu("messenger");
+            }}
+            ref={messengerRef}
+          >
+            <>
+              <Messenger />
+              {true && (
+                <div
+                  className={headerStyles["number"]}
+                  style={{ top: -5, right: -5 }}
+                >
+                  9
+                </div>
+              )}
+            </>
           </button>
         </ToolTip>
         <ToolTip title="Notifications">
-          <button className="w-[40px] h-[40px] rounded-full bg-gray-200 hover:bg-gray-300 flex justify-center items-center">
+          <button
+            className="relative w-[40px] h-[40px] rounded-full bg-gray-200 hover:bg-gray-300 flex justify-center items-center"
+            onClick={() => {
+              setCurrentMenu("notifications");
+            }}
+            ref={notificationsRef}
+          >
             <Notifications />
           </button>
         </ToolTip>
         <ToolTip title="Account">
           <button
-            className={`w-[40px] h-[40px] rounded-full bg-white border border-solid border-gray-200 hover:bg-gray-100 flex justify-center items-center overflow-hidden ${headerStyles["avatar"]}`}
+            className={`relative w-[40px] h-[40px] rounded-full bg-white border border-solid border-gray-200 hover:bg-gray-100 flex justify-center items-center overflow-hidden ${headerStyles["avatar"]}`}
+            onClick={() => {
+              setCurrentMenu("account");
+            }}
+            ref={accountRef}
           >
             <img src={user?.picture} alt="" />
           </button>
         </ToolTip>
       </div>
+      {currentMenu === "search" && (
+        <SearchMenu
+          setHideMenu={() => {
+            setCurrentMenu("");
+          }}
+        />
+      )}
     </header>
   );
 };
