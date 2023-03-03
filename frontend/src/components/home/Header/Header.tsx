@@ -228,36 +228,57 @@ const Header: React.FC<Props> = (props: Props) => {
       </div>
       {/* right */}
       <div className={headerStyles["header-right"]}>
-        <ToolTip title="Menu">
-          <button
-            className="relative w-[40px] h-[40px] rounded-full bg-gray-200 hover:bg-gray-300 flex justify-center items-center"
-            onClick={() => {
-              if (currentMenu === "menu") {
-                setCurrentMenu("");
-              } else {
-                setCurrentMenu("menu");
+        <div ref={allMenuRef}>
+          <ToolTip title="Menu">
+            <button
+              className="relative w-[40px] h-[40px] rounded-full bg-gray-200 hover:bg-gray-300 flex justify-center items-center"
+              style={
+                currentMenu === "menu"
+                  ? {
+                      background: "#E7F3FF",
+                      color: "#1876F2",
+                    }
+                  : {}
               }
-            }}
-            ref={allMenuRef}
-          >
-            <>
-              <Menu />
-              {false && <div className={headerStyles["number"]}>9</div>}
-              {currentMenu === "menu" && (
-                <AllMenu
-                  setHideMenu={() => {
-                    setCurrentMenu("");
-                  }}
-                />
-              )}
-            </>
-          </button>
-        </ToolTip>
+              onClick={() => {
+                if (currentMenu === "menu") {
+                  setCurrentMenu("");
+                } else {
+                  setCurrentMenu("menu");
+                }
+              }}
+            >
+              <>
+                <Menu />
+                {false && <div className={headerStyles["number"]}>9</div>}
+              </>
+            </button>
+          </ToolTip>
+          {currentMenu === "menu" && (
+            <AllMenu
+              setHideMenu={() => {
+                setCurrentMenu("");
+              }}
+            />
+          )}
+        </div>
         <ToolTip title="Messenger">
           <button
             className="relative w-[40px] h-[40px] rounded-full bg-gray-200 hover:bg-gray-300 flex justify-center items-center"
+            style={
+              currentMenu === "messenger"
+                ? {
+                    background: "#E7F3FF",
+                    color: "#1876F2",
+                  }
+                : {}
+            }
             onClick={() => {
-              setCurrentMenu("messenger");
+              if (currentMenu === "messenger") {
+                setCurrentMenu("");
+              } else {
+                setCurrentMenu("messenger");
+              }
             }}
             ref={messengerRef}
           >
@@ -277,8 +298,20 @@ const Header: React.FC<Props> = (props: Props) => {
         <ToolTip title="Notifications">
           <button
             className="relative w-[40px] h-[40px] rounded-full bg-gray-200 hover:bg-gray-300 flex justify-center items-center"
+            style={
+              currentMenu === "notifications"
+                ? {
+                    background: "#E7F3FF",
+                    color: "#1876F2",
+                  }
+                : {}
+            }
             onClick={() => {
-              setCurrentMenu("notifications");
+              if (currentMenu === "notifications") {
+                setCurrentMenu("");
+              } else {
+                setCurrentMenu("notifications");
+              }
             }}
             ref={notificationsRef}
           >
@@ -289,7 +322,11 @@ const Header: React.FC<Props> = (props: Props) => {
           <button
             className={`relative w-[40px] h-[40px] rounded-full bg-white border border-solid border-gray-200 hover:bg-gray-100 flex justify-center items-center overflow-hidden ${headerStyles["avatar"]}`}
             onClick={() => {
-              setCurrentMenu("account");
+              if (currentMenu === "account") {
+                setCurrentMenu("");
+              } else {
+                setCurrentMenu("account");
+              }
             }}
             ref={accountRef}
           >
