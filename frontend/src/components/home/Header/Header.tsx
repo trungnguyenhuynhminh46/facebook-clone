@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import headerStyles from "./style.module.css";
 import React from "react";
 import {
@@ -24,8 +24,9 @@ import { selectCurrentUser } from "../../../store/selectors/user";
 import useOnClickOutside from "../../../hooks/useOnClickOutside";
 // Components
 import ToolTip from "./ToolTip";
-import SearchMenu from "./Menu/SearchMenu";
-import AllMenu from "./Menu/AllMenu";
+import SearchMenu from "./SearchMenu";
+import AllMenu from "./AllMenu";
+import AccountMenu from "./AccountMenu";
 
 type Props = {};
 
@@ -40,33 +41,44 @@ const Header: React.FC<Props> = (props: Props) => {
   const [currentMenu, setCurrentMenu] = useState("");
   // Use click outside
   useOnClickOutside(searchRef, () => {
-    if (currentMenu === "search") setCurrentMenu("");
+    if (currentMenu === "search") {
+      setCurrentMenu("");
+    }
   });
   useOnClickOutside(allMenuRef, () => {
-    if (currentMenu === "menu") setCurrentMenu("");
+    if (currentMenu === "menu") {
+      setCurrentMenu("");
+    }
   });
   useOnClickOutside(messengerRef, () => {
-    if (currentMenu === "messenger") setCurrentMenu("");
+    if (currentMenu === "messenger") {
+      setCurrentMenu("");
+    }
   });
   useOnClickOutside(notificationsRef, () => {
-    if (currentMenu === "notifications") setCurrentMenu("");
+    if (currentMenu === "notifications") {
+      setCurrentMenu("");
+    }
   });
   useOnClickOutside(accountRef, () => {
-    if (currentMenu === "account") setCurrentMenu("");
+    if (currentMenu === "account") {
+      setCurrentMenu("");
+    }
   });
 
   return (
     <header className="fixed w-full top-0 left-0 px-4 py-1 flex justify-between shadow-md">
       {/* left */}
-      <div className={`${headerStyles["header-left"]}`}>
+      <div className={`${headerStyles["header-left"]}`} ref={searchRef}>
         <Link to="/">
           <Logo />
         </Link>
         <div
-          className={`cursor-pointer rounded-full flex justify-center items-center bg-[var(--bg-secondary)] fixed top-[8px] right-[1215px] transition-all duration-150 delay-100 ease-linear z-40 ${
-            currentMenu === "search" ? "left-[52px]" : "left-[64px]"
+          className={`cursor-pointer rounded-full flex justify-center items-center bg-[var(--bg-secondary)] fixed top-[8px] transition-all duration-150 delay-100 ease-linear z-40 ${
+            currentMenu === "search"
+              ? "left-[52px] w-[252px]"
+              : "left-[64px] w-[240px]"
           }`}
-          ref={searchRef}
         >
           {!(currentMenu === "search") && (
             <div className={`p-3`}>
@@ -82,6 +94,13 @@ const Header: React.FC<Props> = (props: Props) => {
             }}
           />
         </div>
+        {currentMenu === "search" && (
+          <SearchMenu
+            setHideMenu={() => {
+              setCurrentMenu("");
+            }}
+          />
+        )}
       </div>
       {/* middle */}
       <div className={`${headerStyles["header-middle"]} translate-x-[58.5px]`}>
@@ -254,13 +273,7 @@ const Header: React.FC<Props> = (props: Props) => {
               </>
             </button>
           </ToolTip>
-          {currentMenu === "menu" && (
-            <AllMenu
-              setHideMenu={() => {
-                setCurrentMenu("");
-              }}
-            />
-          )}
+          {currentMenu === "menu" && <AllMenu />}
         </div>
         <ToolTip title="Messenger">
           <button
@@ -318,29 +331,24 @@ const Header: React.FC<Props> = (props: Props) => {
             <Notifications />
           </button>
         </ToolTip>
-        <ToolTip title="Account">
-          <button
-            className={`relative w-[40px] h-[40px] rounded-full bg-white border border-solid border-gray-200 hover:bg-gray-100 flex justify-center items-center overflow-hidden ${headerStyles["avatar"]}`}
-            onClick={() => {
-              if (currentMenu === "account") {
-                setCurrentMenu("");
-              } else {
-                setCurrentMenu("account");
-              }
-            }}
-            ref={accountRef}
-          >
-            <img src={user?.picture} alt="" />
-          </button>
-        </ToolTip>
+        <div ref={accountRef}>
+          <ToolTip title="Account">
+            <button
+              className={`relative w-[40px] h-[40px] rounded-full bg-white border border-solid border-gray-200 flex justify-center items-center overflow-hidden ${headerStyles["avatar"]}`}
+              onClick={() => {
+                if (currentMenu === "account") {
+                  setCurrentMenu("");
+                } else {
+                  setCurrentMenu("account");
+                }
+              }}
+            >
+              <img src={user?.picture} alt="" />
+            </button>
+          </ToolTip>
+          {currentMenu === "account" && <AccountMenu />}
+        </div>
       </div>
-      {currentMenu === "search" && (
-        <SearchMenu
-          setHideMenu={() => {
-            setCurrentMenu("");
-          }}
-        />
-      )}
     </header>
   );
 };

@@ -1,17 +1,12 @@
 .all_menu-wrapper {
   @apply fixed top-[52px] bottom-4 overflow-y-scroll right-4 w-[608px] bg-[var(--bg-menu)] shadow-lg rounded-lg;
 }
-/* width */
 .all_menu-wrapper::-webkit-scrollbar {
   width: 10px;
 }
-
-/* Track */
 .all_menu-wrapper::-webkit-scrollbar-track {
   background: transparent;
 }
-
-/* Handle */
 .all_menu-wrapper::-webkit-scrollbar-thumb {
   display: none;
   background: #c6c6c6;
@@ -21,12 +16,9 @@
 .all_menu-wrapper:hover::-webkit-scrollbar-thumb {
   display: block;
 }
-
-/* Handle on hover */
 .all_menu-wrapper::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
-
 .all_menu_item-group {
   @apply pb-5 mb-5 border-b-2 border-solid border-gray-300;
 }

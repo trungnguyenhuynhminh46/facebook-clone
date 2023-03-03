@@ -7,11 +7,9 @@ import React from "react";
 import { Search } from "../../../../svg";
 import AllMenuItem from "./AllMenuItem";
 import { Link } from "react-router-dom";
-type Props = {
-  setHideMenu: () => void;
-};
+type Props = {};
 
-const AllMenu: React.FC<Props> = ({ setHideMenu }) => {
+const AllMenu: React.FC<Props> = () => {
   return (
     <div className={`${menuStyles["all_menu-wrapper"]} shadow1`}>
       <p className="p-4 text-2xl leading-4 font-bold">Menu</p>
@@ -45,9 +43,10 @@ const AllMenu: React.FC<Props> = ({ setHideMenu }) => {
             Create
           </h2>
           <div className="flex flex-col justify-start items-stretch">
-            {createData.slice(0, 3).map((item) => {
+            {createData.slice(0, 3).map((item, key) => {
               return (
                 <Link
+                  key={key}
                   to="/"
                   className="flex gap-4 w-full items-center p-2 rounded-lg hover:bg-gray-100"
                 >
@@ -59,9 +58,10 @@ const AllMenu: React.FC<Props> = ({ setHideMenu }) => {
               );
             })}
             <div className="w-full h-[1px] my-2 bg-gray-300"></div>
-            {createData.slice(3, 9).map((item) => {
+            {createData.slice(3, 9).map((item, key) => {
               return (
                 <Link
+                  key={key}
                   to="/"
                   className="flex gap-4 w-full items-center p-2 rounded-lg hover:bg-gray-100"
                 >

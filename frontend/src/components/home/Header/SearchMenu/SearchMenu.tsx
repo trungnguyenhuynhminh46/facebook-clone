@@ -1,5 +1,4 @@
-import React, { useRef } from "react";
-import useOnClickOutside from "../../../../hooks/useOnClickOutside";
+import React from "react";
 import { Return } from "../../../../svg";
 
 type Props = {

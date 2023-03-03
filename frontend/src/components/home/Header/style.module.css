@@ -20,6 +20,16 @@
   background: rgb(185, 185, 185);
   opacity: 0.2;
 }
+.avatar:active::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgb(96, 95, 95);
+  opacity: 0.2;
+}
 .header-nav-item {
   @apply relative h-[48px] flex justify-center items-center px-[39px] rounded-xl;
 }
@@ -45,10 +55,10 @@
   top: 4px;
   right: 30px;
 
-  font-size: 12px;
+  font-size: 11px;
   height: 18px;
   padding: 0 4px;
   min-width: 18px;
   border-radius: 9999999px;
-  @apply bg-red-500 flex justify-center items-center text-white z-20;
+  @apply bg-red-600 flex justify-center items-center text-white z-20;
 }

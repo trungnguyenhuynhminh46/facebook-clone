@@ -12,11 +12,12 @@ const AllMenuItem: React.FC<Props> = ({ title, data }) => {
     <div className={menuStyles["all_menu_item-group"]}>
       <p className={menuStyles["all_menu_item-header"]}>{title}</p>
       <div className="flex flex-col justify-start items-stretch">
-        {data.map((item) => {
+        {data.map((item, key) => {
           return (
             <Link
+              key={key}
               to="/"
-              className="flex cursor-pointer rounded-lg hover:bg-gray-100"
+              className="flex cursor-pointer rounded-lg hover:bg-gray-100 active:bg-gray-300"
             >
               <div className="mr-3 my-2 flex-shrink-0">
                 <img src={`/left/${item.icon}.png`} alt="" />

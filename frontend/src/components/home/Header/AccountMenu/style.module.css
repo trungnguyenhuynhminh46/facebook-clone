@@ -1,0 +1,11 @@
+.account-menu_avatar {
+  @apply relative w-9 h-9 rounded-full border border-solid border-gray-300 overflow-hidden;
+}
+.account-menu_avatar:hover::after {
+  content: "";
+  @apply absolute inset-0 bg-gray-100 opacity-20;
+}
+.account-menu_avatar:active::after {
+  content: "";
+  @apply absolute inset-0 bg-gray-600 opacity-20;
+}
