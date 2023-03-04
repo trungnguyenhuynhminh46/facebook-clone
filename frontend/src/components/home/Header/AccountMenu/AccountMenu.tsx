@@ -1,99 +1,87 @@
-import menuStyles from "./style.module.css";
-import React, { useState } from "react";
-import { selectCurrentUser } from "../../../../store/selectors/user";
+import "./animation.css";
+import React, { useEffect, useRef, useState } from "react";
+import { selectCurrentUser } from "@store/selectors/user";
 import { useSelector } from "react-redux";
+import useVisualViewportHeight from "@/hooks/useVisualViewportHeight";
 // Components
-import { Link } from "react-router-dom";
+import MainMenu from "./MainMenu";
+import SettingsMenu from "./SettingsMenu";
+import HelpMenu from "./HelpMenu";
+import DisplayMenu from "./DisplayMenu";
 
 type Props = {};
 
-const AccountMenu = (props: Props) => {
+const AccountMenu: React.FC<Props> = () => {
+  // Refs
+  const visualViewportHeight = useVisualViewportHeight();
+  const menu0 = useRef<HTMLDivElement>(null);
+  const menu1 = useRef<HTMLDivElement>(null);
+  const menu2 = useRef<HTMLDivElement>(null);
+  const menu3 = useRef<HTMLDivElement>(null);
+
   const currentUser = useSelector(selectCurrentUser);
   const [menu, setMenu] = useState(0);
+  const [menuHeight, setMenuHeight] = useState(0);
+  useEffect(() => {
+    console.log(window.innerHeight);
+  }, [window.innerHeight]);
   return (
-    <>
-      {menu === 0 && (
-        <div className="fixed top-[52px] right-4 rounded-lg bg-white w-[360px] pt-3 px-4 shadow3">
-          <div className="flex flex-col justify-start items-stretch rounded-lg shadow3 p-1 mb-4">
-            <Link
-              to="/profile"
-              className="flex gap-2 items-center p-3 rounded-lg hover:bg-gray-100 active:bg-gray-200"
-            >
-              <Link to="/profile" className={menuStyles["account-menu_avatar"]}>
-                <img src={currentUser?.picture} alt="" />
-              </Link>
-              <span className="text-[17px] font-semibold">
-                {currentUser?.username}
-              </span>
-            </Link>
-            <div className="mx-3">
-              <div className="w-full h-[1.5px] my-1 bg-gray-300"></div>
-            </div>
-            <button className="py-1 px-3 rounded-lg hover:bg-gray-100 active:bg-gray-200 flex">
-              <span className="text-[15px] font-medium text-[var(--blue-color)]">
-                See all profiles
-              </span>
-            </button>
-          </div>
-          {/* End top */}
-          <div className="w-full">
-            <button className="flex gap-3 items-center p-2 rounded-lg hover:bg-gray-50 active:bg-gray-100 w-full">
-              <div className="w-9 h-9 rounded-full bg-gray-200 flex justify-center items-center flex-shrink-0">
-                <i className="report_filled_icon"></i>
-              </div>
-              <div className="flex-1 flex">
-                <span className="text-[15px] font-medium">
-                  Settings & privacy
-                </span>
-              </div>
-              <i className="right_icon flex-shrink-0"></i>
-            </button>
-            <button className="flex gap-3 items-center p-2 rounded-lg hover:bg-gray-50 active:bg-gray-100 w-full">
-              <div className="w-9 h-9 rounded-full bg-gray-200 flex justify-center items-center flex-shrink-0">
-                <i className="report_filled_icon"></i>
-              </div>
-              <div className="flex-1 flex">
-                <span className="text-[15px] font-medium">
-                  Settings & privacy
-                </span>
-              </div>
-              <i className="right_icon flex-shrink-0"></i>
-            </button>
-            <button className="flex gap-3 items-center p-2 rounded-lg hover:bg-gray-50 active:bg-gray-100 w-full">
-              <div className="w-9 h-9 rounded-full bg-gray-200 flex justify-center items-center flex-shrink-0">
-                <i className="report_filled_icon"></i>
-              </div>
-              <div className="flex-1 flex">
-                <span className="text-[15px] font-medium">
-                  Settings & privacy
-                </span>
-              </div>
-              <i className="right_icon flex-shrink-0"></i>
-            </button>
-            <button className="flex gap-3 items-center p-2 rounded-lg hover:bg-gray-50 active:bg-gray-100 w-full">
-              <div className="w-9 h-9 rounded-full bg-gray-200 flex justify-center items-center flex-shrink-0">
-                <i className="report_filled_icon"></i>
-              </div>
-              <div className="flex-1 flex">
-                <span className="text-[15px] font-medium">
-                  Settings & privacy
-                </span>
-              </div>
-            </button>
-            <button className="flex gap-3 items-center p-2 rounded-lg hover:bg-gray-50 active:bg-gray-100 w-full">
-              <div className="w-9 h-9 rounded-full bg-gray-200 flex justify-center items-center flex-shrink-0">
-                <i className="report_filled_icon"></i>
-              </div>
-              <div className="flex-1 flex">
-                <span className="text-[15px] font-medium">
-                  Settings & privacy
-                </span>
-              </div>
-            </button>
-          </div>
-        </div>
-      )}
-    </>
+    <div
+      className="fixed top-[52px] right-4 rounded-lg bg-white w-[360px] pt-3 px-2 shadow3 overflow-hidden transition-all duration-200 ease-linear overflow-y-scroll"
+      style={
+        menuHeight > 0
+          ? {
+              height: menuHeight,
+              maxHeight: visualViewportHeight
+                ? visualViewportHeight - 70
+                : "none",
+            }
+          : {
+              height: 408,
+              maxHeight: visualViewportHeight
+                ? visualViewportHeight - 70
+                : "none",
+            }
+      }
+    >
+      <MainMenu
+        menu={menu}
+        menuRef={menu0}
+        onEnter={() => {
+          menu0.current?.offsetHeight &&
+            setMenuHeight(menu0.current?.offsetHeight + 12);
+        }}
+        currentUser={currentUser}
+        setMenu={setMenu}
+      />
+      <SettingsMenu
+        menu={menu}
+        menuRef={menu1}
+        setMenu={setMenu}
+        onEnter={() => {
+          menu1.current?.offsetHeight &&
+            setMenuHeight(menu1.current?.offsetHeight + 20);
+        }}
+      />
+      <HelpMenu
+        menu={menu}
+        menuRef={menu2}
+        setMenu={setMenu}
+        onEnter={() => {
+          menu2.current?.offsetHeight &&
+            setMenuHeight(menu2.current?.offsetHeight + 20);
+        }}
+      />
+      <DisplayMenu
+        menu={menu}
+        menuRef={menu3}
+        setMenu={setMenu}
+        onEnter={() => {
+          menu3.current?.offsetHeight &&
+            setMenuHeight(menu3.current?.offsetHeight + 20);
+        }}
+      />
+    </div>
   );
 };
 

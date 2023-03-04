@@ -6,32 +6,16 @@ import path from "node:path";
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias: [
-      {
-        find: /^moment$/,
-        replacement: path.resolve(__dirname, "./alias.js"),
-      },
-      {
-        find: /^gc-dv$/,
-        replacement: path.resolve(
-          __dirname,
-          "./node_modules/@grapecity/activereports/lib/node_modules/gc-dv.js"
-        ),
-      },
-      {
-        find: /^\@grapecity\/ar-js-pagereport$/,
-        replacement: path.resolve(
-          __dirname,
-          "./node_modules/@grapecity/activereports/lib/node_modules/@grapecity/ar-js-pagereport.js"
-        ),
-      },
-      {
-        find: /^barcodejs$/,
-        replacement: path.resolve(
-          __dirname,
-          "./node_modules/@grapecity/activereports/lib/node_modules/barcodejs.js"
-        ),
-      },
-    ],
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+      "@icons": path.resolve(__dirname, "./public/icons"),
+      "@fonts": path.resolve(__dirname, "./public/fonts"),
+      "@components": path.resolve(__dirname, "./src/components"),
+      "@data": path.resolve(__dirname, "./src/data"),
+      "@hooks": path.resolve(__dirname, "./src/hooks"),
+      "@pages": path.resolve(__dirname, "./src/pages"),
+      "@store": path.resolve(__dirname, "./src/store"),
+      "@svg": path.resolve(__dirname, "./src/svg"),
+    },
   },
 });

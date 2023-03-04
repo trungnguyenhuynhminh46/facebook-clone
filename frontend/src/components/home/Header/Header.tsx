@@ -17,16 +17,16 @@ import {
   Menu,
   Messenger,
   Notifications,
-} from "../../../svg";
+} from "@svg/index";
 import { Link, NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectCurrentUser } from "../../../store/selectors/user";
-import useOnClickOutside from "../../../hooks/useOnClickOutside";
+import { selectCurrentUser } from "@store/selectors/user";
+import useOnClickOutside from "@hooks/useOnClickOutside";
 // Components
-import ToolTip from "./ToolTip";
-import SearchMenu from "./SearchMenu";
-import AllMenu from "./AllMenu";
-import AccountMenu from "./AccountMenu";
+import ToolTip from "@/components/ToolTip";
+import SearchMenu from "@components/home/Header/SearchMenu";
+import AllMenu from "@components/home/Header/AllMenu";
+import AccountMenu from "@components/home/Header/AccountMenu";
 
 type Props = {};
 

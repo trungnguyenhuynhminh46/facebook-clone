@@ -1,0 +1,28 @@
+.menu-0-enter {
+  position: absolute;
+  width: 100%;
+  transform: translateX(-110%);
+}
+.menu-0-enter-active {
+  transform: translateX(0%);
+  transition: all 200ms ease;
+}
+.menu-0-exit {
+  position: absolute;
+}
+.menu-0-exit-active {
+  transform: translateX(-110%);
+  transition: all 200ms ease;
+}
+
+.menu-1-enter {
+  transform: translateX(110%);
+}
+.menu-1-enter-active {
+  transform: translateX(0%);
+  transition: all 200ms ease;
+}
+.menu-1-exit-active {
+  transform: translateX(110%);
+  transition: all 200ms ease;
+}

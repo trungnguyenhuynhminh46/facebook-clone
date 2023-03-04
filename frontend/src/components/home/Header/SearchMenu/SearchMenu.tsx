@@ -1,5 +1,5 @@
 import React from "react";
-import { Return } from "../../../../svg";
+import { Return } from "@svg/index";
 
 type Props = {
   setHideMenu: () => void;
@@ -9,7 +9,7 @@ const SearchMenu: React.FC<Props> = ({ setHideMenu }) => {
   return (
     <div className="fixed top-0 left-0 w-[320px] bg-white z-20 rounded-lg shadow-xl shadow1">
       <div
-        className="absolute top-[18px] left-4 cursor-pointer"
+        className="absolute top-[10px] left-2 cursor-pointer w-9 h-9 rounded-full hover:bg-gray-100 flex justify-center items-center"
         onClick={() => {
           setHideMenu();
         }}

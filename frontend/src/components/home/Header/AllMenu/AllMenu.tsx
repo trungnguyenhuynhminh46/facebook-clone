@@ -1,10 +1,7 @@
 import menuStyles from "./style.module.css";
-import {
-  menu as allMenuData,
-  create as createData,
-} from "../../../../data/allMenu";
+import { menu as allMenuData, create as createData } from "@data/allMenu";
 import React from "react";
-import { Search } from "../../../../svg";
+import { Search } from "@svg/index";
 import AllMenuItem from "./AllMenuItem";
 import { Link } from "react-router-dom";
 type Props = {};
