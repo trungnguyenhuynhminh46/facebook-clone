@@ -31,19 +31,14 @@ const HelpMenu: React.FC<Props> = ({ menu, menuRef, onEnter, setMenu }) => {
             <Return />
           </div>
           <h2 className="text-2xl font-bold leading-7 pl-[10px]">
-            Settings & privacy
+            Help & support
           </h2>
         </div>
         {/* End top */}
         <div className="w-full">
-          <MenuItem beforeIcon="settings_filled_icon">Settings</MenuItem>
-          <MenuItem beforeIcon="privacy_checkup_icon">Privacy Chekup</MenuItem>
-          <MenuItem beforeIcon="privacy_shortcuts_icon">
-            Privacy Shortcuts
-          </MenuItem>
-          <MenuItem beforeIcon="activity_log_icon">Activity log</MenuItem>
-          <MenuItem beforeIcon="news_icon">News Feed Prefrences</MenuItem>
-          <MenuItem beforeIcon="language_icon">Language</MenuItem>
+          <MenuItem beforeIcon="help_center_icon">Help Center</MenuItem>
+          <MenuItem beforeIcon="email_icon">Support Inbox</MenuItem>
+          <MenuItem beforeIcon="info_filled_icon">Report a Problem</MenuItem>
         </div>
       </div>
     </CSSTransition>

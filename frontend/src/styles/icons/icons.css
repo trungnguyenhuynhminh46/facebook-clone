@@ -763,3 +763,21 @@
   width: 16px;
   height: 16px;
 }
+.compact_icon {
+  background-image: url(/icons/icons38.png);
+  background-position: 0px -130px;
+  background-size: auto;
+  width: 20px;
+  height: 20px;
+  background-repeat: no-repeat;
+  display: inline-block;
+}
+.preview_icon {
+  background-image: url(/icons/icons39.png);
+  background-position: 0px -548px;
+  background-size: 26px 1522px;
+  width: 20px;
+  height: 20px;
+  background-repeat: no-repeat;
+  display: inline-block;
+}
