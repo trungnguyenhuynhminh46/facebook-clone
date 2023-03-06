@@ -4,15 +4,21 @@ import React from "react";
 import { Search } from "@svg/index";
 import AllMenuItem from "./AllMenuItem";
 import { Link } from "react-router-dom";
+import { useMediaQuery } from "react-responsive";
 type Props = {};
 
 const AllMenu: React.FC<Props> = () => {
+  const isSmallScreen = useMediaQuery({ query: "(max-width: 688px)" });
   return (
     <div className={`${menuStyles["all_menu-wrapper"]} shadow1`}>
       <p className="p-4 text-2xl leading-4 font-bold">Menu</p>
-      <div className="flex pl-4 pb-4 gap-4 items-start">
+      <div className={`${menuStyles["all_menu-inner"]}`}>
         {/* Left */}
-        <div className="rounded-lg bg-white shadow-lg w-[360px] shadow2 p-4">
+        <div
+          className={`rounded-lg bg-white shadow-lg shadow2 p-4 ${
+            isSmallScreen ? "w-full" : "w-[360px]"
+          }`}
+        >
           <div className="rounded-full w-full overflow-hidden bg-[var(--bg-secondary)] flex justify-start items-center mb-4">
             <div className="px-3">
               <Search />

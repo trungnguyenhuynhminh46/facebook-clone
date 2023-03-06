@@ -1,11 +1,11 @@
 .header-left {
-  @apply flex justify-start items-center gap-2;
+  @apply flex flex-shrink-0 justify-start items-center gap-2;
 }
 .header-middle {
-  @apply flex items-center max-w-[558px] gap-[14px];
+  @apply flex flex-1 items-center max-w-[586px] ml-[28px] gap-[14px];
 }
 .header-right {
-  @apply flex justify-start items-center gap-2;
+  @apply flex flex-shrink-0 justify-start items-center gap-2;
 }
 .avatar {
   position: relative;
@@ -31,7 +31,7 @@
   opacity: 0.2;
 }
 .header-nav-item {
-  @apply relative h-[48px] flex justify-center items-center px-[39px] rounded-xl;
+  @apply relative h-[48px] flex justify-center items-center flex-1 rounded-xl;
 }
 .header-nav-item:hover {
   @apply bg-[var(--bg-secondary)];

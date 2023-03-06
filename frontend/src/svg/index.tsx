@@ -26,6 +26,8 @@ import Home from "./home";
 import FriendsActive from "./friendsActive";
 import Groups from "./Groups";
 import GroupsActive from "./GroupsActive";
+import More from "./more";
+import MoreActive from "./moreActive";
 
 export {
   Logo,
@@ -56,4 +58,6 @@ export {
   FriendsActive,
   Groups,
   GroupsActive,
+  More,
+  MoreActive,
 };

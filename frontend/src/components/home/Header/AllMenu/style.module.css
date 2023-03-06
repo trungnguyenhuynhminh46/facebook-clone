@@ -19,6 +19,9 @@
 .all_menu-wrapper::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+.all_menu-inner {
+  @apply flex pl-4 pb-4 gap-4 items-start;
+}
 .all_menu_item-group {
   @apply pb-5 mb-5 border-b-2 border-solid border-gray-300;
 }
@@ -27,4 +30,12 @@
 }
 .all_menu_item-header {
   @apply text-[17px] leading-5 font-semibold pb-2;
+}
+@media (max-width: 688px) {
+  .all_menu-wrapper {
+    @apply fixed top-[52px] left-0 right-0 w-full;
+  }
+  .all_menu-inner {
+    @apply flex-col justify-start items-stretch;
+  }
 }

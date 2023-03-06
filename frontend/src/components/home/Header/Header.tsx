@@ -17,11 +17,14 @@ import {
   Menu,
   Messenger,
   Notifications,
+  More,
+  MoreActive,
 } from "@svg/index";
 import { Link, NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@store/selectors/user";
 import useOnClickOutside from "@hooks/useOnClickOutside";
+import { useMediaQuery } from "react-responsive";
 // Components
 import ToolTip from "@/components/ToolTip";
 import SearchMenu from "@components/home/Header/SearchMenu";
@@ -32,6 +35,10 @@ type Props = {};
 
 const Header: React.FC<Props> = (props: Props) => {
   const user = useSelector(selectCurrentUser);
+  // Screen
+  const isBelowLarge = useMediaQuery({ query: "(max-width: 1260px)" });
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1100px)" });
+  const isSmallScreen = useMediaQuery({ query: "(max-width: 640px)" });
   // States, href
   const searchRef = useRef(null);
   const allMenuRef = useRef(null);
@@ -75,24 +82,29 @@ const Header: React.FC<Props> = (props: Props) => {
         </Link>
         <div
           className={`cursor-pointer rounded-full flex justify-center items-center bg-[var(--bg-secondary)] fixed top-[8px] transition-all duration-150 delay-100 ease-linear z-40 ${
-            currentMenu === "search"
-              ? "left-[52px] w-[252px]"
-              : "left-[64px] w-[240px]"
+            currentMenu === "search" ? "left-[52px] w-[252px]" : "left-[64px]"
           }`}
         >
           {!(currentMenu === "search") && (
-            <div className={`p-3`}>
+            <div
+              className={`p-3`}
+              onClick={() => {
+                setCurrentMenu("search");
+              }}
+            >
               <Search />
             </div>
           )}
-          <input
-            type="text"
-            className={`w-[200px] p-2 border-none outline-none bg-transparent -translate-x-3 transition-all duration-300 ease-linear placeholder:text-[var(--color-secondary)] tracking-wide font-[300]`}
-            placeholder="Search Facebook"
-            onFocus={() => {
-              setCurrentMenu("search");
-            }}
-          />
+          {(!isBelowLarge || (isBelowLarge && currentMenu === "search")) && (
+            <input
+              type="text"
+              className={`w-[200px] p-2 border-none outline-none bg-transparent -translate-x-3 transition-all duration-300 ease-linear placeholder:text-[var(--color-secondary)] tracking-wide font-[300]`}
+              placeholder="Search Facebook"
+              onFocus={() => {
+                setCurrentMenu("search");
+              }}
+            />
+          )}
         </div>
         {currentMenu === "search" && (
           <SearchMenu
@@ -103,147 +115,207 @@ const Header: React.FC<Props> = (props: Props) => {
         )}
       </div>
       {/* middle */}
-      <div className={`${headerStyles["header-middle"]} translate-x-[58.5px]`}>
-        <ToolTip title="Home">
-          <NavLink
-            to="/"
-            className={({ isActive }) => {
-              return isActive
-                ? `${
-                    headerStyles["header-nav-item"] +
-                    " " +
-                    headerStyles["active"]
-                  }`
-                : `${headerStyles["header-nav-item"]}`;
-            }}
-          >
-            {({ isActive }) => {
-              return isActive ? (
-                <>
-                  <HomeActive />
-                  {true && <div className={headerStyles["number"]}>9</div>}
-                </>
-              ) : (
-                <>
-                  <Home />;
-                  {true && <div className={headerStyles["number"]}>9</div>}
-                </>
-              );
-            }}
-          </NavLink>
-        </ToolTip>
-        <ToolTip title="Watch">
-          <NavLink
-            to="/watch"
-            className={({ isActive }) => {
-              return isActive
-                ? `${
-                    headerStyles["header-nav-item"] +
-                    " " +
-                    headerStyles["active"]
-                  }`
-                : `${headerStyles["header-nav-item"]}`;
-            }}
-          >
-            {({ isActive }) => {
-              return isActive ? (
-                <>
-                  <WatchActive />
-                  {false && <div className={headerStyles["number"]}>9</div>}
-                </>
-              ) : (
-                <>
-                  <Watch />
-                  {false && <div className={headerStyles["number"]}>9</div>}
-                </>
-              );
-            }}
-          </NavLink>
-        </ToolTip>
-        <ToolTip title="Market">
-          <NavLink
-            to="/market"
-            className={({ isActive }) => {
-              return isActive
-                ? `${
-                    headerStyles["header-nav-item"] +
-                    " " +
-                    headerStyles["active"]
-                  }`
-                : `${headerStyles["header-nav-item"]}`;
-            }}
-          >
-            {({ isActive }) => {
-              return isActive ? (
-                <>
-                  <MarketActive />
-                  {false && <div className={headerStyles["number"]}>9</div>}
-                </>
-              ) : (
-                <>
-                  <Market />
-                  {false && <div className={headerStyles["number"]}>9</div>}
-                </>
-              );
-            }}
-          </NavLink>
-        </ToolTip>
-        <ToolTip title="Groups">
-          <NavLink
-            to="/groups"
-            className={({ isActive }) => {
-              return isActive
-                ? `${
-                    headerStyles["header-nav-item"] +
-                    " " +
-                    headerStyles["active"]
-                  }`
-                : `${headerStyles["header-nav-item"]}`;
-            }}
-          >
-            {({ isActive }) => {
-              return isActive ? (
-                <>
-                  <GroupsActive />
-                  {false && <div className={headerStyles["number"]}>9</div>}
-                </>
-              ) : (
-                <>
-                  <Groups />
-                  {false && <div className={headerStyles["number"]}>9</div>}
-                </>
-              );
-            }}
-          </NavLink>
-        </ToolTip>
-        <ToolTip title="Gaming">
-          <NavLink
-            to="/gaming"
-            className={({ isActive }) => {
-              return isActive
-                ? `${
-                    headerStyles["header-nav-item"] +
-                    " " +
-                    headerStyles["active"]
-                  }`
-                : `${headerStyles["header-nav-item"]}`;
-            }}
-          >
-            {({ isActive }) => {
-              return isActive ? (
-                <>
-                  <GamingActive />
-                  {false && <div className={headerStyles["number"]}>9</div>}
-                </>
-              ) : (
-                <>
-                  <Gaming />
-                  {false && <div className={headerStyles["number"]}>9</div>}
-                </>
-              );
-            }}
-          </NavLink>
-        </ToolTip>
+      <div
+        className={`${headerStyles["header-middle"]} translate-x-[58.5px]`}
+        style={
+          isTabletOrMobile
+            ? {
+                maxWidth: "435px",
+                marginLeft: "auto",
+                marginRight: "100px",
+              }
+            : {}
+        }
+      >
+        {!isSmallScreen && (
+          <ToolTip title="Home">
+            <NavLink
+              to="/"
+              className={({ isActive }) => {
+                return isActive
+                  ? `${
+                      headerStyles["header-nav-item"] +
+                      " " +
+                      headerStyles["active"]
+                    }`
+                  : `${headerStyles["header-nav-item"]}`;
+              }}
+            >
+              {({ isActive }) => {
+                return isActive ? (
+                  <>
+                    <HomeActive />
+                    {true && <div className={headerStyles["number"]}>9</div>}
+                  </>
+                ) : (
+                  <>
+                    <Home />;
+                    {true && <div className={headerStyles["number"]}>9</div>}
+                  </>
+                );
+              }}
+            </NavLink>
+          </ToolTip>
+        )}
+        {!isSmallScreen && (
+          <ToolTip title="Watch">
+            <NavLink
+              to="/watch"
+              className={({ isActive }) => {
+                return isActive
+                  ? `${
+                      headerStyles["header-nav-item"] +
+                      " " +
+                      headerStyles["active"]
+                    }`
+                  : `${headerStyles["header-nav-item"]}`;
+              }}
+            >
+              {({ isActive }) => {
+                return isActive ? (
+                  <>
+                    <WatchActive />
+                    {false && <div className={headerStyles["number"]}>9</div>}
+                  </>
+                ) : (
+                  <>
+                    <Watch />
+                    {false && <div className={headerStyles["number"]}>9</div>}
+                  </>
+                );
+              }}
+            </NavLink>
+          </ToolTip>
+        )}
+        {!isSmallScreen && (
+          <ToolTip title="Market">
+            <NavLink
+              to="/market"
+              className={({ isActive }) => {
+                return isActive
+                  ? `${
+                      headerStyles["header-nav-item"] +
+                      " " +
+                      headerStyles["active"]
+                    }`
+                  : `${headerStyles["header-nav-item"]}`;
+              }}
+            >
+              {({ isActive }) => {
+                return isActive ? (
+                  <>
+                    <MarketActive />
+                    {false && <div className={headerStyles["number"]}>9</div>}
+                  </>
+                ) : (
+                  <>
+                    <Market />
+                    {false && <div className={headerStyles["number"]}>9</div>}
+                  </>
+                );
+              }}
+            </NavLink>
+          </ToolTip>
+        )}
+        {!isSmallScreen && (
+          <ToolTip title="Groups">
+            <NavLink
+              to="/groups"
+              className={({ isActive }) => {
+                return isActive
+                  ? `${
+                      headerStyles["header-nav-item"] +
+                      " " +
+                      headerStyles["active"]
+                    }`
+                  : `${headerStyles["header-nav-item"]}`;
+              }}
+            >
+              {({ isActive }) => {
+                return isActive ? (
+                  <>
+                    <GroupsActive />
+                    {false && <div className={headerStyles["number"]}>9</div>}
+                  </>
+                ) : (
+                  <>
+                    <Groups />
+                    {false && <div className={headerStyles["number"]}>9</div>}
+                  </>
+                );
+              }}
+            </NavLink>
+          </ToolTip>
+        )}
+        {!isTabletOrMobile && (
+          <ToolTip title="Gaming">
+            <NavLink
+              to="/gaming"
+              className={({ isActive }) => {
+                return isActive
+                  ? `${
+                      headerStyles["header-nav-item"] +
+                      " " +
+                      headerStyles["active"]
+                    }`
+                  : `${headerStyles["header-nav-item"]}`;
+              }}
+            >
+              {({ isActive }) => {
+                return isActive ? (
+                  <>
+                    <GamingActive />
+                    {false && <div className={headerStyles["number"]}>9</div>}
+                  </>
+                ) : (
+                  <>
+                    <Gaming />
+                    {false && <div className={headerStyles["number"]}>9</div>}
+                  </>
+                );
+              }}
+            </NavLink>
+          </ToolTip>
+        )}
+        {isTabletOrMobile && (
+          <ToolTip title="More">
+            <NavLink
+              to="/bookmarks"
+              className={({ isActive }) => {
+                return isActive
+                  ? `${
+                      headerStyles["header-nav-item"] +
+                      " " +
+                      headerStyles["active"]
+                    }`
+                  : `${headerStyles["header-nav-item"]}`;
+              }}
+              style={
+                isSmallScreen
+                  ? {
+                      flex: "0",
+                      paddingLeft: "12px",
+                      paddingRight: "12px",
+                    }
+                  : {}
+              }
+            >
+              {({ isActive }) => {
+                return isActive ? (
+                  <>
+                    <MoreActive />
+                    {false && <div className={headerStyles["number"]}>9</div>}
+                  </>
+                ) : (
+                  <>
+                    <More />
+                    {false && <div className={headerStyles["number"]}>9</div>}
+                  </>
+                );
+              }}
+            </NavLink>
+          </ToolTip>
+        )}
       </div>
       {/* right */}
       <div className={headerStyles["header-right"]}>
