@@ -27,9 +27,9 @@ import useOnClickOutside from "@hooks/useOnClickOutside";
 import { useMediaQuery } from "react-responsive";
 // Components
 import ToolTip from "@/components/ToolTip";
-import SearchMenu from "@components/home/Header/SearchMenu";
-import AllMenu from "@components/home/Header/AllMenu";
-import AccountMenu from "@components/home/Header/AccountMenu";
+import SearchMenu from "@components/Header/SearchMenu";
+import AllMenu from "@components/Header/AllMenu";
+import AccountMenu from "@components/Header/AccountMenu";
 
 type Props = {};
 
@@ -74,7 +74,7 @@ const Header: React.FC<Props> = (props: Props) => {
   });
 
   return (
-    <header className="fixed w-full top-0 left-0 px-4 py-1 flex justify-between shadow-md">
+    <header className="fixed w-full top-0 left-0 px-4 py-1 flex justify-between shadow-md bg-white">
       {/* left */}
       <div className={`${headerStyles["header-left"]}`} ref={searchRef}>
         <Link to="/">

@@ -28,6 +28,8 @@ import Groups from "./Groups";
 import GroupsActive from "./GroupsActive";
 import More from "./more";
 import MoreActive from "./moreActive";
+import ChevonDown from "./chevonDown";
+import ChevonUp from "./chevonUp";
 
 export {
   Logo,
@@ -60,4 +62,6 @@ export {
   GroupsActive,
   More,
   MoreActive,
+  ChevonDown,
+  ChevonUp,
 };

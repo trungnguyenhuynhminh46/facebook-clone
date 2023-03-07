@@ -17,7 +17,7 @@
   display: block;
 }
 .all_menu-wrapper::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #9b9b9b;
 }
 .all_menu-inner {
   @apply flex pl-4 pb-4 gap-4 items-start;
