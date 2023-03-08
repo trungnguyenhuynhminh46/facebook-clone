@@ -1,0 +1,16 @@
+.avatar {
+  @apply relative w-10 h-10 rounded-full border border-solid border-gray-200 overflow-hidden flex-shrink-0;
+}
+.open_create_post {
+  @apply relative h-10 flex-1 p-3 bg-gray-100 text-gray-400 rounded-full flex justify-start items-center overflow-hidden;
+}
+.avatar:hover::after,
+.open_create_post:hover::after {
+  content: "";
+  @apply absolute inset-0 bg-gray-300 opacity-20;
+}
+.avatar:active::after,
+.open_create_post:active::after {
+  content: "";
+  @apply absolute inset-0 bg-gray-500 opacity-20;
+}

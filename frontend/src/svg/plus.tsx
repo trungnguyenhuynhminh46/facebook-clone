@@ -1,10 +1,8 @@
 import React from "react";
-interface Props {
-  color?: string;
-}
-const Plus: React.FC<Props> = ({ color }) => {
+interface Props {}
+const Plus: React.FC<Props> = () => {
   return (
-    <svg width="1em" height="1em" fill={color} viewBox="0 0 20 20">
+    <svg width="20px" height="20px" fill="currentColor" viewBox="0 0 20 20">
       <g fillRule="nonzero">
         <path
           d="M449.5 361h13a1 1 0 100-2h-13a1 1 0 100 2z"
