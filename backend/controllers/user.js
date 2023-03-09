@@ -44,7 +44,7 @@ const verify = async (req, res) => {
   const { id } = jwt.verify(token, process.env.JWT_SECRET);
   const user = await User.findById(id);
   if (user.verified === true) {
-    throw customError("This use is already verified", StatusCodes.BAD_REQUEST);
+    throw customError("This user is already verified", StatusCodes.BAD_REQUEST);
   } else {
     user.verified = true;
     user.save();
@@ -97,4 +97,7 @@ const login = async (req, res) => {
     },
   });
 };
-module.exports = { register, verify, login };
+const auth = async (req, res) => {
+  return res.json("Welcome from auth");
+};
+module.exports = { register, verify, login, auth };

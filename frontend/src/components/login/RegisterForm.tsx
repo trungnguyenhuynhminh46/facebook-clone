@@ -105,7 +105,7 @@ const RegisterForm: React.FC<Props> = ({
   const watchBDay = watch("bDay");
   const watchBMonth = watch("bMonth");
   const watchBYear = watch("bYear");
-  // console.log(errors);
+
   const onSubmit = async (inputData: any) => {
     try {
       setIsLoading(true);
