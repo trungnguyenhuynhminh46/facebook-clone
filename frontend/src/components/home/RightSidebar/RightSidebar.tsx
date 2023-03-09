@@ -1,4 +1,5 @@
 import React from "react";
+import { useMediaQuery } from "react-responsive";
 import rightSidebarStyles from "./style.module.css";
 import { NewRoom, Search, Dots } from "@/svg";
 import ToolTip from "@/components/ToolTip";
@@ -23,8 +24,18 @@ const ContactItem: React.FC<ContactItemProps> = ({ user }) => {
 };
 
 const RightSidebar: React.FC<Props> = ({ currentUser }) => {
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1100px)" });
   return (
-    <div className={rightSidebarStyles["right-sidebar-wrapper"]}>
+    <div
+      className={rightSidebarStyles["right-sidebar-wrapper"]}
+      style={
+        isTabletOrMobile
+          ? {
+              maxWidth: "32vw",
+            }
+          : {}
+      }
+    >
       <div className="flex flex-col py-3 px-2">
         <div className="flex justify-between items-center">
           <p className="text-[var(--color-secondary)] font-semibold text-[17px] px-4 py-3">

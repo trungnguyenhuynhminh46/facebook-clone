@@ -1,23 +1,5 @@
 .left-sidebar-wrapper {
-  @apply fixed left-0 top-[56px] w-full max-h-[703px] max-w-[360px] overflow-y-scroll;
-}
-.left-sidebar-wrapper::-webkit-scrollbar {
-  width: 10px;
-}
-.left-sidebar-wrapper::-webkit-scrollbar-track {
-  background: transparent;
-}
-.left-sidebar-wrapper::-webkit-scrollbar-thumb {
-  display: none;
-  background: #c6c6c6;
-  border-radius: 99999px;
-  transition: all 300ms linear;
-}
-.left-sidebar-wrapper:hover::-webkit-scrollbar-thumb {
-  display: block;
-}
-.left-sidebar-wrapper::-webkit-scrollbar-thumb:hover {
-  background: #9b9b9b;
+  @apply fixed left-0 top-[56px] w-full max-h-[703px] overflow-y-scroll max-w-[23.44vw];
 }
 .alert {
   @apply text-[var(--blue-color)] text-sm pl-5 relative;

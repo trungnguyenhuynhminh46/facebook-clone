@@ -13,7 +13,9 @@ const LeftSidebar = (props: Props) => {
   const [seeMore, setSeeMore] = useState(true);
   const [numItems, setNumItems] = useState(5);
   return (
-    <div className={leftSideStyles["left-sidebar-wrapper"]}>
+    <div
+      className={`${leftSideStyles["left-sidebar-wrapper"]} custom-scrollbar`}
+    >
       <div className="flex flex-col py-3 px-2">
         <Link
           to="/profile"

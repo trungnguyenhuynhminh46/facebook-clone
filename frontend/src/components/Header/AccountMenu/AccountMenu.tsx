@@ -2,7 +2,6 @@ import "./animation.css";
 import React, { useEffect, useRef, useState } from "react";
 import { selectCurrentUser } from "@store/selectors/user";
 import { useSelector } from "react-redux";
-import useVisualViewportHeight from "@/hooks/useVisualViewportHeight";
 // Components
 import MainMenu from "./MainMenu";
 import SettingsMenu from "./SettingsMenu";
@@ -13,7 +12,6 @@ type Props = {};
 
 const AccountMenu: React.FC<Props> = () => {
   // Refs
-  const visualViewportHeight = useVisualViewportHeight();
   const menu0 = useRef<HTMLDivElement>(null);
   const menu1 = useRef<HTMLDivElement>(null);
   const menu2 = useRef<HTMLDivElement>(null);
@@ -22,25 +20,18 @@ const AccountMenu: React.FC<Props> = () => {
   const currentUser = useSelector(selectCurrentUser);
   const [menu, setMenu] = useState(0);
   const [menuHeight, setMenuHeight] = useState(0);
-  useEffect(() => {
-    console.log(window.innerHeight);
-  }, [window.innerHeight]);
   return (
     <div
-      className="fixed top-[52px] right-4 rounded-lg bg-white w-[360px] pt-3 px-2 shadow3 overflow-hidden transition-all duration-200 ease-linear overflow-y-scroll"
+      className="fixed top-[52px] right-4 rounded-lg bg-white w-[360px] pt-3 px-2 shadow3 overflow-hidden transition-all duration-200 ease-linear overflow-y-auto custom-scrollbar"
       style={
         menuHeight > 0
           ? {
               height: menuHeight,
-              maxHeight: visualViewportHeight
-                ? visualViewportHeight - 70
-                : "none",
+              maxHeight: "calc(100vh - 70px)",
             }
           : {
               height: 408,
-              maxHeight: visualViewportHeight
-                ? visualViewportHeight - 70
-                : "none",
+              maxHeight: "calc(100vh - 70px)",
             }
       }
     >

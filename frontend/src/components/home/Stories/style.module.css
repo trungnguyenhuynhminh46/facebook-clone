@@ -1,5 +1,5 @@
 .story_wrapper {
-  @apply relative top-[56px] mx-auto mt-6 w-full max-w-[590px] flex gap-2;
+  @apply w-full relative;
 }
 .story_item {
   @apply cursor-pointer relative flex-1 rounded-lg overflow-hidden;

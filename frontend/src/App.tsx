@@ -5,7 +5,6 @@ import Login from "@pages/Login";
 import Home from "@pages/Home";
 import Profile from "@pages/Profile";
 import PrivateRoute from "@components/PrivateRoute";
-import Stories from "@components/home/Stories";
 
 function App() {
   return (

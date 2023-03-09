@@ -1,24 +1,6 @@
 .all_menu-wrapper {
   @apply fixed top-[52px] bottom-4 overflow-y-scroll right-4 w-[608px] bg-[var(--bg-menu)] shadow-lg rounded-lg;
 }
-.all_menu-wrapper::-webkit-scrollbar {
-  width: 10px;
-}
-.all_menu-wrapper::-webkit-scrollbar-track {
-  background: transparent;
-}
-.all_menu-wrapper::-webkit-scrollbar-thumb {
-  display: none;
-  background: #c6c6c6;
-  border-radius: 99999px;
-  transition: all 300ms linear;
-}
-.all_menu-wrapper:hover::-webkit-scrollbar-thumb {
-  display: block;
-}
-.all_menu-wrapper::-webkit-scrollbar-thumb:hover {
-  background: #9b9b9b;
-}
 .all_menu-inner {
   @apply flex pl-4 pb-4 gap-4 items-start;
 }

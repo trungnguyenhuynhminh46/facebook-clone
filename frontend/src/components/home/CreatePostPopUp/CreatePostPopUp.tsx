@@ -1,9 +1,10 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import Style from "./style.module.css";
 import CreatePostsStyle from "./style.module.css";
 import useOnClickOutside from "@/hooks/useOnClickOutside";
 import { Dots, Feeling, Photo } from "@/svg";
+import { useMediaQuery } from "react-responsive";
 
 type Props = {
   setIsShown: React.Dispatch<React.SetStateAction<boolean>>;
@@ -11,6 +12,7 @@ type Props = {
 };
 
 const CreatePostPopUp: React.FC<Props> = ({ setIsShown, currentUser }) => {
+  const isSmallScreen = useMediaQuery({ query: "(max-width: 688px)" });
   const formRef = useRef(null);
   const inputRef = useRef<any>(null);
   useOnClickOutside(formRef, () => {
@@ -18,6 +20,12 @@ const CreatePostPopUp: React.FC<Props> = ({ setIsShown, currentUser }) => {
   });
   // States
   const [inputText, setInputText] = useState("");
+  useEffect(() => {
+    document.documentElement.style.overflow = "hidden";
+    return () => {
+      document.documentElement.style.overflow = "unset";
+    };
+  }, []);
   return ReactDOM.createPortal(
     <>
       <div className="fixed inset-0 bg-gray-300 opacity-60 z-10" />
@@ -71,6 +79,14 @@ const CreatePostPopUp: React.FC<Props> = ({ setIsShown, currentUser }) => {
                 inputRef.current.scrollHeight > 300 &&
                 "overflow-y-scroll"
               }`}
+              style={
+                isSmallScreen
+                  ? {
+                      fontSize: "20px",
+                      minHeight: "100px",
+                    }
+                  : {}
+              }
               onChange={(e) => {
                 setInputText(e.target.value);
                 if (inputRef.current) {
@@ -100,12 +116,17 @@ const CreatePostPopUp: React.FC<Props> = ({ setIsShown, currentUser }) => {
                 <div className="cursor-pointer w-9 h-9 flex justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-full">
                   <Feeling color="#f7b928" />
                 </div>
-                <div className="cursor-pointer w-9 h-9 flex justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-full">
-                  <i className="maps_icon"></i>
-                </div>
-                <div className="cursor-pointer w-9 h-9 flex justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-full">
-                  <i className="microphone_icon"></i>
-                </div>
+                {!isSmallScreen && (
+                  <>
+                    <div className="cursor-pointer w-9 h-9 flex justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-full">
+                      <i className="maps_icon"></i>
+                    </div>
+                    <div className="cursor-pointer w-9 h-9 flex justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-full">
+                      <i className="microphone_icon"></i>
+                    </div>
+                  </>
+                )}
+
                 <div className="cursor-pointer w-9 h-9 flex justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-full">
                   <Dots />
                 </div>

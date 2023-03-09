@@ -1,11 +1,17 @@
 import React from "react";
 interface Props {
   color: string;
+  height?: string;
+  width?: string;
 }
 
-const Feeling: React.FC<Props> = ({ color }) => {
+const Feeling: React.FC<Props> = ({
+  color,
+  width = "25px",
+  height = "25px",
+}) => {
   return (
-    <svg width="25" height="25" fill={color} viewBox="0 0 24 24">
+    <svg width={width} height={height} fill={color} viewBox="0 0 24 24">
       <g fillRule="evenodd">
         <path
           d="M460.785 169.5c.49 0 .841.476.712.957-.623 2.324-2.837 4.043-5.473 4.043-2.636 0-4.85-1.719-5.473-4.043-.13-.48.222-.957.712-.957h9.522z"

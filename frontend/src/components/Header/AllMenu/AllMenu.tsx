@@ -10,7 +10,9 @@ type Props = {};
 const AllMenu: React.FC<Props> = () => {
   const isSmallScreen = useMediaQuery({ query: "(max-width: 688px)" });
   return (
-    <div className={`${menuStyles["all_menu-wrapper"]} shadow1`}>
+    <div
+      className={`${menuStyles["all_menu-wrapper"]} shadow1 custom-scrollbar`}
+    >
       <p className="p-4 text-2xl leading-4 font-bold">Menu</p>
       <div className={`${menuStyles["all_menu-inner"]}`}>
         {/* Left */}
