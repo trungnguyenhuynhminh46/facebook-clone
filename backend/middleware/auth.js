@@ -1,21 +1,20 @@
-const jwt = require("jsonwebtoken");
 const customError = require("../error/customError");
 const { StatusCodes } = require("http-status-codes");
+const jwt = require("jsonwebtoken");
 
-const authMiddleware = async (req, res, next) => {
-  const token = req.header("Authorization")
-    ? req.header("Authorization").split(" ")[1]
-    : "";
-  if (!token) {
-    throw new customError("Invalid authorization", StatusCodes.BAD_REQUEST);
+const authorizationMiddleware = async (req, res, next) => {
+  const authorization = req.header("authorization");
+  if (!authorization || !authorization.startsWith("Bearer")) {
+    throw new customError("Invalid authorization", StatusCodes.UNAUTHORIZED);
   }
+  const token = authorization.split(" ")[1];
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) {
-      throw new customError("Invalid authorization", StatusCodes.BAD_REQUEST);
+      throw new customError(err.message, StatusCodes.UNAUTHORIZED);
     }
-    res.user = user;
+    req.user = user;
     next();
   });
 };
 
-module.exports = { authMiddleware };
+module.exports = authorizationMiddleware;

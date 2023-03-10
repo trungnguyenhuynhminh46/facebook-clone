@@ -3,6 +3,9 @@ import { CSSTransition } from "react-transition-group";
 import { Link } from "react-router-dom";
 import menuStyles from "./style.module.css";
 import MenuItem from "./MenuItem";
+import { logout } from "@/store/slices/user";
+import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
 
 type Props = {
   menu: number;
@@ -19,6 +22,7 @@ const MainMenu: React.FC<Props> = ({
   currentUser,
   setMenu,
 }) => {
+  const dispatch = useDispatch();
   return (
     <CSSTransition
       in={menu === 0}
@@ -77,7 +81,13 @@ const MainMenu: React.FC<Props> = ({
             Display & Accessibility
           </MenuItem>
           <MenuItem beforeIcon="report_filled_icon">Give feedback</MenuItem>
-          <MenuItem beforeIcon="logout_filled_icon" to="/logout">
+          <MenuItem
+            beforeIcon="logout_filled_icon"
+            onClick={() => {
+              dispatch(logout());
+              Cookies.set("user", "");
+            }}
+          >
             Log Out
           </MenuItem>
         </div>

@@ -98,6 +98,8 @@ const login = async (req, res) => {
   });
 };
 const auth = async (req, res) => {
-  return res.json("Welcome from auth");
+  const user_id = req.user.id;
+  return res.status(200).send(user_id);
 };
+
 module.exports = { register, verify, login, auth };

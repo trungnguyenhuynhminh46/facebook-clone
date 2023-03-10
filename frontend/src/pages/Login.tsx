@@ -21,7 +21,6 @@ const Login: React.FC<Props> = (props: Props) => {
         setRegisterIsShown={setRegisterIsShown}
         className={`${registerIsShown ? "fade-in" : "fade-out"}`}
       />
-
       <Footer />
     </div>
   );

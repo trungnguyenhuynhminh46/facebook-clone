@@ -1,0 +1,3 @@
+.tool-tip {
+  @apply p-1 bg-white rounded-sm text-sm min-w-[80px];
+}

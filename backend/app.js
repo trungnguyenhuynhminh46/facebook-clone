@@ -28,10 +28,6 @@ const app = express();
 app.use(express.json());
 app.use(cors(corsOptions));
 
-app.get("/api/v1/", async (req, res) => {
-  return res.status(StatusCodes.OK).json({ msg: "Hello world" });
-});
-
 readdirSync("./routes").map((fileName) => {
   const base = fileName.split(".")[0];
   app.use(`/${base}`, require(`./routes/${fileName}`));
