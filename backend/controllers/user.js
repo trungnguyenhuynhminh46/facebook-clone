@@ -22,7 +22,7 @@ const register = async (req, res) => {
   sendVerificationEmail(
     user.email,
     user.first_name,
-    `${BASE_URL}/verify/${token}`
+    `${BASE_URL}/verify/${encodeURIComponent(token)}/`
   );
   return res.status(StatusCodes.OK).json({
     message: "Register sucessfully, please check your email to verify!",
@@ -40,11 +40,27 @@ const register = async (req, res) => {
   });
 };
 const verify = async (req, res) => {
+  const currentUser = req.user;
   const { token } = req.body;
   const { id } = jwt.verify(token, process.env.JWT_SECRET);
   const user = await User.findById(id);
+  if (!id || !user) {
+    throw new customError(
+      "User is not found in the database!",
+      StatusCodes.NOT_FOUND
+    );
+  }
+  if (currentUser.id !== id) {
+    throw new customError(
+      "You don't have the authorization to complete this operation!",
+      StatusCodes.BAD_REQUEST
+    );
+  }
   if (user.verified === true) {
-    throw customError("This user is already verified", StatusCodes.BAD_REQUEST);
+    throw new customError(
+      "This user is already verified",
+      StatusCodes.BAD_REQUEST
+    );
   } else {
     user.verified = true;
     user.save();
@@ -80,7 +96,9 @@ const login = async (req, res) => {
       StatusCodes.BAD_REQUEST
     );
   }
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    expiresIn: "30d",
+  });
   return res.status(StatusCodes.OK).json({
     message: `Welcome ${user.first_name}, you have login successfully!`,
     token,
@@ -97,9 +115,31 @@ const login = async (req, res) => {
     },
   });
 };
-const auth = async (req, res) => {
-  const user_id = req.user.id;
-  return res.status(200).send(user_id);
+const resentEmail = async (req, res) => {
+  const { id } = req.user;
+  const user = await User.findById(id);
+  if (!user) {
+    throw new customError(
+      "This user has been removed from the database",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+  if (user.verified === true) {
+    throw new customError(
+      "This user has been verified",
+      StatusCodes.BAD_REQUEST
+    );
+  }
+  const token = generateToken({ id: user._id }, "30m");
+  sendVerificationEmail(
+    user.email,
+    user.first_name,
+    `${BASE_URL}/verify/${encodeURIComponent(token)}/`
+  );
+  return res.status(StatusCodes.OK).json({
+    message:
+      "Verification email has been sent successfully, please check your email to verify!",
+  });
 };
 
-module.exports = { register, verify, login, auth };
+module.exports = { register, verify, login, resentEmail };

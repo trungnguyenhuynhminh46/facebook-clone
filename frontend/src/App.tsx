@@ -6,12 +6,14 @@ import Home from "@pages/Home";
 import Profile from "@pages/Profile";
 import PrivateRoute from "@/components/middlewares/PrivateRoute";
 import VerifiedRoute from "./components/middlewares/VerifiedRoute";
+import Verify from "./pages/Verify";
 
 function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route element={<PrivateRoute />}>
+        <Route path="/verify/:token" element={<Verify />} />
         <Route element={<VerifiedRoute />}>
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />} />

@@ -30,6 +30,7 @@ import More from "./more";
 import MoreActive from "./moreActive";
 import ChevonDown from "./chevonDown";
 import ChevonUp from "./chevonUp";
+import ExclamationCircle from "./exclamationCircle";
 
 export {
   Logo,
@@ -64,4 +65,5 @@ export {
   MoreActive,
   ChevonDown,
   ChevonUp,
+  ExclamationCircle,
 };
