@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "@components/Header";
+import Header from "@layouts/Header";
 
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/store/selectors/user";
@@ -17,8 +17,7 @@ const Home: React.FC<Props> = () => {
   const isMediumScreen = useMediaQuery({ query: "(max-width: 900px)" });
   const user = useSelector(selectCurrentUser);
   return (
-    <div className="bg-[var(--bg-secondary)] min-h-screen">
-      <Header />
+    <>
       {!isTabletOrMobile && <LeftSidebar />}
       {!isMediumScreen && <RightSidebar currentUser={user} />}
       <div
@@ -46,7 +45,7 @@ const Home: React.FC<Props> = () => {
           <CreatePosts currentUser={user} />
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

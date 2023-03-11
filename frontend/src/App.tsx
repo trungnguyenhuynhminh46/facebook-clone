@@ -7,6 +7,8 @@ import Profile from "@pages/Profile";
 import PrivateRoute from "@/components/middlewares/PrivateRoute";
 import VerifiedRoute from "./components/middlewares/VerifiedRoute";
 import Verify from "./pages/Verify";
+// Layouts
+import HomeLayout from "./layouts/HomeLayout";
 
 function App() {
   return (
@@ -15,8 +17,10 @@ function App() {
       <Route element={<PrivateRoute />}>
         <Route path="/verify/:token" element={<Verify />} />
         <Route element={<VerifiedRoute />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route element={<HomeLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/profile" element={<Profile />} />
+          </Route>
         </Route>
       </Route>
     </Routes>

@@ -11,6 +11,7 @@ export default defineConfig({
       "@icons": path.resolve(__dirname, "./public/icons"),
       "@fonts": path.resolve(__dirname, "./public/fonts"),
       "@components": path.resolve(__dirname, "./src/components"),
+      "@layouts": path.resolve(__dirname, "./src/layouts"),
       "@data": path.resolve(__dirname, "./src/data"),
       "@hooks": path.resolve(__dirname, "./src/hooks"),
       "@pages": path.resolve(__dirname, "./src/pages"),

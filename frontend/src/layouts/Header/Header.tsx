@@ -27,9 +27,9 @@ import useOnClickOutside from "@hooks/useOnClickOutside";
 import { useMediaQuery } from "react-responsive";
 // Components
 import ToolTip from "@/components/ToolTip";
-import SearchMenu from "@components/Header/SearchMenu";
-import AllMenu from "@components/Header/AllMenu";
-import AccountMenu from "@components/Header/AccountMenu";
+import SearchMenu from "@layouts/Header/SearchMenu";
+import AllMenu from "@layouts/Header/AllMenu";
+import AccountMenu from "@layouts/Header/AccountMenu";
 
 type Props = {};
 
@@ -149,7 +149,7 @@ const Header: React.FC<Props> = (props: Props) => {
                   </>
                 ) : (
                   <>
-                    <Home />;
+                    <Home />
                     {true && <div className={headerStyles["number"]}>9</div>}
                   </>
                 );

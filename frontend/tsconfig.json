@@ -21,6 +21,7 @@
       "@icons/*": ["public/icons/*"],
       "@fonts/*": ["public/fonts/*"],
       "@components/*": ["src/components/*"],
+      "@layouts/*": ["src/layouts/*"],
       "@data/*": ["src/data/*"],
       "@hooks/*": ["src/hooks/*"],
       "@pages/*": ["src/pages/*"],
