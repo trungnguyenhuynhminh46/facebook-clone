@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { days, months, years } from "../../data/date";
 import useOnClickOutside from "../../hooks/useOnClickOutside";
 // Components

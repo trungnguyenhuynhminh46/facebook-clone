@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import LoginTextInput from "./LoginTextInput";
+import React, { useState } from "react";
+import TextInput from "@components/TextInput";
 import logo from "/icons/facebook.svg";
 import { useForm } from "react-hook-form";
 import { useMediaQuery } from "react-responsive";
@@ -11,6 +11,7 @@ import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/slices/user";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 type Props = {
   setRegisterIsShown: any;
@@ -94,7 +95,7 @@ const LoginForm: React.FC<Props> = ({ setRegisterIsShown }) => {
             className="pt-[10px] pb-[24px] px-[16px] rounded-lg shadow-lg bg-white mt-[36px] flex flex-col items-center w-[396px] mx-auto lg:mx-0"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <LoginTextInput
+            <TextInput
               type="text"
               placeholder="Email address or phone number"
               name="email"
@@ -102,7 +103,7 @@ const LoginForm: React.FC<Props> = ({ setRegisterIsShown }) => {
               errorPosition={isNotLargeScreen ? "bottom" : "left"}
               errorMessage={errors.email?.message || ""}
             />
-            <LoginTextInput
+            <TextInput
               type="password"
               placeholder="Password"
               name="password"
@@ -124,12 +125,12 @@ const LoginForm: React.FC<Props> = ({ setRegisterIsShown }) => {
                 {!isLoading && "Log in"}
               </button>
             </div>
-            <a
-              href=""
+            <Link
+              to="/reset"
               className="text-[var(--blue-color)] text-[14px] font-[500] mt-[16px]"
             >
               Forgottern password
-            </a>
+            </Link>
             {errorMsg && (
               <p className="text-center text-sm text-red-500 mt-3">
                 {errorMsg}

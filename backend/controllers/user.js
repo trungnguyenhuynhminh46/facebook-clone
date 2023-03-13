@@ -1,11 +1,16 @@
 const { StatusCodes } = require("http-status-codes");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const User = require("../models/User");
 const customError = require("../error/customError");
 const generateToken = require("../helpers/token");
-const sendVerificationEmail = require("../helpers/mailer");
+const {
+  sendVerificationEmail,
+  sendVerificationCode,
+} = require("../helpers/mailer");
 const { BASE_URL } = process.env;
+const getRandomCode = require("../helpers/getRandomCode");
+const User = require("../models/User");
+const Code = require("../models/Code");
 
 const register = async (req, res) => {
   const { first_name, last_name, password, ...rest } = req.body;
@@ -141,5 +146,97 @@ const resentEmail = async (req, res) => {
       "Verification email has been sent successfully, please check your email to verify!",
   });
 };
+const getUserByEmail = async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email: email });
+  if (!user) {
+    throw new customError(
+      "The email isn't matched any account in database",
+      StatusCodes.NOT_FOUND
+    );
+  }
+  return res.status(StatusCodes.OK).json({
+    message: "Find user by email successfully",
+    user: {
+      picture: user.picture,
+      email: user.email,
+      username: user.username,
+    },
+  });
+};
+const sendValidationCode = async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email }).select("-password");
+  const code = getRandomCode(4);
+  // Save the code to database
+  await Code.findOneAndDelete({ user: user._id });
+  const newCode = await new Code({
+    code,
+    user: user._id,
+  });
+  newCode.save();
+  if (!user) {
+    throw new customError(
+      `No account with email ${email} is found`,
+      StatusCodes.NOT_FOUND
+    );
+  }
+  sendVerificationCode(email, user.first_name, code);
+  return res.status(StatusCodes.OK).json({
+    message: "Email reset code has been sent to your email",
+  });
+};
+const validateCode = async (req, res) => {
+  const { email, code } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new customError(
+      `No account with email ${email} is found`,
+      StatusCodes.NOT_FOUND
+    );
+  }
+  const dbCode = await Code.findOne({ user: user._id });
+  if (!dbCode) {
+    throw new customError(
+      `No code is found in the database`,
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+  if (code !== dbCode.code) {
+    throw new customError(
+      `${code} is a wrong code, please recheck in the mailbox`,
+      StatusCodes.BAD_REQUEST
+    );
+  }
+  return res.status(StatusCodes.OK).json({
+    message: "Success",
+  });
+};
+const resetPassword = async (req, res) => {
+  const { newPassword, email } = req.body;
+  const user = await User.findOne({ email });
+  const salt = bcrypt.genSaltSync(10);
+  const hashedPassword = newPassword ? bcrypt.hashSync(newPassword, salt) : "";
+  if (!hashedPassword) {
+    throw new customError(
+      "There's something wrong with the password",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+  user.password = hashedPassword;
+  user.save();
+  return res.status(StatusCodes.OK).json({
+    message: "Password is changed successfully, please login to continue!",
+  });
+};
 
-module.exports = { register, verify, login, resentEmail };
+module.exports = {
+  register,
+  verify,
+  login,
+  resentEmail,
+  getUserByEmail,
+  sendValidationCode,
+  validateCode,
+  resetPassword,
+};

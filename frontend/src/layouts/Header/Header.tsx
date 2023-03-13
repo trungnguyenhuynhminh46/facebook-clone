@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import headerStyles from "./style.module.css";
 import React from "react";
 import {

@@ -1,5 +1,5 @@
 import "./animation.css";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { selectCurrentUser } from "@store/selectors/user";
 import { useSelector } from "react-redux";
 // Components

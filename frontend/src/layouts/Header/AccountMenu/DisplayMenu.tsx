@@ -1,7 +1,6 @@
 import React from "react";
 import { CSSTransition } from "react-transition-group";
 import { Return } from "@/svg";
-import MenuItem from "./MenuItem";
 
 type Props = {
   menu: number;

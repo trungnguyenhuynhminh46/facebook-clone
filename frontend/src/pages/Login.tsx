@@ -5,8 +5,7 @@ import { selectCurrentUser } from "@/store/selectors/user";
 // Components
 import LoginForm from "@components/login/LoginForm";
 import RegisterForm from "@components/login/RegisterForm";
-import Footer from "@components/login/Footer";
-import { Navigate } from "react-router-dom";
+import Footer from "@layouts/Footer";
 
 type Props = {};
 

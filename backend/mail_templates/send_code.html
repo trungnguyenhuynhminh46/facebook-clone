@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div style="max-width: 1200px; margin: 20px auto">
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          padding: 12px 0;
+          border-bottom: 2px solid #ececec;
+        "
+      >
+        <img
+          src="https://res.cloudinary.com/dmhcnhtng/image/upload/v1645134414/logo_cs1si5.png"
+          alt=""
+          style="width: 40px; height: auto"
+        />
+        <div style="display: flex; align-items: center">
+          <span
+            style="
+              color: #3b5998;
+              font-size: 20px;
+              font-weight: 600;
+              margin-left: 16px;
+            "
+            >Facebook</span
+          >
+        </div>
+      </div>
+      <div>
+        <p style="padding-bottom: 20px">Hi ${receiver_name}</p>
+        <p>We received a request to reset your Facebook password</p>
+        <p>Enter the following password to reset code</p>
+        <div
+          style="
+            display: inline-block;
+            padding: 24px 24px;
+            font-weight: 700;
+            color: black;
+            background: #d1dfff;
+            border: 1px solid #3b5998;
+          "
+        >
+          ${code}
+        </div>
+        <p></p>
+      </div>
+    </div>
+  </body>
+</html>

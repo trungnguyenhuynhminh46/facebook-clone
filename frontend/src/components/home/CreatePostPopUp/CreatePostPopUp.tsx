@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
-import Style from "./style.module.css";
 import CreatePostsStyle from "./style.module.css";
 import useOnClickOutside from "@/hooks/useOnClickOutside";
 import { Dots, Feeling, Photo } from "@/svg";

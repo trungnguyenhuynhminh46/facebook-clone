@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ErrorBox from "../ErrorBox";
+import ErrorBox from "./ErrorBox";
 import { useController } from "react-hook-form";
 import { Control } from "react-hook-form/dist/types";
 
@@ -7,27 +7,25 @@ type Props = {
   type: string;
   placeholder: string;
   errorPosition: "top" | "left" | "right" | "bottom";
-  name: "email" | "password";
-  control: Control<{ email: string; password: string }>;
+  name: string;
+  control: Control<any>;
   errorMessage?: string;
+  className?: string;
 };
 
-const LoginTextInput: React.FC<Props> = ({
+const TextInput: React.FC<Props> = ({
   type,
   placeholder,
   errorPosition,
   name,
   control,
   errorMessage = "",
+  className = "",
 }) => {
   const [isFocus, setIsFocus] = useState(false);
   const [isShowPassword, setIsShowPassword] = useState(false);
   // React-hook-form
-  const {
-    field,
-    fieldState: { invalid, isTouched, isDirty },
-    formState: { touchedFields, dirtyFields },
-  } = useController({
+  const { field } = useController({
     name,
     control,
   });
@@ -48,7 +46,7 @@ const LoginTextInput: React.FC<Props> = ({
             errorMessage &&
             !isFocus &&
             "border-red-500 shadow-none focus:border-red-500 focus:shadow-none"
-          }`}
+          } ${className}`}
           onFocus={() => {
             setIsFocus(true);
           }}
@@ -121,4 +119,4 @@ const LoginTextInput: React.FC<Props> = ({
   );
 };
 
-export default LoginTextInput;
+export default TextInput;
