@@ -1,28 +1,53 @@
-.story_wrapper {
-  @apply w-full relative;
+.carousel {
+  @apply w-full relative overflow-hidden;
 }
-.story_item {
-  @apply cursor-pointer relative flex-1 rounded-lg overflow-hidden;
+
+.container {
+  @apply w-full relative overflow-hidden flex gap-2 rounded-lg;
+  scroll-behavior: smooth;
 }
-.story_item:hover::after {
+
+.btn {
+  @apply w-12 h-12 rounded-full bg-gray-200 transition-all duration-200 hover:bg-gray-300 flex justify-center items-center cursor-pointer border-none outline-none z-10;
+}
+
+.btn--prev {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.btn--next {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Story item */
+.item {
+  @apply cursor-pointer relative rounded-lg overflow-hidden w-[112.5px] flex-shrink-0;
+}
+.item:hover::after {
   content: "";
   @apply absolute inset-0 bg-gray-900 opacity-10;
 }
-.story_background {
+.background {
   @apply relative h-[200px] w-auto overflow-hidden transition-all duration-200 ease-linear;
 }
-.story_item:hover .story_background {
+.item:hover .background {
   @apply scale-105;
 }
-.story_background_image {
+.background_image {
   @apply h-full w-auto object-cover;
 }
-.story_avartar {
+.avartar {
   @apply absolute top-3 left-3 w-10 h-10 rounded-full border-4 border-solid border-[var(--blue-color)] overflow-hidden;
 }
-.story_avartar_image {
+.avartar_image {
   @apply w-full h-full object-cover;
 }
-.story_title {
+.title {
   @apply absolute left-0 bottom-0 p-2 text-white text-sm;
 }

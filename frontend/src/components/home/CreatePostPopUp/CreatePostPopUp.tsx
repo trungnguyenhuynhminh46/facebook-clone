@@ -30,7 +30,7 @@ const CreatePostPopUp: React.FC<Props> = ({ setIsShown, currentUser }) => {
       <div className="fixed inset-0 bg-gray-300 opacity-60 z-10" />
       <div className="fixed inset-0 flex justify-center items-center z-20">
         <div
-          className="flex-1 relative mx-[30px] m-auto max-w-[500px] bg-white shadow2"
+          className="flex-1 relative mx-[30px] m-auto max-w-[500px] bg-white shadow2 rounded-lg overflow-hidden"
           ref={formRef}
         >
           <div className="relative flex justify-center py-4 border-b border-solid border-gray-200">

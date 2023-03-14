@@ -85,14 +85,14 @@ const LoginForm: React.FC<Props> = ({ setRegisterIsShown }) => {
             alt=""
             className="h-[106px] w-auto mx-auto lg:ml-0 lg:-translate-x-3"
           />
-          <p className="text-[#1c1e21] text-2xl text-center leading-7 px-4 w-[396px] mx-auto -translate-y-[6px] lg:ml-0 lg:text-left lg:w-full lg:text-[24px] xl:text-[28px] lg:leading-[32px] tracking-[0.04em]">
+          <p className="text-[#1c1e21] text-xl sm:text-2xl text-center leading-7 px-4 max-w-[396px] mx-auto -translate-y-[6px] lg:ml-0 lg:text-left lg:w-full lg:text-[24px] xl:text-[28px] lg:leading-[32px] tracking-[0.04em]">
             Facebook helps you connect and share with the people in your life.
           </p>
         </div>
         <div className="w-full lg:w-auto lg:mt-6">
           <form
             action="#"
-            className="pt-[10px] pb-[24px] px-[16px] rounded-lg shadow-lg bg-white mt-[36px] flex flex-col items-center w-[396px] mx-auto lg:mx-0"
+            className="pt-[10px] pb-[24px] px-[16px] rounded-lg shadow-lg bg-white mt-[36px] flex flex-col items-center max-w-[396px] md:w-[396px] mx-auto lg:mx-0"
             onSubmit={handleSubmit(onSubmit)}
           >
             <TextInput
@@ -102,6 +102,7 @@ const LoginForm: React.FC<Props> = ({ setRegisterIsShown }) => {
               control={control}
               errorPosition={isNotLargeScreen ? "bottom" : "left"}
               errorMessage={errors.email?.message || ""}
+              className="text-sm sm:text-lg"
             />
             <TextInput
               type="password"
@@ -110,9 +111,10 @@ const LoginForm: React.FC<Props> = ({ setRegisterIsShown }) => {
               control={control}
               errorPosition={isNotLargeScreen ? "bottom" : "left"}
               errorMessage={errors.password?.message || ""}
+              className="text-sm sm:text-lg"
             />
             <div className="w-full pt-[6px]">
-              <button className="btn bg-[var(--blue-color)] w-full font-bold flex justify-center items-center h-[48px]">
+              <button className="btn bg-[var(--blue-color)] w-full font-bold flex justify-center items-center h-[48px] text-base sm:text-lg md:text-xl">
                 {isLoading && (
                   <HashLoader
                     color="white"
@@ -145,7 +147,7 @@ const LoginForm: React.FC<Props> = ({ setRegisterIsShown }) => {
             <div className="w-full pt-[6px] flex justify-center">
               <button
                 type="button"
-                className="btn bg-[var(--green-color)] inline-block text-[17px] font-bold"
+                className="btn bg-[var(--green-color)] inline-block py-2 text-base sm:text-[17px] font-bold "
                 onClick={() => {
                   setRegisterIsShown(true);
                 }}

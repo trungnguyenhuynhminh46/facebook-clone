@@ -1,63 +1,89 @@
-import React from "react";
-import storiesStyle from "./style.module.css";
-import { Plus } from "@/svg";
-import Slider from "react-slick";
-import { useMediaQuery } from "react-responsive";
+import React, { useEffect, useRef, useState } from "react";
+import Style from "./style.module.css";
+import { ArrowRight, Plus } from "@/svg";
 
 type Props = {
   currentUser: any;
   stories: any[];
 };
-type StoryProps = {
+type StoryItemProps = {
   story: any;
 };
 
-const Story: React.FC<StoryProps> = ({ story }) => {
+const StoryItem: React.FC<StoryItemProps> = ({ story }) => {
   return (
-    <div className={storiesStyle["story_item"]}>
+    <div className={Style["item"]}>
       {/* Back ground */}
-      <div className={storiesStyle["story_background"]}>
-        <img
-          src={story.image}
-          alt=""
-          className={storiesStyle["story_background_image"]}
-        />
+      <div className={Style["background"]}>
+        <img src={story.image} alt="" className={Style["background_image"]} />
       </div>
       {/* Avartar */}
-      <div className={storiesStyle["story_avartar"]}>
+      <div className={Style["avartar"]}>
         <img
           src={story.profile_picture}
           alt=""
-          className={storiesStyle["story_avartar_image"]}
+          className={Style["avartar_image"]}
         />
       </div>
       {/* Title */}
-      <p className={storiesStyle["story_title"]}>{story.profile_name}</p>
+      <p className={Style["title"]}>{story.profile_name}</p>
     </div>
   );
 };
 
 const Stories: React.FC<Props> = ({ currentUser, stories }) => {
-  const isBelowLargeScreen = useMediaQuery({ query: "(max-width: 1280px)" });
-  const isSmallScreen = useMediaQuery({ query: "(max-width: 688px)" });
-  var settings = {
-    infinite: false,
-    speed: 500,
-    slidesToShow: isSmallScreen ? 3 : isBelowLargeScreen ? 4 : 5,
-    slidesToScroll: 1,
-    arrows: true,
-    draggable: false,
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [left, setLeft] = useState(0);
+  const [leftMax, setLeftMax] = useState(0);
+  useEffect(() => {
+    if (containerRef.current) {
+      setLeftMax(
+        containerRef.current.scrollWidth - containerRef.current.clientWidth
+      );
+    }
+  }, [containerRef.current]);
+  const handleNextButtonClick = () => {
+    if (containerRef.current) {
+      const width = containerRef.current.clientWidth;
+      containerRef.current.scrollLeft += width;
+      setLeft(containerRef.current.scrollLeft + width);
+      console.log(left, leftMax);
+    }
+  };
+  const handlePrevButtonClick = () => {
+    if (containerRef.current) {
+      const width = containerRef.current.clientWidth;
+      containerRef.current.scrollLeft -= width;
+      setLeft(containerRef.current.scrollLeft - width);
+    }
   };
   return (
-    <div className={`${storiesStyle["story_wrapper"]}`}>
-      <Slider {...settings} className="w-full">
-        <div className={storiesStyle["story_item"]}>
+    <div className={`${Style["carousel"]}`}>
+      {left > 0 && (
+        <button
+          className={`${Style["btn"]} ${Style["btn--prev"]}`}
+          onClick={handlePrevButtonClick}
+        >
+          <ArrowRight color="#65676b" />
+        </button>
+      )}
+      {left < leftMax && (
+        <button
+          className={`${Style["btn"]} ${Style["btn--next"]}`}
+          onClick={handleNextButtonClick}
+        >
+          <ArrowRight color="#65676b" />
+        </button>
+      )}
+
+      <div className={`${Style["container"]}`} ref={containerRef}>
+        <div className={Style["item"]}>
           {/* Back ground */}
-          <div className={storiesStyle["story_background"]}>
+          <div className={Style["background"]}>
             <img
               src={currentUser.picture}
               alt=""
-              className={storiesStyle["story_background_image"]}
+              className={Style["background_image"]}
             />
           </div>
           <div className="absolute bottom-0 left-0 right-0 bg-white text-center pt-7 pb-2 text-[12px] font-medium">
@@ -68,9 +94,9 @@ const Stories: React.FC<Props> = ({ currentUser, stories }) => {
           </div>
         </div>
         {stories.map((story, index) => {
-          return <Story key={index} story={story} />;
+          return <StoryItem key={index} story={story} />;
         })}
-      </Slider>
+      </div>
     </div>
   );
 };
