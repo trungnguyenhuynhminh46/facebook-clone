@@ -2,8 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import CreatePostsStyle from "./style.module.css";
 import useOnClickOutside from "@/hooks/useOnClickOutside";
-import { Dots, Feeling, Photo } from "@/svg";
-import { useMediaQuery } from "react-responsive";
 
 import EmojiPickerBackground from "./EmojiPickerBackground";
 import AddToPost from "./AddToPost";
@@ -14,14 +12,13 @@ type Props = {
 };
 
 const CreatePostPopUp: React.FC<Props> = ({ setIsShown, currentUser }) => {
+  const formRef = useRef(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   // States
   const [inputText, setInputText] = useState("");
   const [cursorPosition, setCursorPosition] = useState(0);
   const [showPrev, setShowPrev] = useState(false);
-
-  const isSmallScreen = useMediaQuery({ query: "(max-width: 688px)" });
-  const formRef = useRef(null);
-  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const [imagesList, setImagesList] = useState<any[]>([]);
   useOnClickOutside(formRef, () => {
     setIsShown(false);
   });
@@ -39,9 +36,16 @@ const CreatePostPopUp: React.FC<Props> = ({ setIsShown, currentUser }) => {
       <div className="fixed inset-0 bg-gray-300 opacity-60 z-10" />
       <div className="fixed inset-0 flex justify-center items-center z-20">
         <div
-          className="flex-1 relative mx-[30px] m-auto max-w-[500px] bg-white shadow2 rounded-lg"
+          className="flex-1 relative mx-[30px] m-auto max-w-[500px] bg-white shadow2 rounded-lg overflow-y-auto custom-scrollbar"
           ref={formRef}
+          style={{
+            maxHeight: "calc(100vh - 16px)",
+          }}
         >
+          <div
+            className="absolute top-10 right-10 z-10"
+            id="emoji-picker"
+          ></div>
           <div className="relative flex justify-center py-4 border-b border-solid border-gray-200">
             <span className="text-xl font-semibold">Create Post</span>
             <button
@@ -62,58 +66,35 @@ const CreatePostPopUp: React.FC<Props> = ({ setIsShown, currentUser }) => {
                   className="w-full h-full object-cover"
                 />
               </button>
-              <div className="flex flex-col gap-1 flex-1">
-                <p>{currentUser.username}</p>
+              <div className="flex flex-col flex-1">
+                <p className="text-[15px] font-semibold">
+                  {currentUser.username}
+                </p>
                 <div className="flex flex-start">
-                  <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-gray-300 cursor-pointer">
+                  <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-gray-200 cursor-pointer">
                     <img
                       src="/icons/public.png"
                       alt=""
                       className="w-3 h-3 shrink-0"
                     />
-                    <span className="text-[12px]">Public</span>
-                    <i className="arrowDown_icon shrink-0"></i>
+                    <span className="text-[12px] font-semibold">Public</span>
+                    <i className="arrowDown_icon shrink-0 mb-1"></i>
                   </div>
                 </div>
               </div>
             </div>
-            {!showPrev && (
-              <textarea
-                ref={inputRef}
-                placeholder={`What's on your mind, ${currentUser.first_name}`}
-                className={`border-none outline-none min-h-[120px] max-h-[300px] pt-3 resize-none ${
-                  inputText.length > 75 ? "text-[16px]" : "text-[24px]"
-                } ${
-                  inputRef.current &&
-                  inputRef.current.scrollHeight > 300 &&
-                  "overflow-y-scroll"
-                }`}
-                style={
-                  isSmallScreen
-                    ? {
-                        fontSize: "20px",
-                        minHeight: "100px",
-                      }
-                    : {}
-                }
-                onChange={(e) => {
-                  setInputText(e.target.value);
-                  if (inputRef.current) {
-                    inputRef.current.style.height = "120px";
-                    inputRef.current.style.height =
-                      inputRef.current.scrollHeight + "px";
-                  }
-                }}
-                value={inputText}
-              />
-            )}
             <EmojiPickerBackground
               inputRef={inputRef}
               setInputText={setInputText}
               inputText={inputText}
               setCursorPosition={setCursorPosition}
+              currentUser={currentUser}
+              showPrev={showPrev}
+              setShowPrev={setShowPrev}
+              imagesList={imagesList}
+              setImagesList={setImagesList}
             />
-            <AddToPost />
+            <AddToPost setShowPrev={setShowPrev} showPrev={showPrev} />
             <button
               className="w-full py-2 text-sm font-semibold text-gray-300 bg-gray-200 flex justify-center items-center mt-4 rounded-lg"
               style={
