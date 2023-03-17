@@ -4,6 +4,7 @@ const { StatusCodes } = require("http-status-codes");
 const { readdirSync } = require("fs");
 const connectDB = require("./database/connect");
 const cors = require("cors");
+const fileUpload = require("express-fileupload");
 var whitelist = [
   "http://localhost:3000",
   "http://127.0.0.1:3000",
@@ -27,6 +28,12 @@ const app = express();
 
 app.use(express.json());
 app.use(cors(corsOptions));
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "/tmp/",
+  })
+);
 
 readdirSync("./routes").map((fileName) => {
   const base = fileName.split(".")[0];

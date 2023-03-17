@@ -31,6 +31,7 @@ const CreatePostPopUp: React.FC<Props> = ({ setIsShown, currentUser }) => {
       document.documentElement.style.overflow = "unset";
     };
   }, []);
+  const handleSubmitPost = async () => {};
   return ReactDOM.createPortal(
     <div className="fixed inset-0 z-10">
       <div className="absolute inset-0 bg-gray-300 opacity-60 z-10" />
@@ -99,15 +100,9 @@ const CreatePostPopUp: React.FC<Props> = ({ setIsShown, currentUser }) => {
               />
               <AddToPost setShowPrev={setShowPrev} showPrev={showPrev} />
               <button
-                className="w-full py-2 text-sm font-semibold text-gray-300 bg-gray-200 flex justify-center items-center mt-4 rounded-lg"
-                style={
-                  inputText.length > 0
-                    ? {
-                        color: "white",
-                        background: "var(--blue-color)",
-                      }
-                    : {}
-                }
+                className="cursor-pointer w-full py-2 text-sm font-semibold flex justify-center items-center mt-4 rounded-lg text-white bg-[var(--blue-color)] disabled:text-gray-300 disabled:bg-gray-200 disabled:cursor-default"
+                disabled={!(inputText.length > 0)}
+                onClick={handleSubmitPost}
               >
                 Post
               </button>
