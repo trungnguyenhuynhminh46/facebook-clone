@@ -28,16 +28,12 @@ const EmojiPickerBackground: React.FC<Props> = ({
   setImagesList,
 }) => {
   const isSmallScreen = useMediaQuery({ query: "(max-width: 688px)" });
-  const emojiPickerRef = useRef(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   useEffect(() => {
     if (showPrev && inputRef.current) {
       inputRef.current.style.height = "auto";
     }
   }, [showPrev]);
-  useOnClickOutside(emojiPickerRef, () => {
-    setShowEmojiPicker(false);
-  });
   const handleEmojiSelect = (emoji: any) => {
     const ref = inputRef.current;
     if (ref) {
@@ -94,7 +90,7 @@ const EmojiPickerBackground: React.FC<Props> = ({
         value={inputText}
       />
       {showPrev && (
-        <div ref={emojiPickerRef} className="absolute right-0 top-4 z-10">
+        <div className="absolute right-0 top-4 z-10">
           <i
             className="emoji_icon_large absolute right-0 top-1/2 -translate-y-1/2"
             onClick={() => {
@@ -102,9 +98,10 @@ const EmojiPickerBackground: React.FC<Props> = ({
             }}
           ></i>
           {showEmojiPicker && (
-            <div className="absolute right-0 top-0 -translate-x-8 -translate-y-4 select-none">
-              <EmojiPicker onEmojiSelect={handleEmojiSelect} />
-            </div>
+            <EmojiPicker
+              onEmojiSelect={handleEmojiSelect}
+              setShowEmojiPicker={setShowEmojiPicker}
+            />
           )}
         </div>
       )}
@@ -115,7 +112,7 @@ const EmojiPickerBackground: React.FC<Props> = ({
             alt=""
             className="absolute left-0 w-10 h-10 cursor-pointer"
           />
-          <div ref={emojiPickerRef}>
+          <div>
             <i
               className="emoji_icon_large absolute right-0 top-1/2 -translate-y-1/2"
               onClick={() => {
@@ -123,9 +120,10 @@ const EmojiPickerBackground: React.FC<Props> = ({
               }}
             ></i>
             {showEmojiPicker && (
-              <div className="absolute right-0 top-0 -translate-y-1/2 -translate-x-10 select-none">
-                <EmojiPicker onEmojiSelect={handleEmojiSelect} />
-              </div>
+              <EmojiPicker
+                onEmojiSelect={handleEmojiSelect}
+                setShowEmojiPicker={setShowEmojiPicker}
+              />
             )}
           </div>
         </div>

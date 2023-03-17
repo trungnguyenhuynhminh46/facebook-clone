@@ -6,7 +6,11 @@ export default function useOnClickOutside(
 ) {
   useEffect(() => {
     const listener = (event: any) => {
-      if (!ref.current || ref.current.contains(event.target)) {
+      if (
+        !ref.current ||
+        ref.current.contains(event.target) ||
+        event.target.tagName.toLowerCase() == "i"
+      ) {
         return;
       }
       handler(event);
