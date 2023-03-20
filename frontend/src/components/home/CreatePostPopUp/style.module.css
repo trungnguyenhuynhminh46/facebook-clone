@@ -54,3 +54,11 @@
 .template-5 :nth-child(5) {
   @apply w-full col-span-2 h-[150px] object-cover;
 }
+
+.add-post__btn {
+  @apply relative cursor-pointer w-9 h-9 flex justify-center items-center rounded-full overflow-hidden;
+}
+.add-post__btn:hover::after {
+  content: "";
+  @apply absolute inset-0 bg-gray-800 opacity-5;
+}

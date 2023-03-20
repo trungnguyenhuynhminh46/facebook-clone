@@ -3,8 +3,8 @@ const route = express.Router();
 // Controllers
 const { uploadImages } = require("../controllers/upload");
 // Middlewares
-const validateImagesUpload = require("../middleware/validateImagesUpload");
+const validateImages = require("../middleware/validateImages");
 
-route.post("/uploadImages", validateImagesUpload, uploadImages);
+route.post("/uploadImages", validateImages, uploadImages);
 
 module.exports = route;

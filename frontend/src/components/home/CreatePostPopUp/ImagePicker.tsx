@@ -5,6 +5,7 @@ type Props = {
   setShowPrev: React.Dispatch<React.SetStateAction<boolean>>;
   imagesList: any[];
   setImagesList: React.Dispatch<React.SetStateAction<any[]>>;
+  setError: React.Dispatch<React.SetStateAction<string>>;
 };
 const generateError = (filesName: string[]) => {
   if (filesName.length === 1) {
@@ -19,9 +20,8 @@ const ImagePicker: React.FC<Props> = ({
   setShowPrev,
   imagesList,
   setImagesList,
+  setError,
 }) => {
-  const num = 5;
-  const [error, setError] = useState("");
   const handleUploadImages = (events: React.ChangeEvent<HTMLInputElement>) => {
     let files = Array.from(events.target.files!);
     if (files) {

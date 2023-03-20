@@ -781,3 +781,12 @@
   background-repeat: no-repeat;
   display: inline-block;
 }
+.window_icon {
+  background-image: url(/icons/icons40.png);
+  background-position: 0px -258px;
+  background-size: 34px 402px;
+  width: 16px;
+  height: 16px;
+  background-repeat: no-repeat;
+  display: inline-block;
+}
