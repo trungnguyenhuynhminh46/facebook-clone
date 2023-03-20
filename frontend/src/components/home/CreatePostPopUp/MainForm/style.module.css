@@ -58,7 +58,7 @@
 .add-post__btn {
   @apply relative cursor-pointer w-9 h-9 flex justify-center items-center rounded-full overflow-hidden;
 }
-.add-post__btn:hover::after {
+.add-post__btn:hover:not(:disabled)::after {
   content: "";
   @apply absolute inset-0 bg-gray-800 opacity-5;
 }

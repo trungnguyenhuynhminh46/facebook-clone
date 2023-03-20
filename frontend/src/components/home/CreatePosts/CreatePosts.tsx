@@ -11,6 +11,7 @@ type Props = {
 const CreatePosts: React.FC<Props> = ({ currentUser }) => {
   const isSmallScreen = useMediaQuery({ query: "(max-width: 688px)" });
   const [isShown, setIsShown] = useState(false);
+  const [inputText, setInputText] = useState("");
   return (
     <div className="w-full relative py-3 px-4 rounded-lg bg-white flex flex-col items-stretch mt-4 shadow2">
       <div className="flex gap-3 items-center mb-2">
@@ -34,10 +35,17 @@ const CreatePosts: React.FC<Props> = ({ currentUser }) => {
               : {}
           }
         >
-          What's on your mine, {currentUser.first_name}?
+          {inputText.trim()
+            ? inputText.trim()
+            : `What's on your mine, ${currentUser.first_name}?`}
         </button>
         {isShown && (
-          <CreatePostPopUp setIsShown={setIsShown} currentUser={currentUser} />
+          <CreatePostPopUp
+            setIsShown={setIsShown}
+            currentUser={currentUser}
+            inputText={inputText}
+            setInputText={setInputText}
+          />
         )}
       </div>
       <div className="w-full h-[1px] bg-gray-200 my-2"></div>

@@ -172,7 +172,7 @@ const EmojiPickerBackground: React.FC<Props> = ({
           style={
             coverState
               ? {
-                  maxHeight: "calc(100% - 32px)",
+                  maxWidth: "calc(100% - 32px)",
                 }
               : {}
           }
