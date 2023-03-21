@@ -12,4 +12,18 @@ const createPost = async (req, res) => {
   }
 };
 
-module.exports = { createPost };
+const getAllPosts = async (req, res) => {
+  try {
+    const allPosts = await Post.find({}).populate({
+      path: "user",
+      select: "-_id first_name last_name username email picture gender",
+    });
+    return res.status(StatusCodes.OK).json({
+      posts: allPosts,
+    });
+  } catch (err) {
+    throw new customError(err.message, StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+};
+
+module.exports = { createPost, getAllPosts };

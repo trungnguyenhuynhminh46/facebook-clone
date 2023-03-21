@@ -68,6 +68,7 @@ const ImagePicker: React.FC<Props> = ({
         onClick={() => {
           setImagesList([]);
           setShowPrev(false);
+          setError("");
         }}
       >
         <i className="exit_icon"></i>
@@ -106,21 +107,23 @@ const ImagePicker: React.FC<Props> = ({
             {imagesList.slice(0, 4).map((imageSrc, index) => {
               return <img key={index} src={imageSrc} alt="" />;
             })}
-            <div className="relative">
-              {imagesList.length - 5 > 0 && (
-                <>
-                  <div className="absolute inset-0 bg-gray-800 opacity-20 z-10"></div>
-                  <div className="absolute inset-0 flex justify-center items-center text-3xl text-white font-medium z-20">
-                    +{imagesList.length - 5}
-                  </div>
-                </>
-              )}
-              <img
-                src={imagesList[4]}
-                alt=""
-                className="w-full h-full object-cover"
-              />
-            </div>
+            {imagesList.length - 5 >= 0 && (
+              <div className="relative">
+                {imagesList.length - 5 > 0 && (
+                  <>
+                    <div className="absolute inset-0 bg-gray-800 opacity-20 z-10"></div>
+                    <div className="absolute inset-0 flex justify-center items-center text-3xl text-white font-medium z-20">
+                      +{imagesList.length - 5}
+                    </div>
+                  </>
+                )}
+                <img
+                  src={imagesList[4]}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
           </div>
         </div>
       )}

@@ -4,7 +4,13 @@ const route = express.Router();
 const { uploadImages } = require("../controllers/upload");
 // Middlewares
 const validateImages = require("../middleware/validateImages");
+const authorizationMiddleware = require("../middleware/auth");
 
-route.post("/uploadImages", validateImages, uploadImages);
+route.post(
+  "/uploadImages",
+  authorizationMiddleware,
+  validateImages,
+  uploadImages
+);
 
 module.exports = route;

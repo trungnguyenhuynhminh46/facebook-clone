@@ -1,7 +1,11 @@
 const express = require("express");
 const route = express.Router();
 // Controllers
-const { createPost } = require("../controllers/post");
+const { createPost, getAllPosts } = require("../controllers/post");
+// Middlewares
+const authorizationMiddleware = require("../middleware/auth");
 
-route.post("/createPost", createPost);
+route.get("/getAllPosts", getAllPosts);
+route.post("/createPost", authorizationMiddleware, createPost);
+
 module.exports = route;

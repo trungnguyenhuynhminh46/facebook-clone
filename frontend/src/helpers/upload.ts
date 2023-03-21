@@ -15,7 +15,7 @@ const uploadImages = async (
     const {
       data: { imagesUrl },
     } = await axios.post(
-      `${import.meta.env.VITE_BACKEND_URL}/upload`,
+      `${import.meta.env.VITE_BACKEND_URL}/upload/uploadImages`,
       formData,
       {
         headers: {

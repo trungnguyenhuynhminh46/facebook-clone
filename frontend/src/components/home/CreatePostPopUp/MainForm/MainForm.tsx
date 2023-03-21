@@ -59,80 +59,90 @@ const MainForm: React.FC<Props> = ({
     };
   }, []);
   const handleSubmitPost = async () => {
-    setLoading(true);
-    // type: cover
-    if (coverState) {
-      const response = await createPost(
-        "cover",
-        currentUser.id,
-        inputText,
-        coverState.id,
-        [],
-        "public",
-        "",
-        "",
-        [],
-        currentUser.token
-      );
-      if (response !== "OK") {
-        setError(response);
+    if (!loading) {
+      setLoading(true);
+      // type: cover
+      if (coverState) {
+        const response = await createPost(
+          "cover",
+          currentUser.id,
+          inputText,
+          coverState.id,
+          [],
+          "public",
+          "",
+          "",
+          [],
+          currentUser.token
+        );
+        if (response !== "OK") {
+          setError(response);
+          setLoading(false);
+
+          return;
+        }
+      }
+      // type: withImages
+      else if (imagesList.length > 0) {
+        // Upload images
+        const imagesUrl = await uploadImages(
+          imagesList,
+          `${currentUser.email}/postsImages`,
+          currentUser.token
+        );
+        if (typeof imagesList === "string") {
+          setError(imagesList);
+          setLoading(false);
+          return;
+        }
+        const response = await createPost(
+          "withImages",
+          currentUser.id,
+          inputText,
+          undefined,
+          imagesUrl,
+          "public",
+          "",
+          "",
+          [],
+          currentUser.token
+        );
+        if (response !== "OK") {
+          setError(response);
+          setLoading(false);
+          return;
+        }
+      }
+      // type: textOnly
+      else if (inputText) {
+        const response = await createPost(
+          "onlyText",
+          currentUser.id,
+          inputText,
+          undefined,
+          [],
+          "public",
+          "",
+          "",
+          [],
+          currentUser.token
+        );
+        if (response !== "OK") {
+          setError(response);
+          setLoading(false);
+          return;
+        }
+      }
+      if (!inputText) {
+        setError("Please enter input");
         setLoading(false);
         return;
       }
-    }
-    // type: withImages
-    if (imagesList.length > 0) {
-      // Upload images
-      const imagesUrl = await uploadImages(
-        imagesList,
-        `${currentUser.email}/postsImages`,
-        currentUser.token
-      );
-      const response = await createPost(
-        "withImages",
-        currentUser.id,
-        inputText,
-        undefined,
-        imagesUrl,
-        "public",
-        "",
-        "",
-        [],
-        currentUser.token
-      );
-      if (response !== "OK") {
-        setError(response);
-        setLoading(false);
-        return;
-      }
-    }
-    // type: textOnly
-    if (inputText) {
-      const response = await createPost(
-        "onlyText",
-        currentUser.id,
-        inputText,
-        undefined,
-        [],
-        "public",
-        "",
-        "",
-        [],
-        currentUser.token
-      );
-      if (response !== "OK") {
-        setError(response);
-        setLoading(false);
-        return;
-      }
-    }
-    if (!inputText) {
-      setError("Please enter input");
+      setError("");
       setLoading(false);
-      return;
+      setIsShown(false);
+      setInputText("");
     }
-    setError("");
-    setLoading(false);
   };
   return (
     <div className="absolute inset-0 flex justify-center items-center z-20">
@@ -144,6 +154,21 @@ const MainForm: React.FC<Props> = ({
           className="absolute top-[100px] right-[50px] z-30"
           id="emoji-picker"
         ></div>
+        {err && (
+          <div className="absolute inset-0 bg-white opacity-90 z-40 flex items-center justify-center">
+            <div className="flex gap-4 justify-center items-center mx-14">
+              <span className="text-red-500 text-base">{err}</span>
+              <button
+                className="bg-blue-600 text-white text-sm font-medium cursor-pointer rounded-lg py-2 px-3"
+                onClick={() => {
+                  setError("");
+                }}
+              >
+                Try again
+              </button>
+            </div>
+          </div>
+        )}
         <div
           className="w-full bg-white shadow2 rounded-lg overflow-y-auto custom-scrollbar"
           style={{
@@ -233,7 +258,6 @@ const MainForm: React.FC<Props> = ({
               )}
               {!loading && "Post"}
             </button>
-            {err && <p className="text-red-500 mt-3">{err}</p>}
           </div>
         </div>
       </div>
