@@ -3,13 +3,14 @@ import { useMediaQuery } from "react-responsive";
 import rightSidebarStyles from "./style.module.css";
 import { NewRoom, Search, Dots } from "@/svg";
 import ToolTip from "@/components/ToolTip";
+import { User } from "@/types/User";
 
 type Props = {
-  currentUser: any;
+  currentUser: User;
 };
 
 type ContactItemProps = {
-  user: any;
+  user: User;
 };
 
 const ContactItem: React.FC<ContactItemProps> = ({ user }) => {

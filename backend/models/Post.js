@@ -62,7 +62,7 @@ const schema = mongoose.Schema(
       default: [],
     },
   },
-  { timestamp: true }
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Post", schema);

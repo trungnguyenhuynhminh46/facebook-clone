@@ -3,9 +3,10 @@ import CreatePostsStyle from "./style.module.css";
 import { Feeling, LiveVideo, Photo } from "@/svg";
 import CreatePostPopUp from "../CreatePostPopUp";
 import { useMediaQuery } from "react-responsive";
+import { User } from "@/types/User";
 
 type Props = {
-  currentUser: any;
+  currentUser: User;
 };
 
 const CreatePosts: React.FC<Props> = ({ currentUser }) => {
@@ -13,7 +14,7 @@ const CreatePosts: React.FC<Props> = ({ currentUser }) => {
   const [isShown, setIsShown] = useState(false);
   const [inputText, setInputText] = useState("");
   return (
-    <div className="w-full relative py-3 px-4 rounded-lg bg-white flex flex-col items-stretch mt-4 shadow2">
+    <div className="w-full relative py-3 px-4 rounded-lg bg-white flex flex-col items-stretch mt-4 shadow2 mb-3">
       <div className="flex gap-3 items-center mb-2">
         <button className={CreatePostsStyle["avatar"]}>
           <img

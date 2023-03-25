@@ -186,4 +186,8 @@
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: #9b9b9b;
   }
+  .hover--overlay:hover::after {
+    content: "";
+    @apply absolute inset-0 bg-gray-800 opacity-10;
+  }
 }

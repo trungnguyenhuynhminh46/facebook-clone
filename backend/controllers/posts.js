@@ -16,7 +16,7 @@ const getAllPosts = async (req, res) => {
   try {
     const allPosts = await Post.find({}).populate({
       path: "user",
-      select: "-_id first_name last_name username email picture gender",
+      select: "first_name last_name username email picture gender",
     });
     return res.status(StatusCodes.OK).json({
       posts: allPosts,

@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
+import { User } from "@/types/User";
 // Forms
 import MainForm from "../CreatePostPopUp/MainForm";
 
 type Props = {
   setIsShown: React.Dispatch<React.SetStateAction<boolean>>;
-  currentUser: any;
+  currentUser: User;
   inputText: string;
   setInputText: React.Dispatch<React.SetStateAction<string>>;
 };

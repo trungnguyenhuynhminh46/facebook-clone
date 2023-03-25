@@ -5,14 +5,19 @@ import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/store/selectors/user";
 import { stories } from "@/data/fakeStories";
 import { useMediaQuery } from "react-responsive";
+import { selectAllPosts } from "@/store/slices/posts";
+import isoStringToDate from "@/helpers/isoStringToDate";
 // Components
 import LeftSidebar from "@/components/home/LeftSidebar";
 import RightSidebar from "@/components/home/RightSidebar";
 import Stories from "@/components/home/Stories";
 import CreatePosts from "@/components/home/CreatePosts";
+import { Post } from "@/types/Post";
+import PostComponent from "@/components/home/PostComponent/PostComponent";
 
 type Props = {};
 const Home: React.FC<Props> = () => {
+  const allPosts = useSelector(selectAllPosts);
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1100px)" });
   const isMediumScreen = useMediaQuery({ query: "(max-width: 900px)" });
   const user = useSelector(selectCurrentUser);
@@ -21,12 +26,12 @@ const Home: React.FC<Props> = () => {
       {!isTabletOrMobile && <LeftSidebar />}
       {!isMediumScreen && <RightSidebar currentUser={user} />}
       <div
-        className="relative top-[56px] mx-auto mt-6 w-full max-w-[38.5vw]"
+        className="mx-auto pt-16 pb-4 w-full max-w-[38.5vw]"
         style={
           isMediumScreen
             ? {
                 width: "100%",
-                maxWidth: "500px",
+                maxWidth: "700px",
                 marginRight: "auto",
                 marginLeft: "auto",
               }
@@ -43,6 +48,14 @@ const Home: React.FC<Props> = () => {
         <div className="mx-4">
           <Stories currentUser={user} stories={stories} />
           <CreatePosts currentUser={user} />
+          {allPosts &&
+            Object.entries(allPosts).map(([postId, post]) => {
+              if (post) {
+                return (
+                  <PostComponent key={postId} post={post} currentUser={user} />
+                );
+              }
+            })}
         </div>
       </div>
     </>

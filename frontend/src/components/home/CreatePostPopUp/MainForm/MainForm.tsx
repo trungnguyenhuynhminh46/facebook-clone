@@ -6,13 +6,13 @@ import useOnClickOutside from "@/hooks/useOnClickOutside";
 import EmojiPickerBackground from "./EmojiPickerBackground";
 import AddToPost from "./AddToPost";
 import BeatLoader from "react-spinners/BeatLoader";
-import axios from "axios";
 import createPost from "@/helpers/posts";
 import uploadImages from "@/helpers/upload";
+import { User } from "@/types/User";
 
 type Props = {
   setIsShown: React.Dispatch<React.SetStateAction<boolean>>;
-  currentUser: any;
+  currentUser: User;
   inputText: string;
   setInputText: React.Dispatch<React.SetStateAction<string>>;
   setCurrentForm: React.Dispatch<React.SetStateAction<string>>;

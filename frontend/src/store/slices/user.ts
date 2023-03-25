@@ -1,21 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
+import { User } from "@/types/User";
 
-type SliceState = { user: {} | null };
+type SliceState = User | null;
 
-const initialState: SliceState = {
-  user: Cookies.get("user") ? JSON.parse(Cookies.get("user") || "") : null,
-};
-
+const initialState: SliceState = Cookies.get("user")
+  ? JSON.parse(Cookies.get("user") || "")
+  : null;
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
     login: (state, action) => {
-      state.user = action.payload;
+      state = action.payload;
     },
     logout: (state) => {
-      state.user = null;
+      state = null;
     },
   },
 });

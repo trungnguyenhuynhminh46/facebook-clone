@@ -74,7 +74,7 @@ const Header: React.FC<Props> = (props: Props) => {
   });
 
   return (
-    <header className="fixed w-full top-0 left-0 px-4 py-1 flex justify-between shadow-md bg-white z-10">
+    <header className="fixed w-full top-0 left-0 px-4 py-1 flex justify-between shadow-md bg-white z-20">
       {/* left */}
       <div className={`${headerStyles["header-left"]}`} ref={searchRef}>
         <Link to="/">

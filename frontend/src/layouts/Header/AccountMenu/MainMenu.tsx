@@ -6,12 +6,13 @@ import MenuItem from "./MenuItem";
 import { logout } from "@/store/slices/user";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
+import { User } from "@/types/User";
 
 type Props = {
   menu: number;
   menuRef: any;
   onEnter?: () => void;
-  currentUser: any;
+  currentUser: User;
   setMenu: (menu: number) => void;
 };
 

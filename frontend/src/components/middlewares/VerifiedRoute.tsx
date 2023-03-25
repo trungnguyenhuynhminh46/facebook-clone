@@ -5,6 +5,7 @@ import UnVerified from "@pages/UnVerified";
 
 const VerifiedRoute = () => {
   const user = useSelector(selectCurrentUser);
+
   return user.verified ? <Outlet /> : <UnVerified />;
 };
 

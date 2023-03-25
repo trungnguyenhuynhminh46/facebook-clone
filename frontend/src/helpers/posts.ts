@@ -13,19 +13,8 @@ const createPost = async (
   token: string | undefined
 ) => {
   try {
-    // console.log({
-    //   type,
-    //   user,
-    //   text,
-    //   coverId,
-    //   imagesList,
-    //   isSharedTo,
-    //   isFeeling,
-    //   checkedOutAt,
-    //   tagedFriends,
-    // });
     const { data } = await axios.post(
-      `${import.meta.env.VITE_BACKEND_URL}/post/createPost`,
+      `${import.meta.env.VITE_BACKEND_URL}/posts/createPost`,
       {
         type,
         user,
