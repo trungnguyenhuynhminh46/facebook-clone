@@ -135,7 +135,7 @@ const PostHeader: React.FC<Props> = ({ post, currentUser }) => {
         )}
       >
         <button
-          className="ml-auto mr-4 h-9 w-9 rounded-full overflow-hidden hover:bg-gray-100 flex justify-center items-center outline-none"
+          className="ml-auto h-9 w-9 rounded-full overflow-hidden hover:bg-gray-100 flex justify-center items-center outline-none"
           onClick={() => {
             setShowTooltip(!showTooltip);
           }}

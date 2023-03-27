@@ -27,6 +27,7 @@ export interface Post {
   };
   reactions: string[];
   comments: string[];
+  sharedUsers: string[];
   createdAt: string;
   updatedAt: string;
 }

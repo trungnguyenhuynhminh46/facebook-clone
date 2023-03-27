@@ -24,7 +24,6 @@ export const fetchPosts = createAsyncThunk(
         },
       }
     );
-    // console.log(data);
     return data.posts;
   }
 );

@@ -16,7 +16,7 @@ const PrivateRoute = () => {
         promise.abort();
       };
     }
-  }, [dispatch]);
+  }, [dispatch, user]);
   return user ? <Outlet /> : <Login />;
 };
 

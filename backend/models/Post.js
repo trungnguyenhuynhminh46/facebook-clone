@@ -61,6 +61,10 @@ const schema = mongoose.Schema(
       type: [{ type: ObjectId, ref: "Comment" }],
       default: [],
     },
+    sharedUsers: {
+      type: [{ type: ObjectId, ref: "User" }],
+      default: [],
+    },
   },
   { timestamps: true }
 );
