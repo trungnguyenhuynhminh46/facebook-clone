@@ -10,6 +10,7 @@ var whitelist = [
   "http://127.0.0.1:3000",
   "http://localhost:8000",
   "https://facebook-clone-nine-woad.vercel.app/",
+  "https://facebook-clone-65fdldmqe-trungnguyenhuynhminh46.vercel.app/",
 ];
 var corsOptions = {
   origin: function (origin, callback) {
