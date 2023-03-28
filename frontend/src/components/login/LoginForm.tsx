@@ -53,7 +53,6 @@ const LoginForm: React.FC<Props> = ({ setRegisterIsShown }) => {
   const onSubmit = async (inputData: any) => {
     try {
       setIsLoading(true);
-      console.log(import.meta.env);
       const {
         data: { message, user },
       } = await axios.post(

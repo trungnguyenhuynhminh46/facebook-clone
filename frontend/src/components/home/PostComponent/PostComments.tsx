@@ -1,7 +1,10 @@
 import React from "react";
+import { Post } from "@/types/Post";
 import { Link } from "react-router-dom";
 
-type Props = {};
+type Props = {
+  post: Post;
+};
 
 type PropsComment = {
   hasChild?: boolean;
@@ -74,7 +77,7 @@ const PostCommentsList = () => {
 
 const PostComments = (props: Props) => {
   return (
-    <div className="p-4 pr-10">
+    <div className="p-4 pt-0 pr-10">
       {/* Root comments */}
       <PostComment hasChild={true} />
       <PostComment />

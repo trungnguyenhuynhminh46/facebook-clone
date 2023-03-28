@@ -5,22 +5,21 @@ const { readdirSync } = require("fs");
 const connectDB = require("./database/connect");
 const cors = require("cors");
 const fileUpload = require("express-fileupload");
-var whitelist = [
-  "http://localhost:3000",
-  "http://127.0.0.1:3000",
-  "http://localhost:8000",
-  "https://facebook-clone-nine-woad.vercel.app/",
-  "https://facebook-clone-65fdldmqe-trungnguyenhuynhminh46.vercel.app/",
-];
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-};
+// var whitelist = [
+//   "http://localhost:3000",
+//   "http://127.0.0.1:3000",
+//   "http://localhost:8000",
+//   "https://facebook-clone-ipqvlw4l2-trungnguyenhuynhminh46.vercel.app/",
+// ];
+// var corsOptions = {
+//   origin: function (origin, callback) {
+//     if (whitelist.indexOf(origin) !== -1 || !origin) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error("Not allowed by CORS"));
+//     }
+//   },
+// };
 // Middlewares
 const notFoundMiddleware = require("./middleware/notFound");
 const errorHandlerMiddleware = require("./middleware/errorHandler");
@@ -29,7 +28,8 @@ const express = require("express");
 const app = express();
 
 app.use(express.json());
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+app.use(cors());
 app.use(
   fileUpload({
     useTempFiles: true,

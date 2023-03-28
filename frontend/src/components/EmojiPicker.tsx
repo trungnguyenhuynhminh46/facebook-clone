@@ -8,12 +8,14 @@ type Props = {
   onEmojiSelect: (emoji: any) => void;
   theme?: string;
   setShowEmojiPicker: React.Dispatch<React.SetStateAction<boolean>>;
+  containerId: string;
 };
 
 const EmojiPicker: React.FC<Props> = ({
   onEmojiSelect,
   theme = "auto",
   setShowEmojiPicker,
+  containerId,
 }) => {
   const ref = useRef(null);
 
@@ -29,7 +31,7 @@ const EmojiPicker: React.FC<Props> = ({
         onEmojiSelect={onEmojiSelect}
       />
     </div>,
-    document.getElementById("emoji-picker")!
+    document.getElementById(containerId)!
   );
 };
 

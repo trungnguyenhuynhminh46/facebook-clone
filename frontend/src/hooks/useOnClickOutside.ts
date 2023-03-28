@@ -9,7 +9,8 @@ export default function useOnClickOutside(
       if (
         !ref.current ||
         ref.current.contains(event.target) ||
-        event.target.tagName.toLowerCase() == "i"
+        event.target.tagName.toLowerCase() == "i" ||
+        event.target.tagName.toLowerCase() == "button"
       ) {
         return;
       }

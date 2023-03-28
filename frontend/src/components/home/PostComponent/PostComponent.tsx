@@ -6,6 +6,7 @@ import PostContent from "./PostContent";
 import PostButton from "./PostButton";
 import PostInteract from "./PostInteract";
 import PostComments from "./PostComments";
+import PostCreateComment from "./PostCreateComment";
 
 type Props = {
   post: Post;
@@ -19,7 +20,8 @@ const PostComponent: React.FC<Props> = ({ post, currentUser }) => {
       <PostContent post={post} />
       <PostInteract post={post} />
       <PostButton post={post} currentUser={currentUser} />
-      <PostComments />
+      <PostCreateComment post={post} currentUser={currentUser} />
+      <PostComments post={post} />
     </div>
   );
 };

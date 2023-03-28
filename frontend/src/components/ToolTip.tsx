@@ -21,7 +21,7 @@ const ToolTip: React.FC<Props> = ({
       delay={300}
       render={(attrs) => (
         <div
-          className="py-2 px-3 bg-gray-800 text-gray-200 rounded-lg text-sm"
+          className="py-[6px] px-[10px] bg-gray-800 opacity-90 text-gray-200 rounded-lg text-[12px]"
           {...attrs}
         >
           {title}
