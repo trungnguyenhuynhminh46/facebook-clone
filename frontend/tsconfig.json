@@ -26,7 +26,8 @@
       "@hooks/*": ["src/hooks/*"],
       "@pages/*": ["src/pages/*"],
       "@store/*": ["src/store/*"],
-      "@svg/*": ["src/svg/*"]
+      "@svg/*": ["src/svg/*"],
+      "@types/*": ["src/types/*"]
     }
   },
   "include": ["src"],

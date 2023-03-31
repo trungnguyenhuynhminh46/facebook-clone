@@ -16,6 +16,32 @@ const schema = mongoose.Schema(
     post: { type: ObjectId, ref: "Post" },
     parentComment: { type: ObjectId, ref: "Comment" },
     replies: [{ type: ObjectId, ref: "Comment" }],
+    reactionsInfo: {
+      like: {
+        type: Number,
+        default: 0,
+      },
+      love: {
+        type: Number,
+        default: 0,
+      },
+      haha: {
+        type: Number,
+        default: 0,
+      },
+      wow: {
+        type: Number,
+        default: 0,
+      },
+      sad: {
+        type: Number,
+        default: 0,
+      },
+      angry: {
+        type: Number,
+        default: 0,
+      },
+    },
     reactions: [{ type: ObjectId, ref: "Reaction" }],
   },
   { timestamps: true }

@@ -47,7 +47,6 @@ const Stories: React.FC<Props> = ({ currentUser, stories }) => {
       const width = containerRef.current.clientWidth;
       containerRef.current.scrollLeft += width;
       setLeft(containerRef.current.scrollLeft + width);
-      console.log(left, leftMax);
     }
   };
   const handlePrevButtonClick = () => {
