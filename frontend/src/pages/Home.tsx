@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/store/selectors/user";
 import { stories } from "@/data/fakeStories";
 import { useMediaQuery } from "react-responsive";
-import { selectAllPosts } from "@/store/slices/posts";
+import { selectAllPosts, selectAllPostsIds } from "@/store/slices/posts";
 import isoStringToDate from "@/helpers/isoStringToDate";
 // Components
 import LeftSidebar from "@/components/home/LeftSidebar";
@@ -17,7 +17,7 @@ import PostComponent from "@/components/home/PostComponent/PostComponent";
 
 type Props = {};
 const Home: React.FC<Props> = () => {
-  const allPosts = useSelector(selectAllPosts);
+  const allPostsIds = useSelector(selectAllPostsIds);
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1100px)" });
   const isMediumScreen = useMediaQuery({ query: "(max-width: 900px)" });
   const user = useSelector(selectCurrentUser);
@@ -48,14 +48,15 @@ const Home: React.FC<Props> = () => {
         <div className="mx-4">
           <Stories currentUser={user} stories={stories} />
           <CreatePosts currentUser={user} />
-          {allPosts &&
-            Object.entries(allPosts).map(([postId, post]) => {
-              if (post) {
-                return (
-                  <PostComponent key={postId} post={post} currentUser={user} />
-                );
-              }
-            })}
+          {allPostsIds.map((postId) => {
+            return (
+              <PostComponent
+                key={postId}
+                postId={postId.toString()}
+                currentUser={user}
+              />
+            );
+          })}
         </div>
       </div>
     </>

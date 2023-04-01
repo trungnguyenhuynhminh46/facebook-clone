@@ -5,6 +5,7 @@ import { useMediaQuery } from "react-responsive";
 import ImagePicker from "./ImagePicker";
 import { ChevonDown } from "@/svg";
 import covers from "@data/covers";
+import classNames from "classnames";
 
 type Props = {
   inputRef: React.RefObject<HTMLTextAreaElement>;
@@ -82,25 +83,6 @@ const EmojiPickerBackground: React.FC<Props> = ({
       setCursorPosition(start.length + emoji.native.length);
     }
   };
-  // Styles
-  const inputFontSize = !showPrev
-    ? isSmallScreen
-      ? "text-[20px]"
-      : inputText.length <= 75
-      ? "text-[24px]"
-      : "text-base"
-    : "text-base";
-  const inputOverFlow = !showPrev
-    ? inputRef.current &&
-      inputRef.current.scrollHeight > 300 &&
-      "overflow-y-scroll"
-    : "";
-  const inputMinHeight = !showPrev
-    ? isSmallScreen
-      ? "min-h-[100px]"
-      : "min-h-[120px]"
-    : "";
-  const inputMaxHeight = !showPrev ? "max-h-[300px]" : "";
   return (
     <div
       className={`${
@@ -119,10 +101,31 @@ const EmojiPickerBackground: React.FC<Props> = ({
       <textarea
         ref={inputRef}
         placeholder={`What's on your mind, ${currentUser.first_name}`}
-        className={`${
-          coverState &&
-          `absolute top-1/2 -translate-y-1/2 text-center text-[30px] font-bold bg-transparent max-w-[80%]`
-        } w-full border-none outline-none pt-3 resize-none ${inputFontSize} ${inputOverFlow} ${inputMinHeight} ${inputMaxHeight}`}
+        className={classNames(
+          "w-full border-none outline-none pt-3 resize-none",
+          {
+            "absolute top-1/2 -translate-y-1/2 text-center text-[30px] font-bold bg-transparent max-w-[80%]":
+              coverState,
+          },
+          {
+            "text-[20px]": !showPrev && isSmallScreen,
+            "text-[24px]":
+              !showPrev && !isSmallScreen && inputText.length <= 75,
+          },
+          {
+            "overflow-y-scroll":
+              !showPrev &&
+              !!inputRef.current &&
+              inputRef.current.scrollHeight > 300,
+          },
+          {
+            "min-h-[100px]": !showPrev && isSmallScreen,
+            "min-h-[120px]": !showPrev && !isSmallScreen,
+          },
+          {
+            "max-h-[300px]": !showPrev,
+          }
+        )}
         style={
           coverState
             ? {

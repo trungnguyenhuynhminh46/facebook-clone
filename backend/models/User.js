@@ -5,6 +5,14 @@ const { ObjectId } = mongoose.Schema;
 
 const userSchema = mongoose.Schema(
   {
+    post_reactions: {
+      type: [{ type: ObjectId, ref: "Reaction" }],
+      default: [],
+    },
+    comment_reactions: {
+      type: [{ type: ObjectId, ref: "Reaction" }],
+      default: [],
+    },
     first_name: {
       type: String,
       required: [true, "first name is required"],

@@ -1,15 +1,29 @@
-import { StatusCodes } from "http-status-codes";
-import Post from "../models/Post";
-import Comment from "../models/Comment";
-import Reaction from "../models/Reaction";
-import customError from "../error/customError";
+const mongoose = require("mongoose");
+const { StatusCodes } = require("http-status-codes");
+const User = require("../models/User");
+const Post = require("../models/Post");
+const Comment = require("../models/Comment");
+const Reaction = require("../models/Reaction");
+const customError = require("../error/customError");
+const { ObjectId } = mongoose.Types;
+// CRUD 1 reaction phải thay đổi các bảng sau
+// Reaction
+// Post/Comment
+// User
 
 const addReaction = async (req, res) => {
   const { id: userId } = req.user;
-  const { postId, commentId, reaction } = req;
+  const { postId, commentId, reaction } = req.body;
   if ((!postId && !commentId) || !reaction) {
     throw new customError("Something went wrong!", StatusCodes.BAD_REQUEST);
   }
+  // Create a reaction
+  // return res.status(StatusCodes.OK).json({ message: "Stop here!" });
+  let addedReaction = await Reaction.create({
+    reaction,
+    user: new ObjectId(userId),
+    post: new ObjectId(postId),
+  });
   // Update post/comment's reactionsInfo
   if (postId) {
     const post = await Post.findById(postId);
@@ -20,6 +34,7 @@ const addReaction = async (req, res) => {
       );
     }
     post.reactionsInfo[reaction]++;
+    post.reactions.push(addedReaction._id);
     post.save();
   }
   if (commentId) {
@@ -31,20 +46,27 @@ const addReaction = async (req, res) => {
       );
     }
     comment.reactionsInfo[reaction]++;
+    comment.reactions[reaction]++;
     comment.save();
   }
-
-  // Create a reaction
-  let addedReaction = await Reaction.create({
-    reaction,
-    user: userId,
-    post: postId,
-  });
+  // Update User Model
+  let reactionId = addedReaction._id;
+  if (!!reactionId) {
+    let user = await User.findById(userId);
+    if (postId) {
+      user.post_reactions.push(reactionId);
+      user.save();
+    } else if (commentId) {
+      user.comment_reactions.push(postId);
+      user.save();
+    }
+  }
   return res.status(StatusCodes.OK).json({ data: addedReaction });
 };
 
 const updateReaction = async (req, res) => {
-  const { reactionId, newReaction } = req.body;
+  const { reactionId } = req.params;
+  const { newReaction } = req.body;
   const updatedReaction = await Reaction.findByIdAndUpdate(
     reactionId,
     {
@@ -95,11 +117,12 @@ const updateReaction = async (req, res) => {
     comment.save();
   }
   const returnReaction = await Reaction.findById(reactionId);
+  // No Need To Update User Model
   return res.status(StatusCodes.OK).json({ data: returnReaction });
 };
 
 const deleteReaction = async (req, res) => {
-  const { reactionId } = req.body;
+  const { reactionId } = req.params;
   const deletedReaction = await Reaction.findByIdAndRemove(reactionId, {
     returnDocument: "before",
   });
@@ -126,6 +149,9 @@ const deleteReaction = async (req, res) => {
       );
     }
     post.reactionsInfo[deletedReaction.reaction]--;
+    post.reactions = post.reactions.filter((reaction) => {
+      return reaction.toString() !== reactionId.toString();
+    });
     post.save();
   }
   if (commentId) {
@@ -139,11 +165,26 @@ const deleteReaction = async (req, res) => {
     comment.reactionsInfo[deletedReaction.reaction]--;
     comment.save();
   }
-  return res.status(StatusCodes.OK).json({ data: deletedReaction });
+  // Update User database
+  const { user: userId } = deletedReaction;
+  // Update User Model
+  const user = await User.findById(userId);
+  if (postId) {
+    user.post_reactions = user.post_reactions.filter((reaction) => {
+      return reaction.toString() !== deletedReaction._id.toString();
+    });
+    user.save();
+  } else if (commentId) {
+    user.comment_reactions = user.comment_reactions.filter((reaction) => {
+      return reaction.toString() !== deletedReaction._id;
+    });
+    user.save();
+  }
+  return res.status(StatusCodes.OK).json({ data: {} });
 };
 
 const getReactionsByPostId = async (req, res) => {
-  const { postId } = req.body;
+  const { postId } = req.params;
   const post = await Post.findById(postId);
   if (!post) {
     throw new customError(
@@ -157,9 +198,22 @@ const getReactionsByPostId = async (req, res) => {
   return res.status(StatusCodes.OK).json({ data: returnReactions });
 };
 
+const getReactionByPostIdAndUserId = async (req, res) => {
+  const { postId } = req.params;
+  const { id: userId } = req.user;
+  const reaction = await Reaction.findOne({
+    user: new ObjectId(userId),
+    post: new ObjectId(postId),
+  });
+  return res.status(StatusCodes.OK).json({
+    data: reaction,
+  });
+};
+
 module.exports = {
   addReaction,
   updateReaction,
   deleteReaction,
   getReactionsByPostId,
+  getReactionByPostIdAndUserId,
 };

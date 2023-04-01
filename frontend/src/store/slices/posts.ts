@@ -1,4 +1,5 @@
 import {
+  PayloadAction,
   createAsyncThunk,
   createEntityAdapter,
   createSlice,
@@ -9,8 +10,9 @@ import { RootState } from "../store";
 
 const postsAdapter = createEntityAdapter<Post>({
   selectId: (post) => post._id,
-  sortComparer: (post1, post2) =>
-    post2.createdAt.localeCompare(post1.createdAt),
+  sortComparer: (post1, post2) => {
+    return post2.createdAt.localeCompare(post1.createdAt);
+  },
 });
 
 export const fetchPosts = createAsyncThunk(
@@ -29,7 +31,6 @@ export const fetchPosts = createAsyncThunk(
 );
 
 const initialState = postsAdapter.getInitialState({
-  //'idle' | 'loading' | 'succeeded' | 'failed'
   status: "idle",
   error: "",
 });
@@ -37,7 +38,30 @@ const initialState = postsAdapter.getInitialState({
 const postsSlice = createSlice({
   name: "posts",
   initialState,
-  reducers: {},
+  reducers: {
+    addPost(state, action: PayloadAction<Post>) {},
+    updatePost(state, action: PayloadAction<Post>) {},
+    addReaction(
+      state,
+      action: PayloadAction<{
+        reactionId: string;
+        reaction: string;
+        postId: string;
+      }>
+    ) {},
+    updateReaction(
+      state,
+      action: PayloadAction<{
+        oldReaction: string;
+        newReaction: string;
+        postId: string;
+      }>
+    ) {},
+    deleteReaction(
+      state,
+      action: PayloadAction<{ reactionId: string; postId: string }>
+    ) {},
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchPosts.pending, (state, action) => {
@@ -46,7 +70,7 @@ const postsSlice = createSlice({
       })
       .addCase(fetchPosts.fulfilled, (state, action) => {
         state.status = "succeeded";
-        postsAdapter.addMany(state, action.payload);
+        postsAdapter.setMany(state, action.payload);
       })
       .addCase(fetchPosts.rejected, (state, action) => {
         state.status = "failed";
@@ -55,7 +79,16 @@ const postsSlice = createSlice({
   },
 });
 
-export const { selectEntities: selectAllPosts, selectById: selectPostById } =
-  postsAdapter.getSelectors<RootState>((state) => state.posts);
-export const {} = postsSlice.actions;
+export const {
+  selectIds: selectAllPostsIds,
+  selectEntities: selectAllPosts,
+  selectById: selectPostById,
+} = postsAdapter.getSelectors<RootState>((state) => state.posts);
+export const {
+  addPost,
+  updatePost,
+  addReaction,
+  updateReaction,
+  deleteReaction,
+} = postsSlice.actions;
 export default postsSlice.reducer;

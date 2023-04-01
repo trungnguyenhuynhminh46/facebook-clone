@@ -35,13 +35,16 @@ const PostReactions: React.FC<Props> = ({
         );
       }}
     >
-      {reactions.map((reaction) => {
+      {Object.entries(reactions).map(([key, reaction]) => {
         return (
           <img
-            key={reaction.id}
+            key={key}
             src={`/reacts/${reaction.name}.gif`}
             alt=""
             className="w-9 h-9 cursor-pointer transition-all duration-200 ease-in-out hover:scale-[135%]"
+            onClick={() => {
+              alert(reaction.name);
+            }}
           />
         );
       })}
