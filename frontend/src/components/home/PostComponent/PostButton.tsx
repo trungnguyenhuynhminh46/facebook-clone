@@ -6,11 +6,12 @@ import { Reaction } from "@/types/Reaction.type";
 import PostReactions from "./PostReactions";
 import reactions from "@data/reactions";
 import {
-  useAddReactionMutation,
-  useUpdateReactionMutation,
-  useDeleteReactionMutation,
+  useGetReactionByPostIdAndUserIdQuery,
+  useHandleReactionPostMutation,
 } from "@/store/api/reactionsApi";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { updatePost } from "@store/slices/posts";
 
 type Props = {
   currentUser: User;
@@ -18,55 +19,36 @@ type Props = {
 };
 
 const PostButton: React.FC<Props> = ({ currentUser, post }) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [addReaction] = useAddReactionMutation();
-  const [updateReaction] = useUpdateReactionMutation();
-  const [deleteReaction] = useDeleteReactionMutation();
-  const [currentReaction, setCurrentReaction] = useState<Reaction | null>(null);
-  const refetchCurrentReaction = async () => {
-    if (isLoading) {
-      return;
-    }
-    try {
-      setIsLoading(true);
-      const {
-        data: { data: defaultReaction },
-      } = await axios.get(
-        `${
-          import.meta.env.VITE_BACKEND_URL
-        }/reactions/getReactionByPostIdAndUserId/${post._id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${currentUser.token}`,
-          },
-        }
-      );
-      // console.log(defaultReaction);
-      setCurrentReaction(defaultReaction);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  useEffect(() => {
-    refetchCurrentReaction();
-  }, []);
+  const dispatch = useDispatch();
+  const { data: currentReaction, isFetching: currentReactionIsFetching } =
+    useGetReactionByPostIdAndUserIdQuery({ postId: post._id });
+  const [handleReactionPost, { isLoading: isHandlingPostReaction }] =
+    useHandleReactionPostMutation();
+  // console.log(data);
   const [showReactions, setShowReactions] = useState(false);
   const [timeOutId, setTimeOutId] = useState<any>();
-  const handleButtonLikeClick = async () => {
-    if (!!currentReaction) {
-      await deleteReaction({ reactionId: currentReaction?._id });
-      // Update state
-      setCurrentReaction(null);
-    }
-    if (!currentReaction) {
-      await addReaction({
-        postId: post._id,
-        reaction: "like",
-      });
-      // Update state
-      await refetchCurrentReaction();
+  const handleButtonReactClick = async (postId: string, reaction: string) => {
+    try {
+      // Prevent spaming reaction
+      if (currentReactionIsFetching || isHandlingPostReaction) {
+        return;
+      }
+      const newPost = await handleReactionPost({
+        postId,
+        reaction,
+      }).unwrap();
+      // Update post state
+      dispatch(
+        updatePost({
+          id: newPost._id,
+          changes: {
+            reactions: newPost.reactions,
+            reactionsInfo: newPost.reactionsInfo,
+          },
+        })
+      );
+    } catch (error) {
+      console.log(error);
     }
   };
   return (
@@ -77,6 +59,7 @@ const PostButton: React.FC<Props> = ({ currentUser, post }) => {
           timeOutId={timeOutId}
           setTimeOutId={setTimeOutId}
           setShowReactions={setShowReactions}
+          handleButtonReactClick={handleButtonReactClick}
         />
       )}
       <button
@@ -98,7 +81,7 @@ const PostButton: React.FC<Props> = ({ currentUser, post }) => {
           );
         }}
         onClick={async () => {
-          await handleButtonLikeClick();
+          await handleButtonReactClick(post._id, "like");
         }}
       >
         {!!currentReaction && (

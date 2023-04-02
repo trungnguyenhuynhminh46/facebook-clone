@@ -39,28 +39,7 @@ const postsSlice = createSlice({
   name: "posts",
   initialState,
   reducers: {
-    addPost(state, action: PayloadAction<Post>) {},
-    updatePost(state, action: PayloadAction<Post>) {},
-    addReaction(
-      state,
-      action: PayloadAction<{
-        reactionId: string;
-        reaction: string;
-        postId: string;
-      }>
-    ) {},
-    updateReaction(
-      state,
-      action: PayloadAction<{
-        oldReaction: string;
-        newReaction: string;
-        postId: string;
-      }>
-    ) {},
-    deleteReaction(
-      state,
-      action: PayloadAction<{ reactionId: string; postId: string }>
-    ) {},
+    updatePost: postsAdapter.updateOne,
   },
   extraReducers: (builder) => {
     builder
@@ -84,11 +63,5 @@ export const {
   selectEntities: selectAllPosts,
   selectById: selectPostById,
 } = postsAdapter.getSelectors<RootState>((state) => state.posts);
-export const {
-  addPost,
-  updatePost,
-  addReaction,
-  updateReaction,
-  deleteReaction,
-} = postsSlice.actions;
+export const { updatePost } = postsSlice.actions;
 export default postsSlice.reducer;

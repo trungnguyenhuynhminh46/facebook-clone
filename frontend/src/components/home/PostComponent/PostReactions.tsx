@@ -7,6 +7,7 @@ type Props = {
   timeOutId: any;
   setTimeOutId: React.Dispatch<any>;
   setShowReactions: React.Dispatch<React.SetStateAction<boolean>>;
+  handleButtonReactClick: (postId: string, reaction: string) => Promise<void>;
 };
 
 const PostReactions: React.FC<Props> = ({
@@ -14,6 +15,7 @@ const PostReactions: React.FC<Props> = ({
   timeOutId,
   setTimeOutId,
   setShowReactions,
+  handleButtonReactClick,
 }) => {
   return (
     <div
@@ -42,8 +44,10 @@ const PostReactions: React.FC<Props> = ({
             src={`/reacts/${reaction.name}.gif`}
             alt=""
             className="w-9 h-9 cursor-pointer transition-all duration-200 ease-in-out hover:scale-[135%]"
-            onClick={() => {
-              alert(reaction.name);
+            onClick={async () => {
+              await handleButtonReactClick(post._id, reaction.name);
+              clearTimeout(timeOutId);
+              setShowReactions(false);
             }}
           />
         );

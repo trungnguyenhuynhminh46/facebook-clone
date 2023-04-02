@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Reaction } from "@/types/Reaction.type";
 import { RootState } from "../store";
+import { Post } from "@/types/Post";
 
 export const reactionsApi = createApi({
   reducerPath: "reactionsApi",
@@ -49,77 +50,42 @@ export const reactionsApi = createApi({
         ];
       },
     }),
-    addReaction: builder.mutation<
-      { data: Reaction },
-      { postId?: string; commentId?: string; reaction: string }
-    >({
+    getReactionByPostIdAndUserId: builder.query<Reaction, { postId: string }>({
       query(body) {
-        return {
-          url: "reactions",
-          method: "POST",
-          body,
-        };
+        const { postId } = body;
+        return `reactions/getReactionByPostIdAndUserId/${postId}`;
       },
-      invalidatesTags(result, error, body) {
-        const { postId, commentId, reaction } = body;
-        if (error) {
-          return [];
-        }
-        if (postId) {
-          return [
-            {
-              type: "Reactions" as const,
-              id: `post-${postId}`,
-            },
-          ];
-        }
-        if (commentId) {
-          return [
-            {
-              type: "Reactions" as const,
-              id: `comment-${commentId}`,
-            },
-          ];
-        }
-        return [];
-      },
-    }),
-    updateReaction: builder.mutation<
-      { data: Reaction },
-      { reactionId: string; newReaction: string }
-    >({
-      query(body) {
-        const { reactionId, newReaction } = body;
-        return {
-          url: `reactions/${reactionId}`,
-          method: "PATCH",
-          body: { newReaction },
-        };
-      },
-      invalidatesTags(result, error, body) {
-        const { reactionId } = body;
+      providesTags(result, error, body) {
+        const { postId } = body;
         return [
           {
-            type: "Reactions" as const,
-            id: reactionId,
+            type: "Reactions",
+            id: `SINGLE-${postId}`,
           },
         ];
       },
     }),
-    deleteReaction: builder.mutation<{ data: {} }, { reactionId: string }>({
+    handleReactionPost: builder.mutation<
+      Post,
+      { postId: string; reaction: string }
+    >({
       query(body) {
-        const { reactionId } = body;
+        const { postId, reaction } = body;
         return {
-          url: `reactions/${reactionId}`,
-          method: "DELETE",
+          url: `reactions/handleReactionPost/${postId}`,
+          method: "POST",
+          body: { reaction },
         };
       },
       invalidatesTags(result, error, body) {
-        const { reactionId } = body;
+        if (error) {
+          return [];
+        }
+        const { postId } = body;
         return [
           {
-            type: "Reactions" as const,
-            id: reactionId,
+            type: "Reactions",
+            id: `SINGLE-${postId}`,
           },
         ];
       },
@@ -128,8 +94,7 @@ export const reactionsApi = createApi({
 });
 
 export const {
+  useHandleReactionPostMutation,
   useGetReactionsByPostIdQuery,
-  useAddReactionMutation,
-  useUpdateReactionMutation,
-  useDeleteReactionMutation,
+  useGetReactionByPostIdAndUserIdQuery,
 } = reactionsApi;

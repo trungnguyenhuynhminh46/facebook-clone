@@ -2,9 +2,7 @@ const express = require("express");
 const route = express.Router();
 // Controllers
 const {
-  addReaction,
-  updateReaction,
-  deleteReaction,
+  handleReactionPost,
   getReactionsByPostId,
   getReactionByPostIdAndUserId,
 } = require("../controllers/reactions");
@@ -17,6 +15,11 @@ route.get("/", (req, res) => {
   });
 });
 
+route.post(
+  "/handleReactionPost/:postId",
+  authorizationMiddleware,
+  handleReactionPost
+);
 route.get(
   "/getReactionsByPostId/:postId",
   authorizationMiddleware,
@@ -27,8 +30,5 @@ route.get(
   authorizationMiddleware,
   getReactionByPostIdAndUserId
 );
-route.post("/", authorizationMiddleware, addReaction);
-route.patch("/:reactionId", authorizationMiddleware, updateReaction);
-route.delete("/:reactionId", authorizationMiddleware, deleteReaction);
 
 module.exports = route;
