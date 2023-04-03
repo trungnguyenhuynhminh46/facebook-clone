@@ -1,6 +1,6 @@
 import React from "react";
 import reactions from "@/data/reactions";
-import { Post } from "@/types/Post";
+import { Post } from "@/types/Post.type";
 
 type Props = {
   post: Post;

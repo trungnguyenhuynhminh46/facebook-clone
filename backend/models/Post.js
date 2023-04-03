@@ -53,14 +53,25 @@ const schema = mongoose.Schema(
         default: 0,
       },
     },
+    commentsCount: {
+      type: Number,
+      default: 0,
+    },
+    sharedCount: {
+      type: Number,
+      default: 0,
+    },
+    // Xem xét bỏ
     reactions: {
       type: [{ type: ObjectId, ref: "Reaction" }],
       default: [],
     },
+    // Xem xét bỏ
     comments: {
       type: [{ type: ObjectId, ref: "Comment" }],
       default: [],
     },
+    // Xem xét bỏ
     sharedUsers: {
       type: [{ type: ObjectId, ref: "User" }],
       default: [],

@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Reaction } from "@/types/Reaction.type";
 import { RootState } from "../store";
-import { Post } from "@/types/Post";
+import { Post } from "@/types/Post.type";
 
 export const reactionsApi = createApi({
   reducerPath: "reactionsApi",
@@ -22,7 +22,7 @@ export const reactionsApi = createApi({
     >({
       query(body) {
         const { postId } = body;
-        return `reactions/${postId}`;
+        return `/reactions/${postId}`;
       },
       providesTags(result, error, body) {
         const { postId } = body;
@@ -53,7 +53,7 @@ export const reactionsApi = createApi({
     getReactionByPostIdAndUserId: builder.query<Reaction, { postId: string }>({
       query(body) {
         const { postId } = body;
-        return `reactions/getReactionByPostIdAndUserId/${postId}`;
+        return `/reactions/getReactionByPostIdAndUserId/${postId}`;
       },
       providesTags(result, error, body) {
         const { postId } = body;
@@ -72,7 +72,7 @@ export const reactionsApi = createApi({
       query(body) {
         const { postId, reaction } = body;
         return {
-          url: `reactions/handleReactionPost/${postId}`,
+          url: `/reactions/handleReactionPost/${postId}`,
           method: "POST",
           body: { reaction },
         };

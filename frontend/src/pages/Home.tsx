@@ -12,7 +12,7 @@ import LeftSidebar from "@/components/home/LeftSidebar";
 import RightSidebar from "@/components/home/RightSidebar";
 import Stories from "@/components/home/Stories";
 import CreatePosts from "@/components/home/CreatePosts";
-import { Post } from "@/types/Post";
+import { Post } from "@/types/Post.type";
 import PostComponent from "@/components/home/PostComponent/PostComponent";
 
 type Props = {};

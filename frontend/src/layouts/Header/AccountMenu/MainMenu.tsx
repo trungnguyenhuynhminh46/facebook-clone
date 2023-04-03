@@ -6,7 +6,7 @@ import MenuItem from "./MenuItem";
 import { logout } from "@/store/slices/user";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
-import { User } from "@/types/User";
+import { User } from "@/types/User.type";
 
 type Props = {
   menu: number;

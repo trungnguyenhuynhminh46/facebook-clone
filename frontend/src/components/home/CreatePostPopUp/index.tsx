@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
-import { User } from "@/types/User";
+import { User } from "@/types/User.type";
 // Forms
 import MainForm from "../CreatePostPopUp/MainForm";
 

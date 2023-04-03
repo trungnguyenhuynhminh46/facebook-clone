@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
-import { User } from "@/types/User";
+import { User } from "@/types/User.type";
 
 type SliceState = { user: User | null };
 

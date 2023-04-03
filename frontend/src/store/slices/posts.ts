@@ -5,7 +5,7 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import axios from "axios";
-import { Post } from "@/types/Post";
+import { Post } from "@/types/Post.type";
 import { RootState } from "../store";
 
 const postsAdapter = createEntityAdapter<Post>({

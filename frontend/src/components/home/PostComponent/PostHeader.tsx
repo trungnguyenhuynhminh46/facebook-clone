@@ -1,10 +1,10 @@
 import isoStringToDate from "@/helpers/isoStringToDate";
-import { Post } from "@/types/Post";
+import { Post } from "@/types/Post.type";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Dots } from "@/svg";
 import Tippy from "@tippyjs/react/headless";
-import { User } from "@/types/User";
+import { User } from "@/types/User.type";
 
 type Props = {
   post: Post;

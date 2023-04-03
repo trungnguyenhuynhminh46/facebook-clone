@@ -3,7 +3,7 @@ import CreatePostsStyle from "./style.module.css";
 import { Feeling, LiveVideo, Photo } from "@/svg";
 import CreatePostPopUp from "../CreatePostPopUp";
 import { useMediaQuery } from "react-responsive";
-import { User } from "@/types/User";
+import { User } from "@/types/User.type";
 
 type Props = {
   currentUser: User;

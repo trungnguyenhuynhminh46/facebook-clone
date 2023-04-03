@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import _ from "lodash";
-import { Post } from "@/types/Post";
-import { User } from "@/types/User";
+import { Post } from "@/types/Post.type";
+import { User } from "@/types/User.type";
 import { Reaction } from "@/types/Reaction.type";
 import PostReactions from "./PostReactions";
 import reactions from "@data/reactions";

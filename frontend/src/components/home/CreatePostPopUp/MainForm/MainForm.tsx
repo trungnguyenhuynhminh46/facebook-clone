@@ -8,7 +8,7 @@ import AddToPost from "./AddToPost";
 import BeatLoader from "react-spinners/BeatLoader";
 import createPost from "@/helpers/posts";
 import uploadImages from "@/helpers/upload";
-import { User } from "@/types/User";
+import { User } from "@/types/User.type";
 
 type Props = {
   setIsShown: React.Dispatch<React.SetStateAction<boolean>>;

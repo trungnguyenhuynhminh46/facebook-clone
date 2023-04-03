@@ -14,8 +14,14 @@ const schema = mongoose.Schema(
     },
     image: String,
     post: { type: ObjectId, ref: "Post" },
-    parentComment: { type: ObjectId, ref: "Comment" },
-    replies: [{ type: ObjectId, ref: "Comment" }],
+    parentComment: {
+      type: { type: ObjectId, ref: "Comment" },
+      default: null,
+    },
+    childrenComments: {
+      type: [{ type: ObjectId, ref: "Comment" }],
+      default: [],
+    },
     reactionsInfo: {
       like: {
         type: Number,
@@ -42,7 +48,10 @@ const schema = mongoose.Schema(
         default: 0,
       },
     },
-    reactions: [{ type: ObjectId, ref: "Reaction" }],
+    reactions: {
+      type: [{ type: ObjectId, ref: "Reaction" }],
+      default: [],
+    },
   },
   { timestamps: true }
 );

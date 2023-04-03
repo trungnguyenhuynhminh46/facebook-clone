@@ -1,4 +1,4 @@
-import { Post } from "@/types/Post";
+import { Post } from "@/types/Post.type";
 import React from "react";
 import Style from "./style.module.css";
 import covers from "@data/covers";

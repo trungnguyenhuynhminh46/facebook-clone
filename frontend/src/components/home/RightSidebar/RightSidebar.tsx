@@ -3,7 +3,7 @@ import { useMediaQuery } from "react-responsive";
 import rightSidebarStyles from "./style.module.css";
 import { NewRoom, Search, Dots } from "@/svg";
 import ToolTip from "@/components/ToolTip";
-import { User } from "@/types/User";
+import { User } from "@/types/User.type";
 
 type Props = {
   currentUser: User;

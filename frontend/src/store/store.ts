@@ -5,17 +5,22 @@ import userReducer from "./slices/user";
 import postReducer from "./slices/posts";
 // Api
 import { reactionsApi } from "./api/reactionsApi";
+import { commentsApi } from "./api/commentsApi";
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
     posts: postReducer,
     [reactionsApi.reducerPath]: reactionsApi.reducer,
+    [commentsApi.reducerPath]: commentsApi.reducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(reactionsApi.middleware),
+    getDefaultMiddleware().concat(
+      reactionsApi.middleware,
+      commentsApi.middleware
+    ),
 });
 
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors

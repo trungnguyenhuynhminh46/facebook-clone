@@ -1,6 +1,6 @@
 import React from "react";
-import { Post } from "@/types/Post";
-import { User } from "@/types/User";
+import { Post } from "@/types/Post.type";
+import { User } from "@/types/User.type";
 import PostHeader from "./PostHeader";
 import PostContent from "./PostContent";
 import PostButton from "./PostButton";

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Post } from "@/types/Post";
-import { User } from "@/types/User";
+import { Post } from "@/types/Post.type";
+import { User } from "@/types/User.type";
 import EmojiPicker from "@/components/EmojiPicker";
 import ToolTip from "@components/ToolTip";
 

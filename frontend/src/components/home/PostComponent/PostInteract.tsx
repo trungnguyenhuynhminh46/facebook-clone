@@ -1,4 +1,4 @@
-import { Post } from "@/types/Post";
+import { Post } from "@/types/Post.type";
 import { useMediaQuery } from "react-responsive";
 import React from "react";
 import Style from "./style.module.css";
