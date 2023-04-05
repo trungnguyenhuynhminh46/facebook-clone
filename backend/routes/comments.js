@@ -9,7 +9,7 @@ const {
   deleteComment,
 } = require("../controllers/comments");
 // Middlewares
-import authorizationMiddleware from "../middleware/auth";
+const authorizationMiddleware = require("../middleware/auth");
 // Get root comments
 route.get("/root/:postId", authorizationMiddleware, getRootCommentsByPostId);
 // Get children comments

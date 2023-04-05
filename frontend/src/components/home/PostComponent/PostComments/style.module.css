@@ -1,0 +1,10 @@
+.reactions-container {
+  display: flex;
+}
+.reactions-container img {
+  @apply rounded-full;
+  border: 2px solid white;
+}
+.reactions-container img:not(:first-child) {
+  margin-left: -6px;
+}

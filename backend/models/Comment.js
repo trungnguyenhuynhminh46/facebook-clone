@@ -14,10 +14,7 @@ const schema = mongoose.Schema(
     },
     image: String,
     post: { type: ObjectId, ref: "Post" },
-    parentComment: {
-      type: { type: ObjectId, ref: "Comment" },
-      default: null,
-    },
+    parentComment: { type: ObjectId, ref: "Comment" },
     childrenComments: {
       type: [{ type: ObjectId, ref: "Comment" }],
       default: [],
@@ -55,4 +52,16 @@ const schema = mongoose.Schema(
   },
   { timestamps: true }
 );
+
+schema.pre("remove", async function (next) {
+  const childComments = await this.model("Comment").find({
+    parentId: this._id,
+  });
+  for (const childComment of childComments) {
+    await childComment.remove();
+  }
+  next();
+});
+
+// Methods
 module.exports = mongoose.model("Comment", schema);

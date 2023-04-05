@@ -1,15 +1,35 @@
 import React, { useEffect, useRef, useState } from "react";
+import { MutationTrigger } from "@reduxjs/toolkit/dist/query/react/buildHooks";
+import {
+  BaseQueryFn,
+  FetchArgs,
+  FetchBaseQueryError,
+  FetchBaseQueryMeta,
+  MutationDefinition,
+} from "@reduxjs/toolkit/dist/query";
 import { Post } from "@/types/Post.type";
 import { User } from "@/types/User.type";
 import EmojiPicker from "@/components/EmojiPicker";
 import ToolTip from "@components/ToolTip";
+import { useAddCommentMutation } from "@/store/api/commentsApi";
+import { useUpdateCommentMutation } from "@/store/api/commentsApi";
+import { useDeleteCommentMutation } from "@/store/api/commentsApi";
+import uploadImages from "@/helpers/upload";
+import { ClipLoader } from "react-spinners";
 
 type Props = {
   currentUser: User;
   post: Post;
+  addComment: any;
+  commentIsBeingAdded: boolean;
 };
 
-const PostCreateComment: React.FC<Props> = ({ currentUser, post }) => {
+const PostCreateComment: React.FC<Props> = ({
+  currentUser,
+  post,
+  addComment,
+  commentIsBeingAdded,
+}) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputText, setInputText] = useState<string>("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -25,6 +45,7 @@ const PostCreateComment: React.FC<Props> = ({ currentUser, post }) => {
   const [stickerMoreInfoText, setStickerMoreInfoText] = useState<string>(
     "Comment with a sticker"
   );
+  const [error, setError] = useState<string>("");
   useEffect(() => {
     inputRef.current!.selectionEnd = cursorPosition;
   }, [cursorPosition]);
@@ -74,6 +95,48 @@ const PostCreateComment: React.FC<Props> = ({ currentUser, post }) => {
       setImageIsLoading(false);
     }
   };
+  const handleKeyDownInput = async (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    try {
+      if (e.key === "Enter" && (!!inputText || !!imageUrl)) {
+        // With image
+        if (imageUrl) {
+          // Upload images
+          const cloudinaryURLs = await uploadImages(
+            [imageUrl],
+            `${currentUser.email}/comments/${post._id}`,
+            currentUser.token
+          );
+          if (typeof cloudinaryURLs === "string") {
+            console.log(cloudinaryURLs);
+            setError(cloudinaryURLs);
+            return;
+          }
+          // Add comment here
+          await addComment({
+            userId: currentUser.id,
+            text: inputText,
+            image: cloudinaryURLs[0],
+            postId: post._id,
+          }).unwrap();
+          // Update comments counts of post
+        }
+        // Without image
+        if (!imageUrl) {
+          await addComment({
+            userId: currentUser.id,
+            text: inputText,
+            image: "",
+            postId: post._id,
+          }).unwrap();
+          // Update comments counts of post
+        }
+      }
+    } catch (err: any) {
+      console.log(err);
+    }
+  };
   return (
     <div className="w-full mx-4 flex gap-2 max-w-[94%] my-2">
       <button className="relative w-8 h-8 rounded-full border border-solid border-gray-400 outline-none hover--overlay overflow-hidden">
@@ -84,16 +147,28 @@ const PostCreateComment: React.FC<Props> = ({ currentUser, post }) => {
         />
       </button>
       <div className="flex-1 flex-shrink-0 flex flex-col gap-2">
-        <div className="basis-[32px] flex items-center h-[32px] px-3 rounded-full bg-gray-100">
+        <div className="relative basis-[32px] flex items-center h-[32px] px-3 rounded-full bg-gray-100">
+          {commentIsBeingAdded && (
+            <ClipLoader
+              color={"gray"}
+              loading={commentIsBeingAdded}
+              size={14}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+              className="absolute top-2 left-2 border-2"
+            />
+          )}
           <input
             ref={inputRef}
             value={inputText}
             onChange={(e) => {
               setInputText(e.target.value);
             }}
+            onKeyDown={handleKeyDownInput}
             type="text"
             className="flex-1 text-[15px] placeholder:text-gray-400 text-gray-800 caret-gray-800 border-none outline-none bg-transparent"
-            placeholder="Write a comment..."
+            disabled={commentIsBeingAdded}
+            placeholder={`${commentIsBeingAdded ? "" : "Write a comment..."}`}
           />
           <div className="flex-shrink-0 flex relative">
             <div

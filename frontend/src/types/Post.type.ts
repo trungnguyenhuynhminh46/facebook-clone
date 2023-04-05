@@ -25,6 +25,8 @@ export interface Post {
     sad: number;
     angry: number;
   };
+  commentsCount: number;
+  sharedCount: number;
   reactions: string[];
   comments: string[];
   sharedUsers: string[];

@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema.Types;
+const Comment = require("./Comment");
+const Post = require("./Post");
 
 const schema = mongoose.Schema(
   {
@@ -79,5 +81,17 @@ const schema = mongoose.Schema(
   },
   { timestamps: true }
 );
+// Methods
+schema.method("updateCommentsCount", async function () {
+  Comment.countDocuments({ post: this._id }, function (err, count) {
+    if (err) {
+      console.log(err);
+    }
+    if (!err) {
+      this.commentsCount = count;
+      this.save();
+    }
+  });
+});
 
 module.exports = mongoose.model("Post", schema);

@@ -184,3 +184,11 @@ export const commentsApi = createApi({
     }),
   }),
 });
+
+export const {
+  useGetCommentsByParentCommentQuery,
+  useGetRootCommentsByPostIdQuery,
+  useAddCommentMutation,
+  useUpdateCommentMutation,
+  useDeleteCommentMutation,
+} = commentsApi;

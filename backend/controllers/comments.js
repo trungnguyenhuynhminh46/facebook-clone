@@ -14,6 +14,9 @@ const getRootCommentsByPostId = async (req, res) => {
   const comments = await Comment.find({
     parentComment: null,
     post: new ObjectId(postId),
+  }).populate({
+    path: "user",
+    select: "first_name last_name username email picture gender",
   });
   if (!comments) {
     throw new customError(
@@ -21,7 +24,7 @@ const getRootCommentsByPostId = async (req, res) => {
       StatusCodes.NOT_FOUND
     );
   }
-  return res.status(StatusCodes.OK).json({ comments, postId });
+  return res.status(StatusCodes.OK).json(comments);
 };
 const getCommentsByParentComment = async (req, res) => {
   const { commentId } = req.params;
@@ -30,8 +33,11 @@ const getCommentsByParentComment = async (req, res) => {
     throw new customError(`Comment with id ${commentId} is not existed`);
   }
   const commentIds = comment.replies;
-  const comments = await Comment.find({ _id: { $in: commentIds } });
-  return res.status(StatusCodes.OK).json({ comments, parentId: commentId });
+  const comments = await Comment.find({ _id: { $in: commentIds } }).populate({
+    path: "user",
+    select: "first_name last_name username email picture gender",
+  });
+  return res.status(StatusCodes.OK).json(comments);
 };
 const addComment = async (req, res) => {
   const { userId, text, image, postId, parentId } = req.body;
@@ -48,11 +54,17 @@ const addComment = async (req, res) => {
     text,
     image,
     post: new ObjectId(postId),
-    parentComment: new ObjectId(parentId),
+    parentComment: parentId ? new ObjectId(parentId) : undefined,
   });
   // Update in post state
   post.commentsCount += 1;
-  post.save;
+  post.save();
+  // Update parent comment
+  const parentComment = await Comment.findById(parentId);
+  if (parentComment) {
+    parentComment.childrenComments.push(new ObjectId(parentId));
+  }
+  parentComment.save();
   return res.status(StatusCodes.OK).json(addedComment);
 };
 const updateComment = async (req, res) => {
@@ -73,19 +85,30 @@ const updateComment = async (req, res) => {
   }
   return res.status(StatusCodes.OK).json(updatedComment);
 };
+
 const deleteComment = async (req, res) => {
   const { commentId } = req.params;
-  const deletedComment = await Comment.findByIdAndUpdate(commentId);
-  if (!deletedComment) {
-    throw new customError(`Comment with id ${commentId} is not existed`);
+  const comment = await Comment.findById(commentId);
+  if (comment) {
+    await comment.remove();
   }
   // Update in post state
-  const post = await Post.findById(deletedComment.post);
-  post.commentsCount -= 1;
-  post.save();
+  const postId = comment.post;
+  const post = await Post.findById(postId);
+  await post.updateCommentsCount();
+  // Update parent comment
+  const parentComment = await Comment.findById(comment.parentComment);
+  if (parentComment) {
+    parentComment.childrenComments = parentComment.childrenComments.filter(
+      (c) => {
+        return c.toString() !== commentId.toString();
+      }
+    );
+  }
+  parentComment.save();
   return res
     .status(StatusCodes.OK)
-    .json({ parentComment: deletedComment.parentComment });
+    .json({ parentComment: comment.parentComment });
 };
 
 module.exports = {
