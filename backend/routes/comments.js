@@ -4,6 +4,7 @@ const route = express.Router();
 const {
   getRootCommentsByPostId,
   getCommentsByParentComment,
+  getCommentByCommentId,
   addComment,
   updateComment,
   deleteComment,
@@ -18,6 +19,8 @@ route.get(
   authorizationMiddleware,
   getCommentsByParentComment
 );
+// Get comment by commentId
+route.get("/:commentId", authorizationMiddleware, getCommentByCommentId);
 // Add a comment
 route.post("/", authorizationMiddleware, addComment);
 // Update a comment

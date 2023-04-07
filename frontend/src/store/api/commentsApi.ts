@@ -1,6 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 import { RootState } from "../store";
 import { Comment } from "@/types/Comment.type";
+// comment-{id}
+// root-comments-{postID}
+// comment-by-parent-{parentID}
 
 export const commentsApi = createApi({
   reducerPath: "commentsApi",
@@ -26,20 +29,21 @@ export const commentsApi = createApi({
           const tags = [
             ...result.map((comment) => {
               return {
-                type: "Commments" as const,
-                id: `root-comment-${comment._id}`,
+                type: "Comments" as const,
+                id: `comment-${comment._id}`,
               };
             }),
             {
               type: "Comments" as const,
-              id: `LIST-root-comment-${postId}`,
+              id: `root-comments-${postId}`,
             },
           ];
+          return tags;
         }
         return [
           {
             type: "Comments",
-            id: `LIST-root-comment-${postId}`,
+            id: `root-comments-${postId}`,
           },
         ];
       },
@@ -59,19 +63,34 @@ export const commentsApi = createApi({
             ...result.map((comment) => {
               return {
                 type: "Comments" as const,
-                id: `children-comment-${comment._id}`,
+                id: `comment-${comment._id}`,
               };
             }),
             {
               type: "Comments" as const,
-              id: `LIST-chidlren-comment-${commentId}`,
+              id: `comment-by-parent-${commentId}`,
             },
           ];
         }
         return [
           {
             type: "Comments",
-            id: `LIST-children-comment-${commentId}`,
+            id: `comment-by-parent-${commentId}`,
+          },
+        ];
+      },
+    }),
+    getCommentByCommentId: builders.query<Comment, { commentId: string }>({
+      query(body) {
+        const { commentId } = body;
+        return `/comments/${commentId}`;
+      },
+      providesTags(result, error, body) {
+        const { commentId } = body;
+        return [
+          {
+            type: "Comments",
+            id: `comment-${commentId}`,
           },
         ];
       },
@@ -98,18 +117,22 @@ export const commentsApi = createApi({
         if (error || !result) {
           return [];
         }
+        // If there is parentId --> Fetch by parentID
         if (parentId) {
+          // console.log(`comment-by-parent-${parentId}`);
           return [
             {
-              type: "Comments",
-              id: `LIST-chidlren-comment-${parentId}`,
+              type: "Comments" as const,
+              id: `comment-by-parent-${parentId}`,
             },
           ];
         }
+        // If there is not parentId --> Fetch by postID
+        // console.log(`root-comments-${postId}`);
         return [
           {
-            type: "Comments",
-            id: `LIST-root-comment-${postId}`,
+            type: "Comments" as const,
+            id: `root-comments-${postId}`,
           },
         ];
       },
@@ -129,7 +152,7 @@ export const commentsApi = createApi({
         const { commentId, ...rest } = body;
         return {
           url: `/comments/${commentId}`,
-          method: "patch",
+          method: "PATCH",
           body: rest,
         };
       },
@@ -138,12 +161,11 @@ export const commentsApi = createApi({
         if (error || !result) {
           return [];
         }
+        console.log(`comment-${commentId}`);
         return [
           {
             type: "Comments",
-            id: result.parrentComment
-              ? `children-comment-${commentId}`
-              : `root-comment-${commentId}`,
+            id: `comment-${commentId}`,
           },
         ];
       },
@@ -165,19 +187,10 @@ export const commentsApi = createApi({
         if (error || !result) {
           return [];
         }
-        const { parentComment } = result;
-        if (parentComment) {
-          return [
-            {
-              type: "Comments",
-              id: `children-comment-${commentId}`,
-            },
-          ];
-        }
         return [
           {
             type: "Comments",
-            id: `root-comment-${commentId}`,
+            id: `comment-${commentId}`,
           },
         ];
       },
@@ -188,6 +201,7 @@ export const commentsApi = createApi({
 export const {
   useGetCommentsByParentCommentQuery,
   useGetRootCommentsByPostIdQuery,
+  useGetCommentByCommentIdQuery,
   useAddCommentMutation,
   useUpdateCommentMutation,
   useDeleteCommentMutation,

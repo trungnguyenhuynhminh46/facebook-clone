@@ -26,6 +26,14 @@ const getRootCommentsByPostId = async (req, res) => {
   }
   return res.status(StatusCodes.OK).json(comments);
 };
+const getCommentByCommentId = async (req, res) => {
+  const { commentId } = req.params;
+  const comment = await Comment.findById(commentId);
+  if (!comment) {
+    throw new customError(`The comment with id ${commentId} is not found`);
+  }
+  return res.status(StatusCodes.OK).json(comment);
+};
 const getCommentsByParentComment = async (req, res) => {
   const { commentId } = req.params;
   const comment = await Comment.findById(commentId);
@@ -63,8 +71,8 @@ const addComment = async (req, res) => {
   const parentComment = await Comment.findById(parentId);
   if (parentComment) {
     parentComment.childrenComments.push(new ObjectId(parentId));
+    parentComment.save();
   }
-  parentComment.save();
   return res.status(StatusCodes.OK).json(addedComment);
 };
 const updateComment = async (req, res) => {
@@ -88,10 +96,7 @@ const updateComment = async (req, res) => {
 
 const deleteComment = async (req, res) => {
   const { commentId } = req.params;
-  const comment = await Comment.findById(commentId);
-  if (comment) {
-    await comment.remove();
-  }
+  const comment = await Comment.findOneAndDelete({ _id: commentId });
   // Update in post state
   const postId = comment.post;
   const post = await Post.findById(postId);
@@ -104,8 +109,8 @@ const deleteComment = async (req, res) => {
         return c.toString() !== commentId.toString();
       }
     );
+    parentComment.save();
   }
-  parentComment.save();
   return res
     .status(StatusCodes.OK)
     .json({ parentComment: comment.parentComment });
@@ -114,6 +119,7 @@ const deleteComment = async (req, res) => {
 module.exports = {
   getRootCommentsByPostId,
   getCommentsByParentComment,
+  getCommentByCommentId,
   addComment,
   updateComment,
   deleteComment,

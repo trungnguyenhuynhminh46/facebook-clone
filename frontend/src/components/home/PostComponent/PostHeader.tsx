@@ -1,4 +1,4 @@
-import isoStringToDate from "@/helpers/isoStringToDate";
+import { isoStringToDate } from "@/helpers/date";
 import { Post } from "@/types/Post.type";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
@@ -54,7 +54,7 @@ const PostHeader: React.FC<Props> = ({ post, currentUser }) => {
         <span className="text-[15px] font-semibold">{post.user.username}</span>
         <div className="flex gap-2 items-center">
           <span className="text-[13px] text-[var(--color-secondary)] tracking-wide">
-            {isoStringToDate(post.createdAt)}
+            {isoStringToDate(post.createdAt, "MMMM d 'at' h:mm a")}
           </span>
           {post.isSharedTo === "public" && (
             <img src="/icons/public.png" alt="" className="w-3 h-3" />

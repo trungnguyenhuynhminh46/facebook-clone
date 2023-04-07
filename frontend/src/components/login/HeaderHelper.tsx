@@ -16,25 +16,25 @@ const HeaderHelper: React.FC<Props> = ({
     query: "(max-width: 1024px)",
   });
   const [isShown, setIsShown] = useState(false);
-  const contentRef = useRef(null);
-  useOnClickOutside(contentRef, () => {
-    setIsShown(false);
-  });
   return (
-    <Tippy
-      placement={isNotLargeScreen ? "top" : "left"}
-      visible={isShown}
-      render={(attrs) => {
-        return (
-          <div className={`helper-box z-50 `} tabIndex={-1} {...attrs}>
-            {children}
-          </div>
-        );
-      }}
-    >
-      <div>
-        <div className="inline-flex items-center gap-1" ref={contentRef}>
-          <span className="text-[12px] leading-5 mt-[2px]">{title}</span>
+    <div>
+      <div className="inline-flex items-center gap-1">
+        <span className="text-[12px] leading-5 mt-[2px]">{title}</span>
+        <Tippy
+          interactive={true}
+          placement={isNotLargeScreen ? "top" : "left"}
+          visible={isShown}
+          onClickOutside={() => {
+            setIsShown(false);
+          }}
+          render={(attrs) => {
+            return (
+              <div className={`helper-box z-50 `} tabIndex={-1} {...attrs}>
+                {children}
+              </div>
+            );
+          }}
+        >
           <i
             className="info_icon cursor-pointer"
             title="Click for more information"
@@ -42,9 +42,9 @@ const HeaderHelper: React.FC<Props> = ({
               setIsShown((prev) => !prev);
             }}
           />
-        </div>
+        </Tippy>
       </div>
-    </Tippy>
+    </div>
   );
 };
 export default HeaderHelper;

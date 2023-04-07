@@ -1,12 +1,11 @@
 import React from "react";
-import { Post } from "@/types/Post.type";
 import { User } from "@/types/User.type";
 import PostHeader from "./PostHeader";
 import PostContent from "./PostContent";
 import PostButton from "./PostButton";
 import PostInteract from "./PostInteract";
 import PostComments from "./PostComments";
-import PostCreateComment from "./PostCreateComment";
+import PostCreateComment from "./PostComments/PostCreateComment";
 import { useSelector } from "react-redux";
 import { selectPostById } from "@/store/slices/posts";
 import { RootState } from "@/store/store";
@@ -36,12 +35,16 @@ const PostComponent: React.FC<Props> = ({ postId, currentUser }) => {
         <PostContent post={post} />
         <PostInteract post={post} />
         <PostButton post={post} currentUser={currentUser} />
-        <PostCreateComment
-          post={post}
-          currentUser={currentUser}
-          addComment={addComment}
-          commentIsBeingAdded={commentIsBeingAdded}
-        />
+        <div className="my-2 mx-4">
+          <PostCreateComment
+            postId={post._id}
+            currentUser={currentUser}
+            addComment={addComment}
+            commentIsBeingAdded={commentIsBeingAdded}
+            updateComment={updateComment}
+            commentIsBeingUpdated={commentIsBeingUpdated}
+          />
+        </div>
         <PostComments post={post} />
       </div>
     );

@@ -4,6 +4,13 @@ import { RootState } from "../store";
 import { Post } from "@/types/Post.type";
 import { Comment } from "@/types/Comment.type";
 
+// by post: post-reactions-{id}, reaction-{id}
+// by comment: comment-reactions-{id}, reaction-{id}
+// by post/comment and user: reaction-{id}
+// create reaction for post/comment [{post-reactions-{id}}, {reaction-{id}}], [{comment-reactions-{id}}, {reaction-{id}}]
+// update reaction for post/comment: reaction-{id}
+// delete reaction for post/comment: reaction-{id}
+
 export const reactionsApi = createApi({
   reducerPath: "reactionsApi",
   tagTypes: ["Reactions"],
@@ -30,12 +37,12 @@ export const reactionsApi = createApi({
             ...reactions.map(({ _id }) => {
               return {
                 type: "Reactions" as const,
-                id: _id,
+                id: `reaction ${_id}`,
               };
             }),
             {
               type: "Reactions" as const,
-              id: `post-${postId}`,
+              id: `post-reactions-${postId}`,
             },
           ];
           return tags;
@@ -43,7 +50,7 @@ export const reactionsApi = createApi({
         return [
           {
             type: "Reactions" as const,
-            id: `post-${postId}`,
+            id: `post-reactions-${postId}`,
           },
         ];
       },
@@ -61,12 +68,12 @@ export const reactionsApi = createApi({
             ...reactions.map(({ _id }) => {
               return {
                 type: "Reactions" as const,
-                id: _id,
+                id: `reaction ${_id}`,
               };
             }),
             {
               type: "Reactions" as const,
-              id: `comment-${commentId}`,
+              id: `comment-reactions-${commentId}`,
             },
           ];
           return tags;
@@ -74,7 +81,7 @@ export const reactionsApi = createApi({
         return [
           {
             type: "Reactions" as const,
-            id: `comment-${commentId}`,
+            id: `comment-reactions-${commentId}`,
           },
         ];
       },
@@ -85,11 +92,17 @@ export const reactionsApi = createApi({
         return `/reactions/getReactionByPostIdAndUserId/${postId}`;
       },
       providesTags(result, error, body) {
+        if (error) {
+          return [];
+        }
         const { postId } = body;
         return [
           {
             type: "Reactions",
-            // SINGLE là reaction của user
+            id: `reaction-${result?._id}`,
+          },
+          {
+            type: "Reactions",
             id: `SINGLE-${postId}`,
           },
         ];
@@ -108,7 +121,10 @@ export const reactionsApi = createApi({
         return [
           {
             type: "Reactions",
-            // SINGLE là reaction của user
+            id: `reaction-${result?._id}`,
+          },
+          {
+            type: "Reactions",
             id: `SINGLE-${commentId}`,
           },
         ];
@@ -158,8 +174,8 @@ export const reactionsApi = createApi({
         const { commentId } = body;
         return [
           {
-            type: "Reactions",
-            id: `SINGLE-${commentId}`,
+            type: "Reactions" as const,
+            id: `comment-reactions-${commentId}`,
           },
         ];
       },

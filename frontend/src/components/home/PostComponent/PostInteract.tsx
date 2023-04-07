@@ -43,13 +43,18 @@ const PostInteract: React.FC<Props> = ({ post }) => {
       )}
       {/* Comments and share */}
       <div className="ml-auto text-[var(--color-secondary)] text-[15px] flex gap-4">
-        <span className="cursor-pointer hover:underline flex gap-1 items-center">
-          758{" "}
-          {isSmallScreen ? <i className="comment_icon w-4"></i> : "comments"}
-        </span>
-        <span className="cursor-pointer hover:underline flex gap-1 items-center">
-          267 {isSmallScreen ? <i className="share_icon w-4"></i> : "shares"}
-        </span>
+        {post.commentsCount > 0 && (
+          <span className="cursor-pointer hover:underline flex gap-1 items-center">
+            {post.commentsCount}{" "}
+            {isSmallScreen ? <i className="comment_icon w-4"></i> : "comments"}
+          </span>
+        )}
+        {post.sharedCount > 0 && (
+          <span className="cursor-pointer hover:underline flex gap-1 items-center">
+            {post.sharedCount}{" "}
+            {isSmallScreen ? <i className="share_icon w-4"></i> : "shares"}
+          </span>
+        )}
       </div>
     </div>
   );

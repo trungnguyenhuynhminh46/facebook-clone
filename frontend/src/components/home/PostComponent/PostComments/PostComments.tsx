@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Post } from "@/types/Post.type";
 import { Comment } from "@/types/Comment.type";
 import { Link } from "react-router-dom";
@@ -18,7 +18,14 @@ const PostComments: React.FC<Props> = ({ post }) => {
   } = useGetRootCommentsByPostIdQuery({
     postId: post._id,
   });
-  if (!rootComments || rootComments.length === 0) {
+  // console.log(rootComments);
+  const [comments, setComments] = useState<Comment[]>([]);
+  useEffect(() => {
+    if (rootComments) {
+      setComments(rootComments);
+    }
+  }, [rootComments]);
+  if (!comments || comments.length === 0) {
     return null;
   }
   return (
@@ -26,7 +33,7 @@ const PostComments: React.FC<Props> = ({ post }) => {
       {!isFetching && !isLoading && (
         <div className="p-4 pt-0 pr-10">
           {/* Root comments */}
-          <PostCommentsList commentsList={rootComments} />
+          <PostCommentsList commentsList={comments} />
         </div>
       )}
       {isLoading && (

@@ -9,6 +9,7 @@ import {
 } from "@reduxjs/toolkit/dist/query";
 import { Post } from "@/types/Post.type";
 import { User } from "@/types/User.type";
+import { Comment } from "@/types/Comment.type";
 import EmojiPicker from "@/components/EmojiPicker";
 import ToolTip from "@components/ToolTip";
 import { useAddCommentMutation } from "@/store/api/commentsApi";
@@ -18,23 +19,40 @@ import uploadImages from "@/helpers/upload";
 import { ClipLoader } from "react-spinners";
 
 type Props = {
+  autoFocus?: boolean;
   currentUser: User;
-  post: Post;
+  postId: string;
   addComment: any;
   commentIsBeingAdded: boolean;
+  updateComment: any;
+  commentIsBeingUpdated: boolean;
+  replyTo?: string;
+  commentContent?: Comment;
+  setEditCommentId?: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const PostCreateComment: React.FC<Props> = ({
+  autoFocus = false,
   currentUser,
-  post,
+  postId,
   addComment,
   commentIsBeingAdded,
+  updateComment,
+  commentIsBeingUpdated,
+  replyTo,
+  commentContent,
+  setEditCommentId,
 }) => {
+  // commentContent && console.log(commentContent.text);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [inputText, setInputText] = useState<string>("");
+  const [inputText, setInputText] = useState<string>(
+    commentContent ? commentContent.text : ""
+  );
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [cursorPosition, setCursorPosition] = useState(0);
-  const [imageUrl, setImageUrl] = useState<string>("");
+  const [imageUrl, setImageUrl] = useState<string>(
+    commentContent ? commentContent.image || "" : ""
+  );
   const [imageIsLoading, setImageIsLoading] = useState<boolean>(false);
   const [emojiMoreInfoText, setEmojiMoreInfoText] =
     useState<string>("Insert an emoji");
@@ -95,51 +113,118 @@ const PostCreateComment: React.FC<Props> = ({
       setImageIsLoading(false);
     }
   };
+  const handleAddComment = async () => {
+    // With image
+    if (imageUrl) {
+      let cloudinaryURLs = [imageUrl];
+      if (!cloudinaryURLs[0].startsWith("https")) {
+        // Upload images
+        cloudinaryURLs = await uploadImages(
+          [imageUrl],
+          `${currentUser.email}/comments/${postId}`,
+          currentUser.token
+        );
+      }
+      if (typeof cloudinaryURLs === "string") {
+        console.log(cloudinaryURLs);
+        setError(cloudinaryURLs);
+        return;
+      }
+      // Add comment here
+      await addComment({
+        userId: currentUser.id,
+        text: inputText,
+        image: cloudinaryURLs[0],
+        postId: postId,
+        parentId: replyTo,
+      }).unwrap();
+      // Update comments counts of post
+    }
+    // Without image
+    if (!imageUrl) {
+      await addComment({
+        userId: currentUser.id,
+        text: inputText,
+        image: "",
+        postId: postId,
+        parentId: replyTo,
+      }).unwrap();
+      // Update comments counts of post
+    }
+  };
+  const handleUpdateComment = async () => {
+    // With image
+    if (imageUrl) {
+      let cloudinaryURLs = [imageUrl];
+      if (!cloudinaryURLs[0].startsWith("https")) {
+        // Upload images
+        cloudinaryURLs = await uploadImages(
+          [imageUrl],
+          `${currentUser.email}/comments/${postId}`,
+          currentUser.token
+        );
+      }
+      if (typeof cloudinaryURLs === "string") {
+        console.log(cloudinaryURLs);
+        setError(cloudinaryURLs);
+        return;
+      }
+      // Add comment here
+      await updateComment({
+        commentId: commentContent?._id,
+        userId: currentUser.id,
+        postId: postId,
+        text: inputText,
+        image: cloudinaryURLs[0],
+        parentId: replyTo,
+      }).unwrap();
+      // Update comments counts of post
+    }
+    // Without image
+    if (!imageUrl) {
+      await updateComment({
+        commentId: commentContent?._id,
+        userId: currentUser.id,
+        text: inputText,
+        image: "",
+        postId: postId,
+        parentId: replyTo,
+      }).unwrap();
+      // Update comments counts of post
+    }
+    // Reset state edit comment
+    setEditCommentId && setEditCommentId("");
+  };
   const handleKeyDownInput = async (
     e: React.KeyboardEvent<HTMLInputElement>
   ) => {
     try {
+      // alert(e.key);
+      if (e.key === "Escape") {
+        setEditCommentId && setEditCommentId("");
+      }
       if (e.key === "Enter" && (!!inputText || !!imageUrl)) {
-        // With image
-        if (imageUrl) {
-          // Upload images
-          const cloudinaryURLs = await uploadImages(
-            [imageUrl],
-            `${currentUser.email}/comments/${post._id}`,
-            currentUser.token
-          );
-          if (typeof cloudinaryURLs === "string") {
-            console.log(cloudinaryURLs);
-            setError(cloudinaryURLs);
-            return;
-          }
-          // Add comment here
-          await addComment({
-            userId: currentUser.id,
-            text: inputText,
-            image: cloudinaryURLs[0],
-            postId: post._id,
-          }).unwrap();
-          // Update comments counts of post
+        // Add comment
+        if (!commentContent) {
+          await handleAddComment();
         }
-        // Without image
-        if (!imageUrl) {
-          await addComment({
-            userId: currentUser.id,
-            text: inputText,
-            image: "",
-            postId: post._id,
-          }).unwrap();
-          // Update comments counts of post
+        // Update root comment
+        if (commentContent) {
+          await handleUpdateComment();
         }
+        // Reset states
+        setInputText("");
+        setShowEmojiPicker(false);
+        setImageUrl("");
+        setEditCommentId && setEditCommentId("");
       }
     } catch (err: any) {
       console.log(err);
     }
   };
   return (
-    <div className="w-full mx-4 flex gap-2 max-w-[94%] my-2">
-      <button className="relative w-8 h-8 rounded-full border border-solid border-gray-400 outline-none hover--overlay overflow-hidden">
+    <div className="w-full flex gap-2 max-w-[94%]">
+      <button className="relative w-8 h-8 rounded-full border border-solid border-gray-400 outline-none hover--overlay overflow-hidden flex-shrink-0">
         <img
           src={currentUser.picture}
           alt=""
@@ -148,7 +233,7 @@ const PostCreateComment: React.FC<Props> = ({
       </button>
       <div className="flex-1 flex-shrink-0 flex flex-col gap-2">
         <div className="relative basis-[32px] flex items-center h-[32px] px-3 rounded-full bg-gray-100">
-          {commentIsBeingAdded && (
+          {(commentIsBeingAdded || commentIsBeingUpdated) && (
             <ClipLoader
               color={"gray"}
               loading={commentIsBeingAdded}
@@ -159,6 +244,7 @@ const PostCreateComment: React.FC<Props> = ({
             />
           )}
           <input
+            autoFocus={autoFocus}
             ref={inputRef}
             value={inputText}
             onChange={(e) => {
@@ -203,15 +289,21 @@ const PostCreateComment: React.FC<Props> = ({
               offset={[0, 2]}
             >
               <label
-                htmlFor="image-picker"
+                htmlFor={`image-picker-${
+                  commentContent ? commentContent._id : postId
+                }`}
                 className="cursor-pointer w-7 h-7 rounded-full bg-transparent hover:bg-gray-200 flex justify-center items-center outline-none"
               >
                 <input
                   type="file"
                   hidden
                   accept="image/jpeg, image/png, image/gif, image/webp"
-                  name="image-picker"
-                  id="image-picker"
+                  name={`image-picker-${
+                    commentContent ? commentContent._id : postId
+                  }`}
+                  id={`image-picker-${
+                    commentContent ? commentContent._id : postId
+                  }`}
                   onChange={handleSelectImage}
                 />
                 <i className="camera_icon scale-[85%]"></i>
@@ -233,6 +325,20 @@ const PostCreateComment: React.FC<Props> = ({
             </ToolTip>
           </div>
         </div>
+        {commentContent && (
+          <p className="text-[13px] text-gray-600 -mt-[3px] mb-1 ml-1">
+            Press esc to{" "}
+            <button
+              className="text-blue-600"
+              onClick={() => {
+                setEditCommentId && setEditCommentId("");
+              }}
+            >
+              cancel
+            </button>
+          </p>
+        )}
+
         {(imageUrl || imageIsLoading) && (
           <div className="relative max-h-[200px] min-h-[20px]">
             <button

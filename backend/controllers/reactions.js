@@ -176,7 +176,7 @@ const getReactionsByPostId = async (req, res) => {
       StatusCodes.NOT_FOUND
     );
   }
-  const returnReactions = Reaction.find({
+  const returnReactions = await Reaction.find({
     post: new ObjectId(postId),
   });
   return res.status(StatusCodes.OK).json(returnReactions);
@@ -191,7 +191,7 @@ const getReactionsByCommentId = async (req, res) => {
       StatusCodes.NOT_FOUND
     );
   }
-  const returnReactions = Reaction.find({
+  const returnReactions = await Reaction.find({
     comment: new ObjectId(commentId),
   });
   return res.status(StatusCodes.OK).json(returnReactions);
