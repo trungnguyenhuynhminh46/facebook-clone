@@ -166,7 +166,6 @@ const handleReactionComment = async (req, res) => {
   }
   return res.status(StatusCodes.OK).json(comment);
 };
-
 const getReactionsByPostId = async (req, res) => {
   const { postId } = req.params;
   const post = await Post.findById(postId);
@@ -181,7 +180,6 @@ const getReactionsByPostId = async (req, res) => {
   });
   return res.status(StatusCodes.OK).json(returnReactions);
 };
-
 const getReactionsByCommentId = async (req, res) => {
   const { commentId } = req.params;
   const comment = await Comment.findById(commentId);
@@ -196,7 +194,6 @@ const getReactionsByCommentId = async (req, res) => {
   });
   return res.status(StatusCodes.OK).json(returnReactions);
 };
-
 const getReactionByPostIdAndUserId = async (req, res) => {
   const { postId } = req.params;
   const post = await Post.findById(postId);
@@ -229,6 +226,82 @@ const getReactionByCommentIdAndUserId = async (req, res) => {
   });
   return res.status(StatusCodes.OK).json(reaction);
 };
+const reactionDetailByCommentId = async (req, res) => {
+  // usernamesList = [], reactionInfo = {}
+  const { commentId } = req.params;
+  const comment = await Comment.findById(commentId);
+  if (!comment) {
+    throw new customError(
+      `No comment with id ${commentId} is found`,
+      StatusCodes.NOT_FOUND
+    );
+  }
+  const reactions = await Reaction.find({
+    comment: new ObjectId(commentId),
+  }).populate({
+    path: "user",
+    select: "_id username",
+  });
+  const usernameObject = reactions.reduce((acc, reaction) => {
+    if (!acc[reaction.user._id]) {
+      acc[reaction.user._id] = reaction.user.username;
+    }
+    return acc;
+  }, {});
+  const usernamesList = Object.values(usernameObject);
+  const reactionsInfo = reactions.reduce(
+    (acc, { reaction }) => {
+      acc[reaction] += 1;
+      return acc;
+    },
+    {
+      like: 0,
+      love: 0,
+      haha: 0,
+      wow: 0,
+      sad: 0,
+      angry: 0,
+    }
+  );
+  return res.status(StatusCodes.OK).json({ usernamesList, reactionsInfo });
+};
+const reactionDetailbyPostId = async (req, res) => {
+  // usernamesList = [], reactionInfo = {}
+  const { postId } = req.params;
+  const post = await Post.findById(postId);
+  if (!post) {
+    throw new customError(`No post with id ${postId} is found`);
+  }
+  const reactions = await Reaction.find({
+    post: new ObjectId(postId),
+  }).populate({
+    path: "user",
+    select: "_id username",
+  });
+  const usernameObject = reactions.reduce((acc, reaction) => {
+    if (!acc[reaction.user._id]) {
+      acc[reaction.user._id] = reaction.user.username;
+    }
+    return acc;
+  }, {});
+  // console.log(usernameObject);
+  const usernamesList = Object.values(usernameObject);
+  const reactionsInfo = reactions.reduce(
+    (acc, { reaction }) => {
+      acc[reaction] += 1;
+      return acc;
+    },
+    {
+      like: 0,
+      love: 0,
+      haha: 0,
+      wow: 0,
+      sad: 0,
+      angry: 0,
+    }
+  );
+  return res.status(StatusCodes.OK).json({ usernamesList, reactionsInfo });
+};
 
 module.exports = {
   handleReactionPost,
@@ -237,4 +310,6 @@ module.exports = {
   getReactionsByCommentId,
   getReactionByPostIdAndUserId,
   getReactionByCommentIdAndUserId,
+  reactionDetailByCommentId,
+  reactionDetailbyPostId,
 };

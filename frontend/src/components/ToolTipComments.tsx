@@ -1,47 +1,72 @@
-import React from "react";
+import React, { useState } from "react";
 import Tippy from "@tippyjs/react/headless";
-import { Reaction } from "@/types/Reaction.type";
+import { useCommentsDetailByPostIdQuery } from "@/store/api/commentsApi";
+import ClipLoader from "react-spinners/ClipLoader";
 
 type Props = {
-  commentId?: string;
-  postId?: string;
+  postId: string;
   placement?: any;
   offset?: [number, number];
   children: any;
 };
 
-const ToolTip: React.FC<Props> = ({
-  commentId,
+const ToolTipComments: React.FC<Props> = ({
   postId,
   placement = "bottom",
   offset = [0, 6],
   children,
 }) => {
-  let commentsList: Reaction[] = [];
-  if (postId) {
-  }
-  if (commentId) {
-  }
+  const [showCommentsDetail, setShowCommentsDetail] = useState(false);
+  const { data, isLoading, isFetching } = useCommentsDetailByPostIdQuery(
+    {
+      postId,
+    },
+    { skip: !showCommentsDetail }
+  );
   return (
     <Tippy
       placement={placement}
       offset={offset}
       delay={300}
-      render={(attrs) => (
-        <div
-          className="py-[6px] px-[10px] bg-gray-800 opacity-90 text-gray-200 rounded-lg text-[12px]"
-          {...attrs}
-        >
-          {commentsList &&
-            commentsList.map((comment) => {
-              return <div>Tên user 1</div>;
-            })}
-        </div>
-      )}
+      onShow={() => {
+        setShowCommentsDetail(true);
+      }}
+      render={(attrs) => {
+        if (!showCommentsDetail) {
+          return null;
+        }
+        return (
+          <div
+            className="py-[6px] px-[10px] bg-gray-800 opacity-90 text-gray-200 rounded-lg text-[12px]"
+            {...attrs}
+          >
+            <>
+              {isLoading && (
+                <ClipLoader
+                  color={"gray"}
+                  loading={isLoading}
+                  size={20}
+                  aria-label="Loading Spinner"
+                  data-testid="loader"
+                />
+              )}
+              {!isLoading &&
+                data?.usernamesList &&
+                data.usernamesList.map((username, index) => {
+                  return (
+                    <p key={index} className="text-left text-sm text-gray-300">
+                      {username}
+                    </p>
+                  );
+                })}
+            </>
+          </div>
+        );
+      }}
     >
       {children}
     </Tippy>
   );
 };
 
-export default ToolTip;
+export default ToolTipComments;

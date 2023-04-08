@@ -3,6 +3,7 @@ const customError = require("../error/customError");
 const Comment = require("../models/Comment");
 const Post = require("../models/Post");
 const User = require("../models/User");
+const Reaction = require("../models/Reaction");
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Types;
 const getRootCommentsByPostId = async (req, res) => {
@@ -65,15 +66,14 @@ const addComment = async (req, res) => {
     parentComment: parentId ? new ObjectId(parentId) : undefined,
   });
   // Update in post state
-  post.commentsCount += 1;
-  post.save();
+  await post.updateCommentsCount();
   // Update parent comment
   const parentComment = await Comment.findById(parentId);
   if (parentComment) {
     parentComment.childrenComments.push(new ObjectId(parentId));
     parentComment.save();
   }
-  return res.status(StatusCodes.OK).json(addedComment);
+  return res.status(StatusCodes.OK).json(post);
 };
 const updateComment = async (req, res) => {
   const { commentId } = req.params;
@@ -88,12 +88,17 @@ const updateComment = async (req, res) => {
       returnDocument: "after",
     }
   );
+  const postId = updatedComment.post;
+  const post = await Post.findById(postId);
+  if (!post) {
+    throw new customError(`The post with id ${postId} is not existed`);
+  }
+  await post.updateCommentsCount();
   if (!updatedComment) {
     throw new customError(`Comment with id ${commentId} is not existed`);
   }
-  return res.status(StatusCodes.OK).json(updatedComment);
+  return res.status(StatusCodes.OK).json(post);
 };
-
 const deleteComment = async (req, res) => {
   const { commentId } = req.params;
   const comment = await Comment.findOneAndDelete({ _id: commentId });
@@ -113,7 +118,34 @@ const deleteComment = async (req, res) => {
   }
   return res
     .status(StatusCodes.OK)
-    .json({ parentComment: comment.parentComment });
+    .json({ parentComment: comment.parentComment, post });
+};
+const commentsDetailByPostId = async (req, res) => {
+  const { postId } = req.params;
+  // console.log(postId);
+  const post = await Post.findById(postId);
+  if (!post) {
+    throw new customError(
+      `The post with id ${postId} is not found`,
+      StatusCodes.NOT_FOUND
+    );
+  }
+  const comments = await Comment.find({
+    post: new ObjectId(postId),
+  }).populate({
+    path: "user",
+    select: "_id username",
+  });
+  // console.log(comments);
+  const usernameObject = comments.reduce((acc, comment) => {
+    if (!acc[comment.user._id]) {
+      acc[comment.user._id] = comment.user.username;
+    }
+    return acc;
+  }, {});
+  // console.log(usernameObject);
+  const usernamesList = Object.values(usernameObject);
+  return res.status(StatusCodes.OK).json({ usernamesList });
 };
 
 module.exports = {
@@ -123,4 +155,5 @@ module.exports = {
   addComment,
   updateComment,
   deleteComment,
+  commentsDetailByPostId,
 };

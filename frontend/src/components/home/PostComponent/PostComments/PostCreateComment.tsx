@@ -17,6 +17,8 @@ import { useUpdateCommentMutation } from "@/store/api/commentsApi";
 import { useDeleteCommentMutation } from "@/store/api/commentsApi";
 import uploadImages from "@/helpers/upload";
 import { ClipLoader } from "react-spinners";
+import { useDispatch } from "react-redux";
+import { updatePost } from "@/store/slices/posts";
 
 type Props = {
   autoFocus?: boolean;
@@ -43,6 +45,7 @@ const PostCreateComment: React.FC<Props> = ({
   commentContent,
   setEditCommentId,
 }) => {
+  const dispatch = useDispatch();
   // commentContent && console.log(commentContent.text);
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputText, setInputText] = useState<string>(
@@ -131,7 +134,7 @@ const PostCreateComment: React.FC<Props> = ({
         return;
       }
       // Add comment here
-      await addComment({
+      const newPost = await addComment({
         userId: currentUser.id,
         text: inputText,
         image: cloudinaryURLs[0],
@@ -139,10 +142,18 @@ const PostCreateComment: React.FC<Props> = ({
         parentId: replyTo,
       }).unwrap();
       // Update comments counts of post
+      dispatch(
+        updatePost({
+          id: newPost._id,
+          changes: {
+            commentsCount: newPost.commentsCount,
+          },
+        })
+      );
     }
     // Without image
     if (!imageUrl) {
-      await addComment({
+      const newPost = await addComment({
         userId: currentUser.id,
         text: inputText,
         image: "",
@@ -150,6 +161,14 @@ const PostCreateComment: React.FC<Props> = ({
         parentId: replyTo,
       }).unwrap();
       // Update comments counts of post
+      dispatch(
+        updatePost({
+          id: newPost._id,
+          changes: {
+            commentsCount: newPost.commentsCount,
+          },
+        })
+      );
     }
   };
   const handleUpdateComment = async () => {
@@ -170,7 +189,7 @@ const PostCreateComment: React.FC<Props> = ({
         return;
       }
       // Add comment here
-      await updateComment({
+      const newPost = await updateComment({
         commentId: commentContent?._id,
         userId: currentUser.id,
         postId: postId,
@@ -179,10 +198,18 @@ const PostCreateComment: React.FC<Props> = ({
         parentId: replyTo,
       }).unwrap();
       // Update comments counts of post
+      dispatch(
+        updatePost({
+          id: newPost._id,
+          changes: {
+            commentsCount: newPost.commentsCount,
+          },
+        })
+      );
     }
     // Without image
     if (!imageUrl) {
-      await updateComment({
+      const newPost = await updateComment({
         commentId: commentContent?._id,
         userId: currentUser.id,
         text: inputText,
@@ -191,6 +218,14 @@ const PostCreateComment: React.FC<Props> = ({
         parentId: replyTo,
       }).unwrap();
       // Update comments counts of post
+      dispatch(
+        updatePost({
+          id: newPost._id,
+          changes: {
+            commentsCount: newPost.commentsCount,
+          },
+        })
+      );
     }
     // Reset state edit comment
     setEditCommentId && setEditCommentId("");

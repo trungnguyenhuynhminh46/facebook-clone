@@ -8,6 +8,8 @@ const {
   getReactionsByCommentId,
   getReactionByPostIdAndUserId,
   getReactionByCommentIdAndUserId,
+  reactionDetailByCommentId,
+  reactionDetailbyPostId,
 } = require("../controllers/reactions");
 // Middlewares
 const authorizationMiddleware = require("../middleware/auth");
@@ -42,5 +44,14 @@ route.get(
   authorizationMiddleware,
   getReactionByCommentIdAndUserId
 );
-
+route.get(
+  "/reactionDetailByCommentId/:commentId",
+  authorizationMiddleware,
+  reactionDetailByCommentId
+);
+route.get(
+  "/reactionDetailbyPostId/:postId",
+  authorizationMiddleware,
+  reactionDetailbyPostId
+);
 module.exports = route;

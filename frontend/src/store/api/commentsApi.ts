@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 import { RootState } from "../store";
 import { Comment } from "@/types/Comment.type";
+import { Post } from "@/types/Post.type";
 // comment-{id}
 // root-comments-{postID}
 // comment-by-parent-{parentID}
@@ -17,8 +18,8 @@ export const commentsApi = createApi({
       }
     },
   }),
-  endpoints: (builders) => ({
-    getRootCommentsByPostId: builders.query<Comment[], { postId: string }>({
+  endpoints: (builder) => ({
+    getRootCommentsByPostId: builder.query<Comment[], { postId: string }>({
       query(body) {
         const { postId } = body;
         return `/comments/root/${postId}`;
@@ -48,39 +49,38 @@ export const commentsApi = createApi({
         ];
       },
     }),
-    getCommentsByParentComment: builders.query<
-      Comment[],
-      { commentId: string }
-    >({
-      query(body) {
-        const { commentId } = body;
-        return `/comments/children/${commentId}`;
-      },
-      providesTags(result, error, body) {
-        const { commentId } = body;
-        if (result && result.length > 0) {
-          const tags = [
-            ...result.map((comment) => {
-              return {
+    getCommentsByParentComment: builder.query<Comment[], { commentId: string }>(
+      {
+        query(body) {
+          const { commentId } = body;
+          return `/comments/children/${commentId}`;
+        },
+        providesTags(result, error, body) {
+          const { commentId } = body;
+          if (result && result.length > 0) {
+            const tags = [
+              ...result.map((comment) => {
+                return {
+                  type: "Comments" as const,
+                  id: `comment-${comment._id}`,
+                };
+              }),
+              {
                 type: "Comments" as const,
-                id: `comment-${comment._id}`,
-              };
-            }),
+                id: `comment-by-parent-${commentId}`,
+              },
+            ];
+          }
+          return [
             {
-              type: "Comments" as const,
+              type: "Comments",
               id: `comment-by-parent-${commentId}`,
             },
           ];
-        }
-        return [
-          {
-            type: "Comments",
-            id: `comment-by-parent-${commentId}`,
-          },
-        ];
-      },
-    }),
-    getCommentByCommentId: builders.query<Comment, { commentId: string }>({
+        },
+      }
+    ),
+    getCommentByCommentId: builder.query<Comment, { commentId: string }>({
       query(body) {
         const { commentId } = body;
         return `/comments/${commentId}`;
@@ -95,8 +95,29 @@ export const commentsApi = createApi({
         ];
       },
     }),
-    addComment: builders.mutation<
-      Comment,
+    commentsDetailByPostId: builder.query<
+      { usernamesList: string[] },
+      { postId: string }
+    >({
+      query(body) {
+        const { postId } = body;
+        return `/comments/commentsDetailByPostId/${postId}`;
+      },
+      providesTags(result, err, body) {
+        if (err) {
+          return [];
+        }
+        const { postId } = body;
+        return [
+          {
+            type: "Comments",
+            id: `comments-detail-${postId}`,
+          },
+        ];
+      },
+    }),
+    addComment: builder.mutation<
+      Post,
       {
         userId: string;
         text: string;
@@ -137,8 +158,8 @@ export const commentsApi = createApi({
         ];
       },
     }),
-    updateComment: builders.mutation<
-      Comment,
+    updateComment: builder.mutation<
+      Post,
       {
         commentId: string;
         userId: string;
@@ -170,8 +191,8 @@ export const commentsApi = createApi({
         ];
       },
     }),
-    deleteComment: builders.mutation<
-      { parentComment?: string },
+    deleteComment: builder.mutation<
+      { parentComment?: string; post: Post },
       { commentId: string }
     >({
       query(body) {
@@ -205,4 +226,5 @@ export const {
   useAddCommentMutation,
   useUpdateCommentMutation,
   useDeleteCommentMutation,
+  useCommentsDetailByPostIdQuery,
 } = commentsApi;

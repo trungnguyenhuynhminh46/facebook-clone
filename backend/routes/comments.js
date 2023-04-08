@@ -8,6 +8,7 @@ const {
   addComment,
   updateComment,
   deleteComment,
+  commentsDetailByPostId,
 } = require("../controllers/comments");
 // Middlewares
 const authorizationMiddleware = require("../middleware/auth");
@@ -18,6 +19,12 @@ route.get(
   "/children/:commentId",
   authorizationMiddleware,
   getCommentsByParentComment
+);
+// Get comments detail by post id
+route.get(
+  "/commentsDetailByPostId/:postId",
+  authorizationMiddleware,
+  commentsDetailByPostId
 );
 // Get comment by commentId
 route.get("/:commentId", authorizationMiddleware, getCommentByCommentId);

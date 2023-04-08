@@ -9,7 +9,7 @@ import {
 } from "@/store/api/reactionsApi";
 import { getTimeDiff, isoStringToDate } from "@/helpers/date";
 import ToolTip from "@/components/ToolTip";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "@/store/selectors/user";
 import { Dots } from "@/svg";
 import Tippy from "@tippyjs/react/headless";
@@ -22,6 +22,8 @@ import PostCreateComment from "./PostCreateComment";
 import { Reaction } from "@/types/Reaction.type";
 import reactions from "@/data/reactions";
 import CommentReactions from "./CommentReactions";
+import ToolTipReactions from "@/components/ToolTipReactions";
+import { updatePost } from "@/store/slices/posts";
 // const reactionsInfo = {
 //   like: 0,
 //   love: 100,
@@ -36,6 +38,7 @@ type PropsComment = {
   editCommentId: string;
 };
 type PropsReactionsInfo = {
+  comment: Comment;
   reactionsInfo: Record<string, number>;
 };
 type PropsCommentFunction = {
@@ -43,7 +46,10 @@ type PropsCommentFunction = {
   setEditCommentId: React.Dispatch<React.SetStateAction<string>>;
   deleteComment: any;
 };
-const ReactionsInfo: React.FC<PropsReactionsInfo> = ({ reactionsInfo }) => {
+const ReactionsInfo: React.FC<PropsReactionsInfo> = ({
+  comment,
+  reactionsInfo,
+}) => {
   const sortedReactions = Object.entries(reactionsInfo).sort(
     ([, a], [, b]) => b - a
   );
@@ -55,29 +61,31 @@ const ReactionsInfo: React.FC<PropsReactionsInfo> = ({ reactionsInfo }) => {
     return null;
   }
   return (
-    <div
-      className={`relative flex gap-1 items-center p-[1px] shadow4 rounded-full hover--overlay overflow-hidden cursor-pointer ${
-        total > 20 ? "ml-auto" : ""
-      }`}
-    >
-      <div className={`${Style["reactions-container"]}`}>
-        {sortedReactions.slice(0, 3).map(([reaction, qty]) => {
-          if (qty > 0) {
-            return (
-              <img
-                key={reaction}
-                src={`/reacts/${reaction}.svg`}
-                className="w-[22px]"
-                alt=""
-              />
-            );
-          }
-        })}
+    <ToolTipReactions commentId={comment._id}>
+      <div
+        className={`relative flex gap-1 items-center p-[1px] shadow4 rounded-full hover--overlay overflow-hidden cursor-pointer ${
+          total > 20 ? "ml-auto" : ""
+        }`}
+      >
+        <div className={`${Style["reactions-container"]}`}>
+          {sortedReactions.slice(0, 3).map(([reaction, qty]) => {
+            if (qty > 0) {
+              return (
+                <img
+                  key={reaction}
+                  src={`/reacts/${reaction}.svg`}
+                  className="w-[22px]"
+                  alt=""
+                />
+              );
+            }
+          })}
+        </div>
+        <span className="text-[var(--color-secondary)] text-[13px] mr-1">
+          {total}
+        </span>
       </div>
-      <span className="text-[var(--color-secondary)] text-[13px] mr-1">
-        {total}
-      </span>
-    </div>
+    </ToolTipReactions>
   );
 };
 const CommentFunction: React.FC<PropsCommentFunction> = ({
@@ -85,7 +93,23 @@ const CommentFunction: React.FC<PropsCommentFunction> = ({
   setEditCommentId,
   deleteComment,
 }) => {
+  const dispatch = useDispatch();
   const [showTooltip, setShowTooltip] = useState(false);
+  const handleDeleteComment = async () => {
+    try {
+      const { post: newPost } = await deleteComment({
+        commentId: comment._id,
+      }).unwrap();
+      dispatch(
+        updatePost({
+          id: newPost._id,
+          changes: {
+            commentsCount: newPost.commentsCount,
+          },
+        })
+      );
+    } catch (error) {}
+  };
   return (
     <Tippy
       popperOptions={{ modifiers: [{ name: "flip", enabled: false }] }}
@@ -113,8 +137,8 @@ const CommentFunction: React.FC<PropsCommentFunction> = ({
           </button>
           <button
             className="w-full rounded-md hover:bg-gray-200 transition-all duration-200 ease-linear p-2 text-[15px] font-medium leading-5 px-3 text-start"
-            onClick={() => {
-              deleteComment({ commentId: comment._id });
+            onClick={async () => {
+              await handleDeleteComment();
             }}
           >
             Delete comment
@@ -303,7 +327,10 @@ const PostComment: React.FC<PropsComment> = ({
                       </span>
                     </ToolTip>
                   </div>
-                  <ReactionsInfo reactionsInfo={reactionsInfo} />
+                  <ReactionsInfo
+                    comment={comment}
+                    reactionsInfo={reactionsInfo}
+                  />
                 </div>
               </div>
             </div>

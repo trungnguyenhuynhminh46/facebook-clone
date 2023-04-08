@@ -4,13 +4,6 @@ import { RootState } from "../store";
 import { Post } from "@/types/Post.type";
 import { Comment } from "@/types/Comment.type";
 
-// by post: post-reactions-{id}, reaction-{id}
-// by comment: comment-reactions-{id}, reaction-{id}
-// by post/comment and user: reaction-{id}
-// create reaction for post/comment [{post-reactions-{id}}, {reaction-{id}}], [{comment-reactions-{id}}, {reaction-{id}}]
-// update reaction for post/comment: reaction-{id}
-// delete reaction for post/comment: reaction-{id}
-
 export const reactionsApi = createApi({
   reducerPath: "reactionsApi",
   tagTypes: ["Reactions"],
@@ -130,6 +123,48 @@ export const reactionsApi = createApi({
         ];
       },
     }),
+    reactionDetailByCommentId: builder.query<
+      { usernamesList: string[]; reactionsInfo: Record<string, number> },
+      { commentId: string }
+    >({
+      query(body) {
+        const { commentId } = body;
+        return `/reactions/reactionDetailByCommentId/${commentId}`;
+      },
+      providesTags(result, err, body) {
+        if (err) {
+          return [];
+        }
+        const { commentId } = body;
+        return [
+          {
+            type: "Reactions",
+            id: `reactions-detail-${commentId}`,
+          },
+        ];
+      },
+    }),
+    reactionDetailByPostId: builder.query<
+      { usernamesList: string[]; reactionsInfo: Record<string, number> },
+      { postId: string }
+    >({
+      query(body) {
+        const { postId } = body;
+        return `/reactions/reactionDetailByPostId/${postId}`;
+      },
+      providesTags(result, err, body) {
+        if (err) {
+          return [];
+        }
+        const { postId } = body;
+        return [
+          {
+            type: "Reactions",
+            id: `reactions-detail-${postId}`,
+          },
+        ];
+      },
+    }),
     handleReactionPost: builder.mutation<
       Post,
       { postId: string; reaction: string }
@@ -190,4 +225,6 @@ export const {
   useGetReactionsByCommentIdQuery,
   useGetReactionByPostIdAndUserIdQuery,
   useGetReactionByCommentIdAndUserIdQuery,
+  useReactionDetailByCommentIdQuery,
+  useReactionDetailByPostIdQuery,
 } = reactionsApi;
