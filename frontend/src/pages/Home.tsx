@@ -6,7 +6,7 @@ import { selectCurrentUser } from "@/store/selectors/user";
 import { stories } from "@/data/fakeStories";
 import { useMediaQuery } from "react-responsive";
 import { selectAllPosts, selectAllPostsIds } from "@/store/slices/posts";
-import isoStringToDate from "@/helpers/isoStringToDate";
+import { isoStringToDate } from "@/helpers/date";
 // Components
 import LeftSidebar from "@/components/home/LeftSidebar";
 import RightSidebar from "@/components/home/RightSidebar";

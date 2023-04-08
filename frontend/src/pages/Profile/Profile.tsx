@@ -2,7 +2,7 @@ import React from "react";
 
 type Props = {};
 
-const Profile: React.FC<Props> = (props: Props) => {
+const Profile = (props: Props) => {
   return <div>Profile</div>;
 };
 

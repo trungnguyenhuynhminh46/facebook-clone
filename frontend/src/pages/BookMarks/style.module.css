@@ -1,0 +1,10 @@
+.left-sidebar-wrapper {
+  @apply fixed left-0 top-[56px] w-full max-h-[703px] overflow-y-scroll max-w-[23.44vw];
+}
+.alert {
+  @apply text-[var(--blue-color)] text-sm pl-5 relative;
+}
+.alert::before {
+  content: "";
+  @apply w-2 h-2 bg-[var(--blue-color)] rounded-full absolute left-1 top-1/2 -translate-y-1/2;
+}

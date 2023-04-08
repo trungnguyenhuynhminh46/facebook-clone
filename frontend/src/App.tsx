@@ -7,9 +7,11 @@ import Profile from "@pages/Profile";
 import PrivateRoute from "@/components/middlewares/PrivateRoute";
 import VerifiedRoute from "./components/middlewares/VerifiedRoute";
 import Verify from "./pages/Verify";
+import NotFound from "./pages/NotFound";
 // Layouts
 import HomeLayout from "./layouts/HomeLayout";
 import NormalLayout from "./layouts/NormalLayout";
+import BookMarks from "./pages/BookMarks/BookMarks";
 
 function App() {
   return (
@@ -21,7 +23,9 @@ function App() {
         <Route element={<VerifiedRoute />}>
           <Route element={<HomeLayout />}>
             <Route path="/" element={<Home />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile/:email" element={<Profile />} />
+            <Route path="/bookmarks" element={<BookMarks />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
         </Route>
       </Route>
