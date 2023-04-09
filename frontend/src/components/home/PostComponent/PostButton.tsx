@@ -37,6 +37,7 @@ const PostButton: React.FC<Props> = ({ currentUser, post }) => {
         postId,
         reaction,
       }).unwrap();
+      // console.log(newPost);
       // Update post state
       dispatch(
         updatePost({

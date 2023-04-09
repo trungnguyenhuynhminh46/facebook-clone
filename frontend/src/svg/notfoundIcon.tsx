@@ -22,12 +22,12 @@ const NotfoundIcon = (props: Props) => {
       </defs>
       <path
         d="M38.54 39.69h1.82a11.78 11.78 0 0111.78 11.78v13.6h0-25.37 0v-13.6a11.78 11.78 0 0111.77-11.78z"
-        stroke-miterlimit="10"
-        stroke-width="9.48"
+        strokeMiterlimit="10"
+        strokeWidth="9.48"
         stroke="#a4a7ab"
         fill="none"
       />
-      <g clip-path="url(#a)">
+      <g clipPath="url(#a)">
         <path
           fill="#90c3ff"
           d="M100.31 101.1H39.45V12.8h40.78l20.08 21.03v67.27z"
@@ -39,8 +39,8 @@ const NotfoundIcon = (props: Props) => {
         <path
           d="M38.54 39.69h1.82a11.78 11.78 0 0111.78 11.78v13.6h0-25.37 0v-13.6a11.78 11.78 0 0111.77-11.78z"
           stroke="#fff"
-          stroke-miterlimit="10"
-          stroke-width="9.48"
+          strokeMiterlimit="10"
+          strokeWidth="9.48"
           fill="none"
         />
       </g>

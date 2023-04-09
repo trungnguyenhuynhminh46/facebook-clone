@@ -5,6 +5,9 @@ import { Link } from "react-router-dom";
 import { Dots } from "@/svg";
 import Tippy from "@tippyjs/react/headless";
 import { User } from "@/types/User.type";
+import { useDispatch } from "react-redux";
+import { removePost } from "@/store/slices/posts";
+import { useDeletePostMutation } from "@/store/api/postsApi";
 
 type Props = {
   post: Post;
@@ -16,11 +19,21 @@ type PropsMenuItem = {
   img?: string;
   title?: string;
   subTitle?: string;
+  onClick?: () => void;
 };
 
-const MenuItem: React.FC<PropsMenuItem> = ({ icon, img, title, subTitle }) => {
+const MenuItem: React.FC<PropsMenuItem> = ({
+  icon,
+  img,
+  title,
+  subTitle,
+  onClick,
+}) => {
   return (
-    <button className="flex gap-3 items-center justify-start p-2 rounded-md hover:bg-gray-200">
+    <button
+      className="flex gap-3 items-center justify-start p-2 rounded-md hover:bg-gray-200"
+      onClick={onClick}
+    >
       {icon && <i className={icon}></i>}
       {img && <img src={img} alt="" />}
       <div className="flex flex-col">
@@ -36,6 +49,8 @@ const MenuItem: React.FC<PropsMenuItem> = ({ icon, img, title, subTitle }) => {
 };
 
 const PostHeader: React.FC<Props> = ({ post, currentUser }) => {
+  const dispatch = useDispatch();
+  const [handleDeletePost] = useDeletePostMutation();
   const isOwner = post.user._id === currentUser.id;
   const imagesLength = post.imagesList?.length || 0;
   const [showTooltip, setShowTooltip] = useState(false);
@@ -121,6 +136,10 @@ const PostHeader: React.FC<Props> = ({ post, currentUser }) => {
                 icon="trash_icon"
                 title="Move to trash"
                 subTitle="Items in your trash are deleted after 30 days"
+                onClick={async () => {
+                  await handleDeletePost({ postId: post._id });
+                  dispatch(removePost(post._id));
+                }}
               />
             )}
             {!isOwner && <div className="spacer"></div>}

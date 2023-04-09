@@ -9,6 +9,7 @@ const {
   sendValidationCode,
   validateCode,
   resetPassword,
+  getUserInfoByUserEmail,
 } = require("../controllers/user");
 // Middlewares
 const authorizationMiddleware = require("../middleware/auth");
@@ -21,5 +22,10 @@ router.post("/getUserByEmail", getUserByEmail);
 router.post("/sendValidationCode", sendValidationCode);
 router.post("/validateCode", validateCode);
 router.post("/resetPassword", resetPassword);
+router.get(
+  "/getUserInfoByUserEmail/:email",
+  authorizationMiddleware,
+  getUserInfoByUserEmail
+);
 
 module.exports = router;

@@ -1,7 +1,7 @@
 import {
-  PayloadAction,
   createAsyncThunk,
   createEntityAdapter,
+  createSelector,
   createSlice,
 } from "@reduxjs/toolkit";
 import axios from "axios";
@@ -39,7 +39,11 @@ const postsSlice = createSlice({
   name: "posts",
   initialState,
   reducers: {
+    addPost: postsAdapter.addOne,
     updatePost: postsAdapter.updateOne,
+    upsertPost: postsAdapter.upsertOne,
+    upsertManyPosts: postsAdapter.upsertMany,
+    removePost: postsAdapter.removeOne,
   },
   extraReducers: (builder) => {
     builder
@@ -63,5 +67,12 @@ export const {
   selectEntities: selectAllPosts,
   selectById: selectPostById,
 } = postsAdapter.getSelectors<RootState>((state) => state.posts);
-export const { updatePost } = postsSlice.actions;
+export const selectPostsIdsByEmail = createSelector(
+  [selectAllPostsIds, selectAllPosts, (_, email) => email],
+  (ids, entities, email) => {
+    return ids.filter((postId) => entities[postId]?.user.email === email);
+  }
+);
+export const { addPost, updatePost, upsertPost, upsertManyPosts, removePost } =
+  postsSlice.actions;
 export default postsSlice.reducer;

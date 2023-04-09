@@ -1,18 +1,15 @@
 import React from "react";
-import Header from "@layouts/Header";
 
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/store/selectors/user";
 import { stories } from "@/data/fakeStories";
 import { useMediaQuery } from "react-responsive";
-import { selectAllPosts, selectAllPostsIds } from "@/store/slices/posts";
-import { isoStringToDate } from "@/helpers/date";
+import { selectAllPostsIds } from "@/store/slices/posts";
 // Components
 import LeftSidebar from "@/components/home/LeftSidebar";
 import RightSidebar from "@/components/home/RightSidebar";
 import Stories from "@/components/home/Stories";
 import CreatePosts from "@/components/home/CreatePosts";
-import { Post } from "@/types/Post.type";
 import PostComponent from "@/components/home/PostComponent/PostComponent";
 
 type Props = {};

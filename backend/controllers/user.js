@@ -232,6 +232,19 @@ const resetPassword = async (req, res) => {
     message: "Password is changed successfully, please login to continue!",
   });
 };
+const getUserInfoByUserEmail = async (req, res) => {
+  const { email } = req.params;
+  const userInfo = await User.findOne({
+    email,
+  }).select("-password");
+  if (!userInfo) {
+    throw new customError(
+      `The user with email ${email} is not found`,
+      StatusCodes.NOT_FOUND
+    );
+  }
+  return res.status(StatusCodes.OK).json(userInfo);
+};
 
 module.exports = {
   register,
@@ -242,4 +255,5 @@ module.exports = {
   sendValidationCode,
   validateCode,
   resetPassword,
+  getUserInfoByUserEmail,
 };

@@ -30,4 +30,22 @@ const uploadImageToCloudinary = async (file, path) => {
   }
 };
 
-module.exports = { uploadImages };
+const getImages = async (req, res) => {
+  try {
+    const { folder, sort, max } = req.body;
+    // console.log(req.body);
+    const { total_count, resources } = await cloudinary.search
+      .expression(`folder:${folder} AND resource_type:image`)
+      .sort_by("created_at", sort)
+      .max_results(max)
+      .execute();
+    const imagesUrl = resources.map(({ secure_url }) => {
+      return secure_url;
+    });
+    return res.status(StatusCodes.OK).json({ total_count, imagesUrl });
+  } catch (err) {
+    throw new customError(err.message, StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+};
+
+module.exports = { uploadImages, getImages };

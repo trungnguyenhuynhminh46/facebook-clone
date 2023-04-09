@@ -5,6 +5,8 @@ import Login from "@/pages/Login";
 import { AppDispatch } from "@/store/store";
 import { fetchPosts } from "@/store/slices/posts";
 import { useEffect } from "react";
+import { useGetAllPostsQuery } from "@/store/api/postsApi";
+import { upsertManyPosts } from "@/store/slices/posts";
 
 const PrivateRoute = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -17,6 +19,7 @@ const PrivateRoute = () => {
       };
     }
   }, [dispatch, user]);
+
   return user ? <Outlet /> : <Login />;
 };
 

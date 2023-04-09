@@ -54,7 +54,10 @@ const addComment = async (req, res) => {
   if (!user) {
     throw new customError(`The user with id ${userId} is not existed`);
   }
-  const post = await Post.findById(postId);
+  const post = await Post.findById(postId).populate({
+    path: "user",
+    select: "first_name last_name username email picture gender",
+  });
   if (!post) {
     throw new customError(`The post with id ${postId} is not existed`);
   }
@@ -89,7 +92,10 @@ const updateComment = async (req, res) => {
     }
   );
   const postId = updatedComment.post;
-  const post = await Post.findById(postId);
+  const post = await Post.findById(postId).populate({
+    path: "user",
+    select: "first_name last_name username email picture gender",
+  });
   if (!post) {
     throw new customError(`The post with id ${postId} is not existed`);
   }
@@ -104,7 +110,10 @@ const deleteComment = async (req, res) => {
   const comment = await Comment.findOneAndDelete({ _id: commentId });
   // Update in post state
   const postId = comment.post;
-  const post = await Post.findById(postId);
+  const post = await Post.findById(postId).populate({
+    path: "user",
+    select: "first_name last_name username email picture gender",
+  });
   await post.updateCommentsCount();
   // Update parent comment
   const parentComment = await Comment.findById(comment.parentComment);

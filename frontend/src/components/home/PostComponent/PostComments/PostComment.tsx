@@ -265,7 +265,7 @@ const PostComment: React.FC<PropsComment> = ({
                   )}
                 </div>
                 {comment.image && (
-                  <div className="mb-1">
+                  <div className="my-1">
                     <img
                       src={comment.image}
                       alt=""

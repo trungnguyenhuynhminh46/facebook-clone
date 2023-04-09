@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import { User } from "@/types/User.type";
 // Forms
-import MainForm from "../CreatePostPopUp/MainForm";
+import MainForm from "./MainForm";
 
 type Props = {
   setIsShown: React.Dispatch<React.SetStateAction<boolean>>;

@@ -1,14 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
-import ReactDOM from "react-dom";
 import CreatePostsStyle from "./style.module.css";
 import useOnClickOutside from "@/hooks/useOnClickOutside";
 
 import EmojiPickerBackground from "./EmojiPickerBackground";
 import AddToPost from "./AddToPost";
 import BeatLoader from "react-spinners/BeatLoader";
-import createPost from "@/helpers/posts";
 import uploadImages from "@/helpers/upload";
 import { User } from "@/types/User.type";
+import {
+  useAddPostMutation,
+  useUpdatePostMutation,
+} from "@/store/api/postsApi";
+import { useDispatch } from "react-redux";
+import { addPost } from "@/store/slices/posts";
 
 type Props = {
   setIsShown: React.Dispatch<React.SetStateAction<boolean>>;
@@ -25,6 +29,10 @@ const MainForm: React.FC<Props> = ({
   setInputText,
   setCurrentForm,
 }) => {
+  const dispatch = useDispatch();
+  const [handleAddPost, { isLoading: postIsBeingAdded }] = useAddPostMutation();
+  const [handleUpdatePost, { isLoading: postIsBeingUpdated }] =
+    useUpdatePostMutation();
   const formRef = useRef(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   // States
@@ -63,72 +71,77 @@ const MainForm: React.FC<Props> = ({
       setLoading(true);
       // type: cover
       if (coverState) {
-        const response = await createPost(
-          "cover",
-          currentUser.id,
-          inputText,
-          coverState.id,
-          [],
-          "public",
-          "",
-          "",
-          [],
-          currentUser.token
-        );
-        if (response !== "OK") {
-          setError(response);
+        try {
+          const addedPost = await handleAddPost({
+            type: "cover",
+            user: currentUser.id,
+            text: inputText,
+            coverId: coverState.id,
+            imagesList: [],
+            isSharedTo: "public",
+            isFeeling: "",
+            checkedOutAt: "",
+            tagedFriends: [],
+          }).unwrap();
+          dispatch(addPost(addedPost));
+        } catch (error: any) {
+          console.log(error);
+          setError("Something went wrong, please try again!");
           setLoading(false);
-
           return;
         }
       }
       // type: withImages
       else if (imagesList.length > 0) {
-        // Upload images
-        const imagesUrl = await uploadImages(
-          imagesList,
-          `${currentUser.email}/postsImages`,
-          currentUser.token
-        );
-        if (typeof imagesList === "string") {
-          setError(imagesList);
-          setLoading(false);
-          return;
-        }
-        const response = await createPost(
-          "withImages",
-          currentUser.id,
-          inputText,
-          undefined,
-          imagesUrl,
-          "public",
-          "",
-          "",
-          [],
-          currentUser.token
-        );
-        if (response !== "OK") {
-          setError(response);
+        try {
+          // Upload images
+          const imagesUrl = await uploadImages(
+            imagesList,
+            `${currentUser.email}/postsImages`,
+            currentUser.token
+          );
+          if (typeof imagesList === "string") {
+            setError(imagesList);
+            setLoading(false);
+            return;
+          }
+          const addedPost = await handleAddPost({
+            type: "withImages",
+            user: currentUser.id,
+            text: inputText,
+            coverId: undefined,
+            imagesList: imagesUrl,
+            isSharedTo: "public",
+            isFeeling: "",
+            checkedOutAt: "",
+            tagedFriends: [],
+          }).unwrap();
+          dispatch(addPost(addedPost));
+        } catch (error: any) {
+          console.log(error);
+          setError("Something went wrong, please try again!");
           setLoading(false);
           return;
         }
       }
       // type: textOnly
       else if (inputText) {
-        const response = await createPost(
-          "onlyText",
-          currentUser.id,
-          inputText,
-          undefined,
-          [],
-          "public",
-          "",
-          "",
-          [],
-          currentUser.token
-        );
-        if (response !== "OK") {
-          setError(response);
+        try {
+          const addedPost = await handleAddPost({
+            type: "onlyText",
+            user: currentUser.id,
+            text: inputText,
+            coverId: undefined,
+            imagesList: [],
+            isSharedTo: "public",
+            isFeeling: "",
+            checkedOutAt: "",
+            tagedFriends: [],
+          }).unwrap();
+          dispatch(addPost(addedPost));
+        } catch (error) {
+          console.log(error);
+          setError("Something went wrong, please try again!");
           setLoading(false);
           return;
         }
