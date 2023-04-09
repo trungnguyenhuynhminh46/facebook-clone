@@ -196,7 +196,7 @@ const MainForm: React.FC<Props> = ({
                 setIsShown(false);
               }}
             >
-              <i className="exit_icon"></i>
+              <i className="exit_icon scale-75"></i>
             </button>
           </div>
           <div className="flex flex-col items-stretch p-4">

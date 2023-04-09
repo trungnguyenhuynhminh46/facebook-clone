@@ -8,6 +8,7 @@ import { User } from "@/types/User.type";
 import { useDispatch } from "react-redux";
 import { removePost } from "@/store/slices/posts";
 import { useDeletePostMutation } from "@/store/api/postsApi";
+import DeleteConfirmForm from "../DeleteConfirmForm/DeleteConfirmForm";
 
 type Props = {
   post: Post;
@@ -20,6 +21,7 @@ type PropsMenuItem = {
   title?: string;
   subTitle?: string;
   onClick?: () => void;
+  setShowToolTip: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const MenuItem: React.FC<PropsMenuItem> = ({
@@ -28,11 +30,15 @@ const MenuItem: React.FC<PropsMenuItem> = ({
   title,
   subTitle,
   onClick,
+  setShowToolTip,
 }) => {
   return (
     <button
       className="flex gap-3 items-center justify-start p-2 rounded-md hover:bg-gray-200"
-      onClick={onClick}
+      onClick={() => {
+        setShowToolTip(false);
+        onClick && onClick();
+      }}
     >
       {icon && <i className={icon}></i>}
       {img && <img src={img} alt="" />}
@@ -53,7 +59,9 @@ const PostHeader: React.FC<Props> = ({ post, currentUser }) => {
   const [handleDeletePost] = useDeletePostMutation();
   const isOwner = post.user._id === currentUser.id;
   const imagesLength = post.imagesList?.length || 0;
-  const [showTooltip, setShowTooltip] = useState(false);
+  const [showToolTip, setShowToolTip] = useState(false);
+  const [showDeleteConfirmForm, setShowDeleteConfirmForm] =
+    useState<boolean>(false);
   return (
     <div className="flex items-center py-3 px-4 gap-2">
       <Link to={`/user`}>
@@ -85,9 +93,9 @@ const PostHeader: React.FC<Props> = ({ post, currentUser }) => {
       <Tippy
         popperOptions={{ modifiers: [{ name: "flip", enabled: false }] }}
         onClickOutside={() => {
-          setShowTooltip(false);
+          setShowToolTip(false);
         }}
-        visible={showTooltip}
+        visible={showToolTip}
         placement="bottom-end"
         offset={[0, 10]}
         delay={300}
@@ -98,53 +106,104 @@ const PostHeader: React.FC<Props> = ({ post, currentUser }) => {
             tabIndex={-1}
             {...attrs}
           >
-            {isOwner && <MenuItem icon="pin_icon" title="Pin Post" />}
+            {isOwner && (
+              <MenuItem
+                setShowToolTip={setShowToolTip}
+                icon="pin_icon"
+                title="Pin Post"
+              />
+            )}
             <MenuItem
+              setShowToolTip={setShowToolTip}
               icon="save_icon"
               title="Save Post"
               subTitle="Add this to your saved items."
             />
             <div className="spacer my-3"></div>
-            {isOwner && <MenuItem icon="edit_icon" title="Edit Post" />}
-            {imagesLength > 0 && (
-              <MenuItem icon="download_icon" title="Download" />
+            {isOwner && (
+              <MenuItem
+                setShowToolTip={setShowToolTip}
+                icon="edit_icon"
+                title="Edit Post"
+              />
             )}
             {imagesLength > 0 && (
-              <MenuItem icon="fullscreen_icon" title="Enter Fullscreen" />
+              <MenuItem
+                setShowToolTip={setShowToolTip}
+                icon="download_icon"
+                title="Download"
+              />
+            )}
+            {imagesLength > 0 && (
+              <MenuItem
+                setShowToolTip={setShowToolTip}
+                icon="fullscreen_icon"
+                title="Enter Fullscreen"
+              />
             )}
             {isOwner && (
-              <MenuItem img="/icons/lock.png" title="Edit audience" />
+              <MenuItem
+                setShowToolTip={setShowToolTip}
+                img="/icons/lock.png"
+                title="Edit audience"
+              />
             )}
             {!isOwner && (
               <MenuItem
+                setShowToolTip={setShowToolTip}
                 icon="turnOnNotification_icon"
                 title="Turn on notifications for this post"
               />
             )}
             {isOwner && (
-              <MenuItem icon="delete_icon" title="Turn off translations" />
-            )}
-            {isOwner && <MenuItem icon="date_icon" title="Edit Date" />}
-            {isOwner && (
-              <MenuItem icon="refresh_icon" title="Refresh share attachment" />
-            )}
-            {isOwner && (
-              <MenuItem icon="archive_icon" title="Move to archive" />
+              <MenuItem
+                setShowToolTip={setShowToolTip}
+                icon="delete_icon"
+                title="Turn off translations"
+              />
             )}
             {isOwner && (
               <MenuItem
-                icon="trash_icon"
-                title="Move to trash"
-                subTitle="Items in your trash are deleted after 30 days"
-                onClick={async () => {
-                  await handleDeletePost({ postId: post._id });
-                  dispatch(removePost(post._id));
-                }}
+                setShowToolTip={setShowToolTip}
+                icon="date_icon"
+                title="Edit Date"
               />
+            )}
+            {isOwner && (
+              <MenuItem
+                setShowToolTip={setShowToolTip}
+                icon="refresh_icon"
+                title="Refresh share attachment"
+              />
+            )}
+            {isOwner && (
+              <MenuItem
+                setShowToolTip={setShowToolTip}
+                icon="archive_icon"
+                title="Move to archive"
+              />
+            )}
+            {isOwner && (
+              <>
+                {post._id && showDeleteConfirmForm && (
+                  <DeleteConfirmForm
+                    postId={post._id}
+                    setIsShown={setShowDeleteConfirmForm}
+                  />
+                )}
+                <MenuItem
+                  setShowToolTip={setShowToolTip}
+                  icon="trash_icon"
+                  title="Move to trash"
+                  subTitle="Items in your trash are deleted after 30 days"
+                  onClick={() => setShowDeleteConfirmForm(true)}
+                />
+              </>
             )}
             {!isOwner && <div className="spacer"></div>}
             {!isOwner && (
               <MenuItem
+                setShowToolTip={setShowToolTip}
                 img="/icons/report.png"
                 title="Report post"
                 subTitle="I'm concerned about this post"
@@ -156,7 +215,7 @@ const PostHeader: React.FC<Props> = ({ post, currentUser }) => {
         <button
           className="ml-auto h-9 w-9 rounded-full overflow-hidden hover:bg-gray-100 flex justify-center items-center outline-none"
           onClick={() => {
-            setShowTooltip(!showTooltip);
+            setShowToolTip(!showToolTip);
           }}
         >
           <Dots />

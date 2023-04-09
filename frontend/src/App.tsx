@@ -12,24 +12,40 @@ import NotFound from "./pages/NotFound";
 import HomeLayout from "./layouts/HomeLayout";
 import NormalLayout from "./layouts/NormalLayout";
 import BookMarks from "./pages/BookMarks/BookMarks";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/reset" element={<ResetPassword />} />
-      <Route element={<PrivateRoute />}>
-        <Route path="/verify/:token" element={<Verify />} />
-        <Route element={<VerifiedRoute />}>
-          <Route element={<HomeLayout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/profile/:email" element={<Profile />} />
-            <Route path="/bookmarks" element={<BookMarks />} />
-            <Route path="*" element={<NotFound />} />
+    <>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/reset" element={<ResetPassword />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/verify/:token" element={<Verify />} />
+          <Route element={<VerifiedRoute />}>
+            <Route element={<HomeLayout />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/profile/:email?" element={<Profile />} />
+              <Route path="/bookmarks" element={<BookMarks />} />
+              <Route path="*" element={<NotFound />} />
+            </Route>
           </Route>
         </Route>
-      </Route>
-    </Routes>
+      </Routes>
+      <ToastContainer
+        position="bottom-left"
+        autoClose={2000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable={false}
+        pauseOnHover={false}
+        theme="dark"
+        icon={false}
+      />
+    </>
   );
 }
 

@@ -1,4 +1,6 @@
 @import "./styles/fonts/index.css";
+@import "react-toastify/dist/ReactToastify.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
