@@ -36,7 +36,7 @@ const MainMenu: React.FC<Props> = ({
       <div className="w-full" ref={menuRef}>
         <div className="flex flex-col justify-start items-stretch rounded-lg shadow3 p-1 mb-4">
           <Link
-            to="/profile"
+            to={`/profile/${currentUser.email}`}
             className="flex gap-2 items-center p-3 rounded-lg hover:bg-gray-100 active:bg-gray-200"
           >
             <div className={menuStyles["account-menu_avatar"]}>

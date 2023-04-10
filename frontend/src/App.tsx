@@ -1,18 +1,25 @@
 import { Routes, Route } from "react-router-dom";
 // Pages
 import Login from "@pages/Login";
-import ResetPassword from "./pages/ResetPassword";
+import ResetPassword from "@pages/ResetPassword";
 import Home from "@pages/Home";
 import Profile from "@pages/Profile";
 import PrivateRoute from "@/components/middlewares/PrivateRoute";
 import VerifiedRoute from "./components/middlewares/VerifiedRoute";
-import Verify from "./pages/Verify";
-import NotFound from "./pages/NotFound";
+import Verify from "@pages/Verify";
+import NotFound from "@pages/NotFound";
+import { Navigate } from "react-router-dom";
 // Layouts
-import HomeLayout from "./layouts/HomeLayout";
-import NormalLayout from "./layouts/NormalLayout";
-import BookMarks from "./pages/BookMarks/BookMarks";
+import HomeLayout from "@layouts/HomeLayout";
+import ProfileLayout from "@layouts/ProfileLayout";
+import BookMarks from "@pages/BookMarks/BookMarks";
 import { ToastContainer } from "react-toastify";
+import ProfilePosts from "@pages/Profile/ProfilePosts";
+import ProfilePostsList from "@pages/Profile/ProfilePosts/ProfilePostsList";
+import ProfilePostsGrid from "./pages/Profile/ProfilePosts/ProfilePostsGrid";
+import ProfileAbout from "@pages/Profile/ProfileAbout";
+import ProfileFriends from "@pages/Profile/ProfileFriends";
+import ProfilePhotos from "@pages/Profile/ProfilePhotos";
 
 function App() {
   return (
@@ -25,7 +32,19 @@ function App() {
           <Route element={<VerifiedRoute />}>
             <Route element={<HomeLayout />}>
               <Route path="/" element={<Home />} />
-              <Route path="/profile/:email?" element={<Profile />} />
+              <Route path="/profile/:email" element={<ProfileLayout />}>
+                {/* Posts */}
+                <Route path="" element={<ProfilePosts />}>
+                  <Route index element={<ProfilePostsList />} />
+                  <Route path="grid" element={<ProfilePostsGrid />} />
+                </Route>
+                {/* Abouts */}
+                <Route path="about" element={<ProfileAbout />}></Route>
+                {/* Friends */}
+                <Route path="friends" element={<ProfileFriends />}></Route>
+                {/* Photos */}
+                <Route path="photos" element={<ProfilePhotos />}></Route>
+              </Route>
               <Route path="/bookmarks" element={<BookMarks />} />
               <Route path="*" element={<NotFound />} />
             </Route>

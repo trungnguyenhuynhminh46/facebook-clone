@@ -18,7 +18,7 @@ const LeftSidebar = (props: Props) => {
     >
       <div className="flex flex-col py-3 px-2">
         <Link
-          to="/profile"
+          to={`/profile/${user.email}`}
           className="flex gap-3 items-center p-2 rounded-lg hover:bg-gray-200"
         >
           <div className="w-9 h-9 rounded-full border border-gray-100 overflow-hidden">

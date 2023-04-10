@@ -7,14 +7,17 @@ import { User } from "@/types/User.type";
 
 type Props = {
   currentUser: User;
+  className?: string;
 };
 
-const CreatePosts: React.FC<Props> = ({ currentUser }) => {
+const CreatePosts: React.FC<Props> = ({ currentUser, className = "" }) => {
   const isSmallScreen = useMediaQuery({ query: "(max-width: 688px)" });
   const [isShown, setIsShown] = useState(false);
   const [inputText, setInputText] = useState("");
   return (
-    <div className="w-full relative py-3 px-4 rounded-lg bg-white flex flex-col items-stretch mt-4 shadow2 mb-3">
+    <div
+      className={`w-full relative py-3 px-4 rounded-lg bg-white flex flex-col items-stretch shadow2 ${className}`}
+    >
       <div className="flex gap-3 items-center mb-2">
         <button className={CreatePostsStyle["avatar"]}>
           <img

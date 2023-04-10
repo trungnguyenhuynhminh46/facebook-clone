@@ -44,7 +44,7 @@ const Home: React.FC<Props> = () => {
       >
         <div className="mx-4">
           <Stories currentUser={user} stories={stories} />
-          <CreatePosts currentUser={user} />
+          <CreatePosts currentUser={user} className="mt-4 mb-3" />
           {allPostsIds.map((postId) => {
             return (
               <PostComponent

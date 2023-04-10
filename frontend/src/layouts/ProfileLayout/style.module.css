@@ -1,0 +1,10 @@
+.menu-item {
+  @apply relative p-3 text-gray-500 font-medium rounded-lg hover:bg-gray-100;
+}
+.menu-item.active {
+  @apply font-medium text-blue-500 hover:bg-transparent;
+}
+.menu-item.active::after {
+  content: "";
+  @apply absolute left-0 right-0 bottom-0 translate-y-[4px] h-[2px] bg-blue-500;
+}
