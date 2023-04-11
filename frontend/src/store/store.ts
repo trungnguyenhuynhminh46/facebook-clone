@@ -7,6 +7,7 @@ import postReducer from "./slices/posts";
 import { reactionsApi } from "./api/reactionsApi";
 import { commentsApi } from "./api/commentsApi";
 import { postsApi } from "./api/postsApi";
+import { usersApi } from "./api/usersApi";
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     [reactionsApi.reducerPath]: reactionsApi.reducer,
     [commentsApi.reducerPath]: commentsApi.reducer,
     [postsApi.reducerPath]: postsApi.reducer,
+    [usersApi.reducerPath]: usersApi.reducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
@@ -22,7 +24,8 @@ export const store = configureStore({
     getDefaultMiddleware().concat(
       reactionsApi.middleware,
       commentsApi.middleware,
-      postsApi.middleware
+      postsApi.middleware,
+      usersApi.middleware
     ),
 });
 

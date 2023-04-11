@@ -236,7 +236,12 @@ const getUserInfoByUserEmail = async (req, res) => {
   const { email } = req.params;
   const userInfo = await User.findOne({
     email,
-  }).select("-password");
+  })
+    .select("-password")
+    .populate({
+      path: "friends",
+      select: "_id username picture email",
+    });
   if (!userInfo) {
     throw new customError(
       `The user with email ${email} is not found`,

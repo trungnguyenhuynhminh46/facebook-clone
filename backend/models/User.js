@@ -87,15 +87,15 @@ const userSchema = mongoose.Schema(
       default: false,
     },
     friends: {
-      type: Array,
+      type: [{ type: ObjectId, ref: "User" }],
       default: [],
     },
     following: {
-      type: Array,
+      type: [{ type: ObjectId, ref: "User" }],
       default: [],
     },
     followers: {
-      type: Array,
+      type: [{ type: ObjectId, ref: "User" }],
       default: [],
     },
     requests: {

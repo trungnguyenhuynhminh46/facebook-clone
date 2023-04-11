@@ -182,7 +182,7 @@ export const commentsApi = createApi({
         if (error || !result) {
           return [];
         }
-        console.log(`comment-${commentId}`);
+        // console.log(`comment-${commentId}`);
         return [
           {
             type: "Comments",
