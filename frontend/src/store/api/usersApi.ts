@@ -57,7 +57,35 @@ export const usersApi = createApi({
         ];
       },
     }),
+    updateProfilePictureByEmail: builder.mutation<
+      { email: string; currentProfilePicture: string },
+      { email: string; pictureUrl: string }
+    >({
+      query(body) {
+        return {
+          url: `/user/updateProfilePicture`,
+          method: "POST",
+          body,
+        };
+      },
+      invalidatesTags(result, error, body) {
+        const { email } = body;
+        if (error || !result) {
+          return [];
+        }
+        return [
+          {
+            type: "Users",
+            id: `user-${email}`,
+          },
+        ];
+      },
+    }),
   }),
 });
 
-export const { useGetUserInfoByUserEmailQuery, useGetImagesQuery } = usersApi;
+export const {
+  useGetUserInfoByUserEmailQuery,
+  useGetImagesQuery,
+  useUpdateProfilePictureByEmailMutation,
+} = usersApi;

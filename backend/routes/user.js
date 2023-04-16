@@ -10,6 +10,7 @@ const {
   validateCode,
   resetPassword,
   getUserInfoByUserEmail,
+  updateProfilePicture,
 } = require("../controllers/user");
 // Middlewares
 const authorizationMiddleware = require("../middleware/auth");
@@ -26,6 +27,11 @@ router.get(
   "/getUserInfoByUserEmail/:email",
   authorizationMiddleware,
   getUserInfoByUserEmail
+);
+router.post(
+  "/updateProfilePicture",
+  authorizationMiddleware,
+  updateProfilePicture
 );
 
 module.exports = router;

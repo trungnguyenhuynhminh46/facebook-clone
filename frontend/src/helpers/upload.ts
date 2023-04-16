@@ -1,5 +1,4 @@
 import axios from "axios";
-import dataURItoBlob from "./dataURLToBlob";
 const uploadImages = async (
   imagesList: string[],
   path: string,
@@ -7,10 +6,10 @@ const uploadImages = async (
 ) => {
   try {
     let formData = new FormData();
-    imagesList.forEach((image) => {
-      const blob = dataURItoBlob(image);
+    for (let image of imagesList) {
+      const blob = await fetch(image).then((response) => response.blob());
       blob && formData.append("images", blob);
-    });
+    }
     formData.append("path", path);
     const {
       data: { imagesUrl },

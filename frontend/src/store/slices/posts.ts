@@ -43,7 +43,16 @@ const postsSlice = createSlice({
     updatePost: postsAdapter.updateOne,
     upsertPost: postsAdapter.upsertOne,
     upsertManyPosts: postsAdapter.upsertMany,
+    updateManyPosts: postsAdapter.updateMany,
     removePost: postsAdapter.removeOne,
+    updatePicturesByEmail: (state, action) => {
+      const { email, currentProfilePicture } = action.payload;
+      Object.entries(state.entities).map(([id, post]) => {
+        if (post && post.user && post.user.email === email) {
+          post.user.picture = currentProfilePicture;
+        }
+      });
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -73,6 +82,13 @@ export const selectPostsIdsByEmail = createSelector(
     return ids.filter((postId) => entities[postId]?.user.email === email);
   }
 );
-export const { addPost, updatePost, upsertPost, upsertManyPosts, removePost } =
-  postsSlice.actions;
+export const {
+  addPost,
+  updatePost,
+  upsertPost,
+  upsertManyPosts,
+  updateManyPosts,
+  removePost,
+  updatePicturesByEmail,
+} = postsSlice.actions;
 export default postsSlice.reducer;

@@ -17,9 +17,15 @@ const userSlice = createSlice({
     logout: (state) => {
       state.user = null;
     },
+    updateProfileImage: (state, action) => {
+      const { profileUrl } = action.payload;
+      if (state.user?.picture) {
+        state.user.picture = profileUrl;
+      }
+    },
   },
 });
 
-export const { login, logout } = userSlice.actions;
+export const { login, logout, updateProfileImage } = userSlice.actions;
 
 export default userSlice.reducer;

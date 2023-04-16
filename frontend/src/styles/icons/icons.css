@@ -6,7 +6,7 @@
   height: 20px;
   background-repeat: no-repeat;
   display: inline-block;
-  -webkit-filter: invert(10%);
+  -webkit-filter: invert(100%);
 }
 .friends_suggestions_icon {
   background-image: url(/icons/icons11.png);

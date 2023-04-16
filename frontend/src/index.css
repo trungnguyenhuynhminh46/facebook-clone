@@ -67,6 +67,14 @@
   input[type="number"] {
     -moz-appearance: textfield;
   }
+
+  .cropper-container {
+    @apply relative w-full h-[200px] flex justify-center items-center;
+  }
+  .cropper-container .reactEasyCrop_Container {
+    @apply h-[300px] w-full;
+    color: rgba(0, 0, 0, 0.4);
+  }
 }
 
 @layer components {
@@ -195,9 +203,7 @@
     content: "";
     @apply absolute inset-0 bg-gray-400 opacity-10;
   }
-  .filter_blue {
-    filter: invert(39%) sepia(57%) saturate(200%) saturate(200%) saturate(200%)
-      saturate(200%) saturate(200%) saturate(147.75%) hue-rotate(202deg)
-      brightness(97%) contrast(96%);
+  .filer-invert {
+    -webkit-filter: invert(100%);
   }
 }

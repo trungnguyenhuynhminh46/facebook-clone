@@ -250,6 +250,29 @@ const getUserInfoByUserEmail = async (req, res) => {
   }
   return res.status(StatusCodes.OK).json(userInfo);
 };
+const updateProfilePicture = async (req, res) => {
+  const { email, pictureUrl } = req.body;
+  const user = await User.findOneAndUpdate(
+    { email },
+    {
+      picture: pictureUrl,
+    },
+    {
+      runValidators: true,
+      returnDocument: "after",
+    }
+  );
+  if (!user) {
+    throw customError(
+      `User with email ${email} is not found`,
+      StatusCodes.NOT_FOUND
+    );
+  }
+  return res.status(StatusCodes.OK).json({
+    email,
+    currentProfilePicture: user.picture,
+  });
+};
 
 module.exports = {
   register,
@@ -261,4 +284,5 @@ module.exports = {
   validateCode,
   resetPassword,
   getUserInfoByUserEmail,
+  updateProfilePicture,
 };
