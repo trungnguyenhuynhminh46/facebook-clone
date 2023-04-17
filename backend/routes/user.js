@@ -11,6 +11,7 @@ const {
   resetPassword,
   getUserInfoByUserEmail,
   updateProfilePicture,
+  updateProfileCover,
 } = require("../controllers/user");
 // Middlewares
 const authorizationMiddleware = require("../middleware/auth");
@@ -33,5 +34,6 @@ router.post(
   authorizationMiddleware,
   updateProfilePicture
 );
+router.post("/updateProfileCover", authorizationMiddleware, updateProfileCover);
 
 module.exports = router;

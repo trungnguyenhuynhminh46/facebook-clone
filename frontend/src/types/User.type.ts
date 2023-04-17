@@ -3,6 +3,7 @@ export interface User {
   username: string;
   email: string;
   picture: string;
+  cover: string;
   first_name: string;
   last_name: string;
   pronoun: string;

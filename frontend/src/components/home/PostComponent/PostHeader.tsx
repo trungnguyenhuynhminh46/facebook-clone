@@ -79,7 +79,16 @@ const PostHeader: React.FC<Props> = ({ post, currentUser }) => {
             {post.user.username}
           </span>
           {post.type === "profilePicture" && (
-            <span className="text-gray-400"> updated his profile picture</span>
+            <span className="text-gray-500 font-light">
+              {" "}
+              updated his profile picture
+            </span>
+          )}
+          {post.type === "profileCover" && (
+            <span className="text-gray-500 font-light">
+              {" "}
+              updated his cover photo
+            </span>
           )}
         </div>
         <div className="flex gap-2 items-center">

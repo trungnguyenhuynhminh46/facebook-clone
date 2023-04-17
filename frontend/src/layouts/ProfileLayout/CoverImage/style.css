@@ -1,0 +1,7 @@
+.crooper {
+  height: 100%;
+}
+.crooper img {
+  object-fit: cover;
+  width: 100%;
+}

@@ -62,13 +62,17 @@ const ProfileLayout = (props: Props) => {
             <div className="w-full bg-white">
               <div className="relative w-full max-w-[1094px] mx-auto mt-14">
                 {/* Cover image edit */}
-                <CoverImage isOwner={isOwner} userInfo={userInfo} />
+                <CoverImage
+                  isOwner={isOwner}
+                  userInfo={userInfo}
+                  currentUser={currentUser}
+                />
                 {/* User info */}
                 <div className="relative px-4 max-w-[1032px] mx-auto">
                   {/* User avatar */}
                   <UserImage isOwner={isOwner} userInfo={userInfo} />
                   {/* User info */}
-                  <div className="flex flex-col gap-1 items-center pt-[100px] md:items-start md:ml-[200px] md:pt-6 h-[128px]">
+                  <div className="flex flex-col gap-1 items-center pt-[100px] md:items-start md:ml-[200px] md:pt-6 min-h-[128px]">
                     <h1 className="text-3xl font-bold">
                       Nguyễn Huỳnh Minh Trung
                     </h1>

@@ -149,7 +149,7 @@ const EditAvatar: React.FC<Props> = ({
           );
           dispatch(updateProfileImage({ profileUrl: currentProfilePicture }));
           // Update profile picture of post's owner
-          dispatch(updatePicturesByEmail({ email, currentProfilePicture }));
+          // dispatch(updatePicturesByEmail({ email, currentProfilePicture }));
           // Create Post
           const addedPost = await handleAddPost({
             type: "profilePicture",
@@ -246,6 +246,21 @@ const EditAvatar: React.FC<Props> = ({
       <div className="absolute inset-0 bg-white opacity-80"></div>
       {/* Form */}
       <div className="relative flex-1 max-w-[700px] rounded-lg shadow2 bg-white overflow-hidden border border-solid border-gray-200 mx-4">
+        {/* Error */}
+        {error && (
+          <div className="absolute z-10 inset-0 bg-white bg-opacity-95 flex justify-center items-center gap-4">
+            <p className="font-medium text-red-600">{error}</p>
+            <button
+              className=" py-1 px-3 bg-blue-600 text-white rounded-md active:scale-95 active:bg-blue-700"
+              onClick={() => {
+                setImageUrl("");
+                setError("");
+              }}
+            >
+              Try again
+            </button>
+          </div>
+        )}
         {/* Loading */}
         {isLoading && (
           <div className="absolute inset-0 bg-white opacity-95 flex justify-center items-center z-10">

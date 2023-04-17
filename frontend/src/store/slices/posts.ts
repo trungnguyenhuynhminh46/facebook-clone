@@ -53,6 +53,14 @@ const postsSlice = createSlice({
         }
       });
     },
+    updateCoversByEmail: (state, action) => {
+      const { email, cover } = action.payload;
+      Object.entries(state.entities).map(([id, post]) => {
+        if (post && post.user && post.user.email === email) {
+          post.user.cover = cover;
+        }
+      });
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -90,5 +98,6 @@ export const {
   updateManyPosts,
   removePost,
   updatePicturesByEmail,
+  updateCoversByEmail,
 } = postsSlice.actions;
 export default postsSlice.reducer;

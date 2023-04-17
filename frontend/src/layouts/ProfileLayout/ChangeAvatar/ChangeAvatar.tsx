@@ -3,6 +3,7 @@ import Style from "./style.module.css";
 import ReactDOM from "react-dom";
 import EditAvatar from "./EditAvatar";
 import { useGetImagesQuery } from "@/store/api/usersApi";
+import { ClipLoader } from "react-spinners";
 
 type Props = {
   userInfo: any;
@@ -66,6 +67,21 @@ const ChangeAvatar: React.FC<Props> = ({ userInfo, setShowPopUp }) => {
       <div className="absolute inset-0 bg-white opacity-80"></div>
       {/* Form */}
       <div className="relative flex-1 max-w-[700px] rounded-lg shadow2 bg-white overflow-hidden border border-solid border-gray-200 mx-4">
+        {/* Error */}
+        {error && (
+          <div className="absolute z-10 inset-0 bg-white bg-opacity-95 flex justify-center items-center gap-4">
+            <p className="font-medium text-red-600">{error}</p>
+            <button
+              className=" py-1 px-3 bg-blue-600 text-white rounded-md active:scale-95 active:bg-blue-700"
+              onClick={() => {
+                setImageUrl("");
+                setError("");
+              }}
+            >
+              Try again
+            </button>
+          </div>
+        )}
         {/* Header */}
         <div className="w-full relative flex justify-center items-center border-b border-solid border-gray-300">
           <h1 className="py-5 text-xl font-bold">Update profile picture</h1>
@@ -79,7 +95,7 @@ const ChangeAvatar: React.FC<Props> = ({ userInfo, setShowPopUp }) => {
           </button>
         </div>
         {/* Content */}
-        <div className="w-full p-3 relative min-h-[400px] overflow-y-auto">
+        <div className="w-full p-3 relative overflow-y-auto">
           {/* Buttons */}
           <div className="flex flex-col items-stretch gap-2">
             <button
@@ -98,13 +114,25 @@ const ChangeAvatar: React.FC<Props> = ({ userInfo, setShowPopUp }) => {
           </div>
           {/* Uploads */}
           <h1 className="mt-5 mb-3 text-[17px] font-medium">Uploads</h1>
+          {isLoading && (
+            <div className="w-full flex justify-center items-center p-3">
+              {/* Loading */}
+              <ClipLoader
+                color={"gray"}
+                loading={isLoading}
+                size={20}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+              />
+            </div>
+          )}
           {!isLoading && data && (
             <div className="grid grid-cols-6 gap-2 ">
               {data.imagesUrl.map((image) => {
                 return (
                   <button
                     key={image}
-                    className="relative w-full aspect-square border border-solid border-gray-200 hover--overlay"
+                    className="relative w-full aspect-square border border-solid border-gray-200 hover--overlay rounded-md overflow-hidden"
                     onClick={() => {
                       setImageUrl(image);
                     }}

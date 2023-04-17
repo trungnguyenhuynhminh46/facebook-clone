@@ -7,6 +7,7 @@ export interface Comment {
     gender: string;
     last_name: string;
     picture: string;
+    cover: string;
     username: string;
   };
   text: string;

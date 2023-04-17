@@ -1,7 +1,8 @@
 import { Post } from "@/types/Post.type";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Style from "./style.module.css";
 import covers from "@data/covers";
+import { getAverageColorFromImageUrl } from "@/helpers/getAverageRGB";
 
 type Props = {
   post: Post;
@@ -11,6 +12,19 @@ const PostContent: React.FC<Props> = ({ post }) => {
   const cover = covers.find((c) => {
     return c.id === post.coverId;
   });
+  const [averageCoverColor, setAverageCoverColor] = useState<string>("");
+  useEffect(() => {
+    (async () => {
+      try {
+        if (post.type === "profileCover" && post.imagesList) {
+          const rgb = await getAverageColorFromImageUrl(post.imagesList[0]);
+          setAverageCoverColor(rgb);
+        }
+      } catch (err: any) {
+        alert(err.message);
+      }
+    })();
+  }, []);
   return (
     <>
       {post.type === "onlyText" && (
@@ -71,12 +85,31 @@ const PostContent: React.FC<Props> = ({ post }) => {
       )}
       {post.type === "profilePicture" && post.imagesList && (
         <div className="relative flex justify-center items-center py-8">
-          <div className="absolute top-0 left-0 right-0 h-[55%] bg-gray-200 z-[0]"></div>
+          {!post.user.cover && (
+            <div className="absolute top-0 left-0 right-0 h-[50%] bg-gray-200 z-[0]"></div>
+          )}
+          {post.user.cover && (
+            <img
+              src={post.user.cover}
+              alt=""
+              className="absolute top-0 w-full h-[50%] object-cover"
+            />
+          )}
           <img
             src={post.imagesList[0]}
             alt=""
             className="w-[388px] h-[388px] rounded-full border-[4px] border-solid border-white z-[1]"
           />
+        </div>
+      )}
+      {post.type === "profileCover" && post.imagesList && (
+        <div
+          className="flex justify-center"
+          style={{
+            background: averageCoverColor,
+          }}
+        >
+          <img src={post.imagesList[0]} alt="" className="w-[80%]" />
         </div>
       )}
     </>

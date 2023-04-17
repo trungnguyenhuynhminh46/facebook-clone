@@ -1,6 +1,6 @@
 export interface Post {
   _id: string;
-  type: "onlyText" | "cover" | "withImages" | "profilePicture";
+  type: "onlyText" | "cover" | "withImages" | "profilePicture" | "profileCover";
   user: {
     _id: string;
     email: string;
@@ -8,6 +8,7 @@ export interface Post {
     gender: string;
     last_name: string;
     picture: string;
+    cover: string;
     username: string;
   };
   text?: string;

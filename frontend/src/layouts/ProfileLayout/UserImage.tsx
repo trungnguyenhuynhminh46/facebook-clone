@@ -28,7 +28,7 @@ const UserImage: React.FC<Props> = ({ isOwner, userInfo }) => {
       {/* Camera button */}
       {isOwner && (
         <div
-          className="absolute right-1/2 translate-x-[80px] top-3 translate-y-4 p-2 rounded-full bg-gray-200 hover:bg-gray-300 flex justify-center items-center cursor-pointer md:top-[52px] md:left-0 md:right-auto md:translate-x-[160px] active:scale-95"
+          className="absolute right-1/2 translate-x-[80px] top-3 translate-y-4 p-2 rounded-full bg-gray-200 hover:bg-gray-300 flex justify-center items-center cursor-pointer md:top-[72px] md:-left-4 md:right-auto md:translate-x-[160px] active:scale-95"
           onClick={() => {
             setShowPopUp(!showPopUp);
           }}

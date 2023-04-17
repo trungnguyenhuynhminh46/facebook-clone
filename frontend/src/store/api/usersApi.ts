@@ -81,6 +81,30 @@ export const usersApi = createApi({
         ];
       },
     }),
+    updateProfileCoverByEmail: builder.mutation<
+      { email: string; currentCoverPicture: string },
+      { email: string; cover: string }
+    >({
+      query(body) {
+        return {
+          url: `/user/updateProfileCover`,
+          method: "POST",
+          body,
+        };
+      },
+      invalidatesTags(result, error, body) {
+        const { email } = body;
+        if (error || !result) {
+          return [];
+        }
+        return [
+          {
+            type: "Users",
+            id: `user-${email}`,
+          },
+        ];
+      },
+    }),
   }),
 });
 
@@ -88,4 +112,5 @@ export const {
   useGetUserInfoByUserEmailQuery,
   useGetImagesQuery,
   useUpdateProfilePictureByEmailMutation,
+  useUpdateProfileCoverByEmailMutation,
 } = usersApi;

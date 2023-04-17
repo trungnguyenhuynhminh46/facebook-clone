@@ -19,7 +19,7 @@ const handleReactionPost = async (req, res) => {
   const { postId } = req.params;
   const post = await Post.findById(postId).populate({
     path: "user",
-    select: "first_name last_name username email picture gender",
+    select: "first_name last_name username email picture cover gender",
   });
   if (!post) {
     throw new customError(

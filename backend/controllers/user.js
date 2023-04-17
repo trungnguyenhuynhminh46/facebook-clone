@@ -36,6 +36,7 @@ const register = async (req, res) => {
       username: user.username,
       email: user.email,
       picture: user.picture,
+      cover: user.cover,
       first_name: user.first_name,
       last_name: user.last_name,
       pronoun: user.pronoun,
@@ -78,6 +79,7 @@ const verify = async (req, res) => {
       username: user.username,
       email: user.email,
       picture: user.picture,
+      cover: user.cover,
       first_name: user.first_name,
       last_name: user.last_name,
       pronoun: user.pronoun,
@@ -114,6 +116,7 @@ const login = async (req, res) => {
       username: user.username,
       email: user.email,
       picture: user.picture,
+      cover: user.cover,
       first_name: user.first_name,
       last_name: user.last_name,
       pronoun: user.pronoun,
@@ -273,6 +276,29 @@ const updateProfilePicture = async (req, res) => {
     currentProfilePicture: user.picture,
   });
 };
+const updateProfileCover = async (req, res) => {
+  const { email, cover } = req.body;
+  const user = await User.findOneAndUpdate(
+    { email },
+    {
+      cover,
+    },
+    {
+      runValidators: true,
+      returnDocument: "after",
+    }
+  );
+  if (!user) {
+    throw customError(
+      `User with email ${email} is not found`,
+      StatusCodes.NOT_FOUND
+    );
+  }
+  return res.status(StatusCodes.OK).json({
+    email,
+    currentCoverPicture: cover,
+  });
+};
 
 module.exports = {
   register,
@@ -285,4 +311,5 @@ module.exports = {
   resetPassword,
   getUserInfoByUserEmail,
   updateProfilePicture,
+  updateProfileCover,
 };

@@ -8,7 +8,7 @@ const createPost = async (req, res) => {
     const savedPost = await createdPost.save();
     const returnPost = await Post.findById(savedPost._id).populate({
       path: "user",
-      select: "first_name last_name username email picture gender",
+      select: "first_name last_name username email picture cover gender",
     });
     return res.status(StatusCodes.OK).json(returnPost);
   } catch (err) {
@@ -23,7 +23,7 @@ const updatePost = async (req, res) => {
     runValidators: true,
   }).populate({
     path: "user",
-    select: "first_name last_name username email picture gender",
+    select: "first_name last_name username email picture cover gender",
   });
   if (!updatedPost) {
     throw new customError(`Post with id ${postId} is not existed`);
@@ -39,7 +39,7 @@ const getAllPosts = async (req, res) => {
   try {
     const allPosts = await Post.find({}).populate({
       path: "user",
-      select: "first_name last_name username email picture gender",
+      select: "first_name last_name username email picture cover gender",
     });
     return res.status(StatusCodes.OK).json({
       posts: allPosts,

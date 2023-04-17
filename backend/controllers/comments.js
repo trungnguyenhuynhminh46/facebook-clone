@@ -17,7 +17,7 @@ const getRootCommentsByPostId = async (req, res) => {
     post: new ObjectId(postId),
   }).populate({
     path: "user",
-    select: "first_name last_name username email picture gender",
+    select: "first_name last_name username email picture cover gender",
   });
   if (!comments) {
     throw new customError(
@@ -44,7 +44,7 @@ const getCommentsByParentComment = async (req, res) => {
   const commentIds = comment.replies;
   const comments = await Comment.find({ _id: { $in: commentIds } }).populate({
     path: "user",
-    select: "first_name last_name username email picture gender",
+    select: "first_name last_name username email picture cover gender",
   });
   return res.status(StatusCodes.OK).json(comments);
 };
@@ -56,7 +56,7 @@ const addComment = async (req, res) => {
   }
   const post = await Post.findById(postId).populate({
     path: "user",
-    select: "first_name last_name username email picture gender",
+    select: "first_name last_name username email picture cover gender",
   });
   if (!post) {
     throw new customError(`The post with id ${postId} is not existed`);
@@ -94,7 +94,7 @@ const updateComment = async (req, res) => {
   const postId = updatedComment.post;
   const post = await Post.findById(postId).populate({
     path: "user",
-    select: "first_name last_name username email picture gender",
+    select: "first_name last_name username email picture cover gender",
   });
   if (!post) {
     throw new customError(`The post with id ${postId} is not existed`);
@@ -112,7 +112,7 @@ const deleteComment = async (req, res) => {
   const postId = comment.post;
   const post = await Post.findById(postId).populate({
     path: "user",
-    select: "first_name last_name username email picture gender",
+    select: "first_name last_name username email picture cover gender",
   });
   await post.updateCommentsCount();
   // Update parent comment
