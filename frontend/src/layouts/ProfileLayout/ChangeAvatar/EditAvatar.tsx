@@ -13,6 +13,9 @@ import { useUpdateProfilePictureByEmailMutation } from "@/store/api/usersApi";
 import Cookies from "js-cookie";
 import { updateProfileImage } from "@/store/slices/user";
 import { updatePicturesByEmail } from "@/store/slices/posts";
+import { BeatLoader } from "react-spinners";
+import { useAddPostMutation } from "@/store/api/postsApi";
+import { addPost } from "@/store/slices/posts";
 
 type Props = {
   imageUrl: string;
@@ -85,13 +88,11 @@ const EditAvatar: React.FC<Props> = ({
   setShowPopUp,
   userInfo,
 }) => {
-  // console.log(imageUrl);
-  // fetch(imageUrl)
-  //   .then((response) => response.blob())
-  //   .then(console.log);
   const dispatch = useDispatch();
   const [updateProfilePictureByEmail] =
     useUpdateProfilePictureByEmailMutation();
+  const [handleAddPost] = useAddPostMutation();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const currentUser = useSelector(selectCurrentUser);
   const [showDiscardForm, setShowDiscardForm] = useState<boolean>(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -124,10 +125,10 @@ const EditAvatar: React.FC<Props> = ({
       }
     } catch (e: any) {
       console.log(e);
-      setError(e.message);
     }
   }, [croppedAreaPixels]);
   const handleUpdateProfileImage = async () => {
+    setIsLoading(true);
     if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
       if (imageUrl !== userInfo.picture) {
         try {
@@ -149,8 +150,23 @@ const EditAvatar: React.FC<Props> = ({
           dispatch(updateProfileImage({ profileUrl: currentProfilePicture }));
           // Update profile picture of post's owner
           dispatch(updatePicturesByEmail({ email, currentProfilePicture }));
+          // Create Post
+          const addedPost = await handleAddPost({
+            type: "profilePicture",
+            user: currentUser.id,
+            text: "",
+            coverId: undefined,
+            imagesList: [currentProfilePicture],
+            isSharedTo: "public",
+            isFeeling: "",
+            checkedOutAt: "",
+            tagedFriends: [],
+          }).unwrap();
+          dispatch(addPost(addedPost));
+          setIsLoading(false);
         } catch (error: any) {
           console.log(error);
+          setIsLoading(false);
           // setError(error.response.data.message);
         }
       }
@@ -167,6 +183,7 @@ const EditAvatar: React.FC<Props> = ({
         // console.log(cloudinaryImagesUrls);
         if (typeof cloudinaryImagesUrls === "string") {
           setError(cloudinaryImagesUrls);
+          setIsLoading(false);
           return;
         }
         // Update profile picture (server)
@@ -186,12 +203,28 @@ const EditAvatar: React.FC<Props> = ({
         dispatch(updateProfileImage({ profileUrl: currentProfilePicture }));
         // Update profile picture of post's owner
         dispatch(updatePicturesByEmail({ email, currentProfilePicture }));
+        // Create Post
+        const addedPost = await handleAddPost({
+          type: "profilePicture",
+          user: currentUser.id,
+          text: "",
+          coverId: undefined,
+          imagesList: [currentProfilePicture],
+          isSharedTo: "public",
+          isFeeling: "",
+          checkedOutAt: "",
+          tagedFriends: [],
+        }).unwrap();
+        dispatch(addPost(addedPost));
+        setIsLoading(false);
       } catch (error: any) {
         console.log(error);
+        setIsLoading(false);
         // setError(error.response.data.message);
       }
     } else {
       console.log("Strange type: ", imageUrl);
+      setIsLoading(false);
     }
   };
   useEffect(() => {
@@ -213,6 +246,18 @@ const EditAvatar: React.FC<Props> = ({
       <div className="absolute inset-0 bg-white opacity-80"></div>
       {/* Form */}
       <div className="relative flex-1 max-w-[700px] rounded-lg shadow2 bg-white overflow-hidden border border-solid border-gray-200 mx-4">
+        {/* Loading */}
+        {isLoading && (
+          <div className="absolute inset-0 bg-white opacity-95 flex justify-center items-center z-10">
+            <BeatLoader
+              color="#3498db"
+              loading={isLoading}
+              size={16}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+          </div>
+        )}
         {/* Header */}
         <div className="w-full relative flex justify-center items-center border-b border-solid border-gray-300">
           <h1 className="py-5 text-xl font-bold">Update profile picture</h1>

@@ -69,6 +69,16 @@ const PostContent: React.FC<Props> = ({ post }) => {
           </p>
         </div>
       )}
+      {post.type === "profilePicture" && post.imagesList && (
+        <div className="relative flex justify-center items-center py-8">
+          <div className="absolute top-0 left-0 right-0 h-[55%] bg-gray-200 z-[0]"></div>
+          <img
+            src={post.imagesList[0]}
+            alt=""
+            className="w-[388px] h-[388px] rounded-full border-[4px] border-solid border-white z-[1]"
+          />
+        </div>
+      )}
     </>
   );
 };

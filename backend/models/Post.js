@@ -6,7 +6,7 @@ const schema = mongoose.Schema(
   {
     type: {
       type: String,
-      enum: ["onlyText", "cover", "withImages"],
+      enum: ["onlyText", "cover", "withImages", "profilePicture"],
       default: "onlyText",
     },
     user: {

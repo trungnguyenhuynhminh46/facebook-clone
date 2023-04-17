@@ -1,6 +1,6 @@
 export interface Post {
   _id: string;
-  type: "onlyText" | "cover" | "withImages";
+  type: "onlyText" | "cover" | "withImages" | "profilePicture";
   user: {
     _id: string;
     email: string;

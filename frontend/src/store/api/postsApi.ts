@@ -5,7 +5,7 @@ import { Post } from "@/types/Post.type";
 // post-${postId}
 
 type AddPostBodyType = {
-  type: "onlyText" | "cover" | "withImages";
+  type: "onlyText" | "cover" | "withImages" | "profilePicture";
   user?: string;
   text?: string;
   coverId?: number;

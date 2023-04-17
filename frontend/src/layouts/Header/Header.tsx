@@ -415,7 +415,11 @@ const Header: React.FC<Props> = (props: Props) => {
                 }
               }}
             >
-              <img src={user?.picture} alt="" />
+              <img
+                src={user?.picture}
+                alt=""
+                className="w-full h-full object-cover"
+              />
             </button>
           </ToolTip>
           {currentMenu === "account" && <AccountMenu />}

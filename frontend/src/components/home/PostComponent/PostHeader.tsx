@@ -74,7 +74,14 @@ const PostHeader: React.FC<Props> = ({ post, currentUser }) => {
         </div>
       </Link>
       <div className="flex flex-col">
-        <span className="text-[15px] font-semibold">{post.user.username}</span>
+        <div>
+          <span className="text-[15px] font-semibold">
+            {post.user.username}
+          </span>
+          {post.type === "profilePicture" && (
+            <span className="text-gray-400"> updated his profile picture</span>
+          )}
+        </div>
         <div className="flex gap-2 items-center">
           <span className="text-[13px] text-[var(--color-secondary)] tracking-wide">
             {isoStringToDate(post.createdAt, "MMMM d 'at' h:mm a")}

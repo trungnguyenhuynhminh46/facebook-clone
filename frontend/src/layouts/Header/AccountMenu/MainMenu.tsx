@@ -40,7 +40,11 @@ const MainMenu: React.FC<Props> = ({
             className="flex gap-2 items-center p-3 rounded-lg hover:bg-gray-100 active:bg-gray-200"
           >
             <div className={menuStyles["account-menu_avatar"]}>
-              <img src={currentUser?.picture} alt="" />
+              <img
+                src={currentUser?.picture}
+                alt=""
+                className="w-full h-full object-cover"
+              />
             </div>
             <span className="text-[17px] font-semibold">
               {currentUser?.username}

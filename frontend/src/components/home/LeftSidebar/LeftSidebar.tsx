@@ -22,7 +22,11 @@ const LeftSidebar = (props: Props) => {
           className="flex gap-3 items-center p-2 rounded-lg hover:bg-gray-200"
         >
           <div className="w-9 h-9 rounded-full border border-gray-100 overflow-hidden">
-            <img src={user.picture} alt="" />
+            <img
+              src={user.picture}
+              alt=""
+              className="w-full h-full object-cover"
+            />
           </div>
           <p className="text-[#050505] font-medium text-[15px]">
             {user.username}
@@ -71,7 +75,7 @@ const LeftSidebar = (props: Props) => {
       {/* Shortcut */}
       <div className="h-[1px] w-auto bg-gray-300 my-2 mx-4"></div>
       <p className="text-[var(--color-secondary)] font-semibold text-[17px] px-4 py-3">
-        You shortcuts
+        Your shortcuts
       </p>
       <div className="flex flex-col py-3 px-2 min-h-[132px]">
         <a

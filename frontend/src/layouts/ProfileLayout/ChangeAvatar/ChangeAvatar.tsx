@@ -2,6 +2,7 @@ import React, { useCallback, useRef, useState } from "react";
 import Style from "./style.module.css";
 import ReactDOM from "react-dom";
 import EditAvatar from "./EditAvatar";
+import { useGetImagesQuery } from "@/store/api/usersApi";
 
 type Props = {
   userInfo: any;
@@ -9,6 +10,13 @@ type Props = {
 };
 
 const ChangeAvatar: React.FC<Props> = ({ userInfo, setShowPopUp }) => {
+  const folder = `${userInfo.email}/profile_pictures`;
+  const { data, isLoading, isFetching } = useGetImagesQuery({
+    folder,
+    sort: "desc",
+    max: 12,
+  });
+
   const [error, setError] = useState<string>("");
   const [imageUrl, setImageUrl] = useState<string>("");
   const refInput = useRef<HTMLInputElement>(null);
@@ -37,8 +45,6 @@ const ChangeAvatar: React.FC<Props> = ({ userInfo, setShowPopUp }) => {
     // Clear file
     e.target.value = "";
   };
-
-  const handleGetCroppedImage = () => {};
   return ReactDOM.createPortal(
     <div className="fixed inset-0 flex justify-center items-center z-20">
       {imageUrl && (
@@ -90,6 +96,25 @@ const ChangeAvatar: React.FC<Props> = ({ userInfo, setShowPopUp }) => {
               <span>Add Frame</span>
             </button>
           </div>
+          {/* Uploads */}
+          <h1 className="mt-5 mb-3 text-[17px] font-medium">Uploads</h1>
+          {!isLoading && data && (
+            <div className="grid grid-cols-6 gap-2 ">
+              {data.imagesUrl.map((image) => {
+                return (
+                  <button
+                    key={image}
+                    className="relative w-full aspect-square border border-solid border-gray-200 hover--overlay"
+                    onClick={() => {
+                      setImageUrl(image);
+                    }}
+                  >
+                    <img src={image} className="w-full h-full object-cover" />
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>{" "}
       </div>
     </div>,

@@ -17,7 +17,7 @@ const ContactItem: React.FC<ContactItemProps> = ({ user }) => {
   return (
     <button className="flex gap-3 items-center p-2 rounded-lg hover:bg-gray-200">
       <div className="w-9 h-9 rounded-full border border-gray-100 overflow-hidden">
-        <img src={user.picture} alt="" />
+        <img src={user.picture} alt="" className="w-full h-full object-cover" />
       </div>
       <p className="text-[#050505] font-medium text-[15px]">{user.username}</p>
     </button>
