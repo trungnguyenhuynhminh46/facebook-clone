@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 import Login from "@pages/Login";
 import ResetPassword from "@pages/ResetPassword";
 import Home from "@pages/Home";
-import Profile from "@pages/Profile";
 import PrivateRoute from "@/components/middlewares/PrivateRoute";
 import VerifiedRoute from "./components/middlewares/VerifiedRoute";
 import Verify from "@pages/Verify";
