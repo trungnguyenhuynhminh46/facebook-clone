@@ -47,7 +47,7 @@ const ProfileLayout = (props: Props) => {
   const [isOwner, setIsOwner] = useState<boolean>(false);
   useEffect(() => {
     if (userInfo) {
-      console.log(userInfo);
+      // console.log(userInfo);
       setIsOwner(userInfo.email === currentUser.email);
     }
   }, [userInfo]);
@@ -76,6 +76,11 @@ const ProfileLayout = (props: Props) => {
                     <h1 className="text-3xl font-bold">
                       Nguyễn Huỳnh Minh Trung
                     </h1>
+                    {userInfo.details.otherName && (
+                      <span className="tracking-wide text-xl text-gray-500 font-semibold">
+                        ({userInfo.details.otherName})
+                      </span>
+                    )}
                     {hasFriends && (
                       <>
                         <span className="text-[#65676B] font-medium -mt-1 mb-2">

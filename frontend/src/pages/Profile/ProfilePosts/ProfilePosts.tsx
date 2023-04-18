@@ -36,7 +36,7 @@ const ProfilePosts = (props: Props) => {
     <div className="flex flex-col gap-[15px] mt-[15px] max-w-[1032px] px-4 mx-auto md:flex-row">
       {/* Left column */}
       <div className="w-full md:basis-2/5 flex flex-col gap-[15px]">
-        <IntroMenu isOwner={isOwner} />
+        <IntroMenu isOwner={isOwner} userInfo={userInfo} />
         <ManageImagesMenu folder={folder} />
         <ManageFriends
           userInfo={userInfo}

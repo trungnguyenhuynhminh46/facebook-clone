@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 import { RootState } from "../store";
+import { Details } from "@/types/Details";
 
 export const usersApi = createApi({
   reducerPath: "usersApi",
@@ -105,6 +106,18 @@ export const usersApi = createApi({
         ];
       },
     }),
+    updateProfileDetailsByEmail: builder.mutation<
+      { email: string; newDetails: Details },
+      { email: string; details: Details }
+    >({
+      query(body) {
+        return {
+          url: `/user/updateProfileDetails`,
+          method: "PATCH",
+          body,
+        };
+      },
+    }),
   }),
 });
 
@@ -113,4 +126,5 @@ export const {
   useGetImagesQuery,
   useUpdateProfilePictureByEmailMutation,
   useUpdateProfileCoverByEmailMutation,
+  useUpdateProfileDetailsByEmailMutation,
 } = usersApi;

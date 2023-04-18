@@ -272,7 +272,7 @@ const CoverImage: React.FC<Props> = ({ isOwner, userInfo, currentUser }) => {
           !error && imageUrl && (
             <>
               {/* Accept form */}
-              <div className="fixed top-0 left-0 right-0 px-4 py-2 z-20 flex items-center bg-gray-700 text-white">
+              <div className="fixed top-14 left-0 right-0 px-4 py-2 z-20 flex items-center bg-gray-700 bg-opacity-70 text-white">
                 <div className="flex items-center gap-2">
                   <img
                     src="/icons/public.png"

@@ -12,6 +12,7 @@ const {
   getUserInfoByUserEmail,
   updateProfilePicture,
   updateProfileCover,
+  updateProfileDetails,
 } = require("../controllers/user");
 // Middlewares
 const authorizationMiddleware = require("../middleware/auth");
@@ -35,5 +36,10 @@ router.post(
   updateProfilePicture
 );
 router.post("/updateProfileCover", authorizationMiddleware, updateProfileCover);
+router.patch(
+  "/updateProfileDetails",
+  authorizationMiddleware,
+  updateProfileDetails
+);
 
 module.exports = router;

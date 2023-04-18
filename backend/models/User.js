@@ -114,34 +114,44 @@ const userSchema = mongoose.Schema(
     details: {
       bio: {
         type: String,
+        default: "",
       },
       otherName: {
         type: String,
+        default: "",
       },
       job: {
         type: String,
+        default: "",
       },
       workplace: {
         type: String,
+        default: "",
       },
       highSchool: {
         type: String,
+        default: "",
       },
       college: {
         type: String,
+        default: "",
       },
       currentCity: {
         type: String,
+        default: "",
       },
       hometown: {
         type: String,
+        default: "",
       },
       relationship: {
         type: String,
-        enum: ["Single", "In a relationship", "Married", "Divorced"],
+        enum: ["Single", "In a relationship", "Married", "Divorced", ""],
+        default: "",
       },
       instagram: {
         type: String,
+        default: "",
       },
     },
     savedPosts: [

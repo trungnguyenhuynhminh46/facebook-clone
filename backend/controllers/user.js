@@ -299,6 +299,29 @@ const updateProfileCover = async (req, res) => {
     currentCoverPicture: cover,
   });
 };
+const updateProfileDetails = async (req, res) => {
+  const { email, details } = req.body;
+  const user = await User.findOneAndUpdate(
+    { email },
+    {
+      details,
+    },
+    {
+      runValidators: true,
+      returnDocument: "after",
+    }
+  );
+  if (!user) {
+    throw new customError(
+      `Thus use with email ${email} is not found`,
+      StatusCodes.NOT_FOUND
+    );
+  }
+  return res.status(StatusCodes.OK).json({
+    email,
+    newDetails: user.details,
+  });
+};
 
 module.exports = {
   register,
@@ -312,4 +335,5 @@ module.exports = {
   getUserInfoByUserEmail,
   updateProfilePicture,
   updateProfileCover,
+  updateProfileDetails,
 };
