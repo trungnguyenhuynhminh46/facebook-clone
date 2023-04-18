@@ -96,7 +96,7 @@ const ImagePicker: React.FC<Props> = ({
                 onChange={handleUploadImages}
               />
               <i className="addPhoto_icon"></i>
-              <span className="font-medium">Add Photos/Videos</span>
+              <span className="font-sm sm:font-medium">Add Photos/Videos</span>
             </label>
           </div>
           <div

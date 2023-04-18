@@ -2,46 +2,46 @@
   @apply w-full grid grid-cols-1 gap-[2px];
 }
 .template-1 img {
-  @apply w-full h-[233px] object-cover;
+  @apply w-full h-[180px] sm:h-[233px] object-cover;
 }
 .template-2 {
   @apply w-full grid grid-cols-2 gap-[2px];
 }
 .template-2 img {
-  @apply w-full col-span-1 h-[233px] object-cover;
+  @apply w-full col-span-1 h-[180px] sm:h-[233px] object-cover;
 }
 .template-3 {
   @apply w-full grid grid-cols-6 gap-[2px];
 }
 .template-3 img:nth-child(1) {
-  @apply w-full col-span-6 h-[233px] object-cover;
+  @apply w-full col-span-6 h-[180px] sm:h-[233px] object-cover;
 }
 .template-3 img:nth-child(2),
 .template-3 img:nth-child(3) {
-  @apply w-full col-span-3 h-[233px] object-cover;
+  @apply w-full col-span-3 h-[180px] sm:h-[233px] object-cover;
 }
 .template-4 {
   @apply w-full grid grid-cols-2 gap-[2px];
 }
 .template-4 img:nth-child(1),
 .template-4 img:nth-child(2) {
-  @apply w-full col-span-1 h-[250px] object-cover;
+  @apply w-full col-span-1 h-[200px] sm:h-[250px] object-cover;
 }
 .template-4 img:nth-child(3),
 .template-4 img:nth-child(4) {
-  @apply w-full col-span-1 h-[250px] object-cover;
+  @apply w-full col-span-1 h-[200px] sm:h-[250px] object-cover;
 }
 .template-5 {
   @apply w-full grid grid-cols-6 gap-[2px];
 }
 .template-5 img:nth-child(1),
 .template-5 img:nth-child(2) {
-  @apply w-full col-span-3 h-[233px] object-cover;
+  @apply w-full col-span-3 h-[180px] sm:h-[233px] object-cover;
 }
 .template-5 img:nth-child(3),
 .template-5 img:nth-child(4),
 .template-5 :nth-child(5) {
-  @apply w-full col-span-2 h-[150px] object-cover;
+  @apply w-full col-span-2 h-[110px] sm:h-[150px] object-cover;
 }
 .reactions-container {
   display: flex;

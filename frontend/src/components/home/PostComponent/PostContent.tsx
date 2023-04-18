@@ -98,7 +98,7 @@ const PostContent: React.FC<Props> = ({ post }) => {
           <img
             src={post.imagesList[0]}
             alt=""
-            className="w-[388px] h-[388px] rounded-full border-[4px] border-solid border-white z-[1]"
+            className="w-[200px] h-[200px] sm:w-[388px] sm:h-[388px] rounded-full border-[4px] border-solid border-white z-[1]"
           />
         </div>
       )}

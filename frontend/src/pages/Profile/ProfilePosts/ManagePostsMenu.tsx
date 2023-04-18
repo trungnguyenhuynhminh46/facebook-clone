@@ -13,16 +13,18 @@ const ManagePostsMenu: React.FC<Props> = ({ isOwner }) => {
     <div className="w-full rounded-lg bg-white shadow2">
       {/* Top */}
       <div className="flex justify-between items-center px-4 border-b-[0.5px] border-solid border-gray-300">
-        <span className="text-xl font-bold">Posts</span>
+        <span className="text-lg sm:text-xl font-bold">Posts</span>
         <div className="flex gap-2 items-stretch h-[52px] py-[8px]">
           <button className="flex gap-1 items-center rounded-lg bg-gray-200 active:bg-gray-300 active:scale-95 px-3">
             <i className="equalize_icon"></i>
-            <span className="font-semibold">Filters</span>
+            <span className="text-sm sm:text-base font-semibold">Filters</span>
           </button>
           {isOwner && (
             <button className="flex gap-1 items-center rounded-lg bg-gray-200 active:bg-gray-300 active:scale-95 px-3">
               <i className="manage_icon"></i>
-              <span className="font-semibold">Manage posts</span>
+              <span className="text-sm sm:text-base font-semibold">
+                Manage posts
+              </span>
             </button>
           )}
         </div>

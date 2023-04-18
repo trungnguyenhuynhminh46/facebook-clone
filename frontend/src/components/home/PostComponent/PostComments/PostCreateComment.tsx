@@ -287,11 +287,11 @@ const PostCreateComment: React.FC<Props> = ({
             }}
             onKeyDown={handleKeyDownInput}
             type="text"
-            className="flex-1 text-[15px] placeholder:text-gray-400 text-gray-800 caret-gray-800 border-none outline-none bg-transparent"
+            className="flex-1 placeholder:text-gray-400 text-gray-800 caret-gray-800 border-none outline-none bg-transparent max-w-[111px] sm:max-w-none text-[12px] sm:text-[15px]"
             disabled={commentIsBeingAdded}
             placeholder={`${commentIsBeingAdded ? "" : "Write a comment..."}`}
           />
-          <div className="flex-shrink-0 flex relative">
+          <div className="flex-shrink-0 flex relative ml-auto">
             <div
               id="comment-emoji"
               className="absolute left-0 top-0 -translate-x-full z-10"

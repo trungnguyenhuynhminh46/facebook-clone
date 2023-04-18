@@ -108,7 +108,7 @@ const EmojiPickerBackground: React.FC<Props> = ({
               coverState,
           },
           {
-            "text-[20px]": !showPrev && isSmallScreen,
+            "text-[18px]": !showPrev && isSmallScreen,
             "text-[24px]":
               !showPrev && !isSmallScreen && inputText.length <= 75,
           },

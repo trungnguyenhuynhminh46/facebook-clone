@@ -71,7 +71,7 @@ const SelectUploadedCoverPopUp: React.FC<SelectUploadedCoverProps> = ({
           </div>
         )}
         {!isLoading && data && (
-          <div className="w-full p-3 grid grid-cols-3 gap-2">
+          <div className="w-full p-3 grid grid-cols-3 gap-1 sm:gap-2">
             {data.imagesUrl.map((image) => {
               return (
                 <button
@@ -277,14 +277,16 @@ const CoverImage: React.FC<Props> = ({ isOwner, userInfo, currentUser }) => {
                   <img
                     src="/icons/public.png"
                     alt=""
-                    className="w-6 h-6 shrink-0 invert"
+                    className="w-4 h-4 sm:w-6 sm:h-6 shrink-0 invert"
                   />
-                  <span>Your cover photo is public</span>
+                  <span className="text-sm sm:text-base">
+                    Your cover photo is public
+                  </span>
                 </div>
                 {/* Button */}
                 <div className="flex items-stretch ml-auto gap-2">
                   <button
-                    className="py-2 px-5 rounded-md bg-gray-500 active:scale-95 active:bg-gray-600"
+                    className="py-2 px-5 rounded-md bg-gray-500 active:scale-95 active:bg-gray-600 text-sm sm:text-base"
                     onClick={() => {
                       setImageUrl("");
                     }}
@@ -292,7 +294,7 @@ const CoverImage: React.FC<Props> = ({ isOwner, userInfo, currentUser }) => {
                     Cancel
                   </button>
                   <button
-                    className="w-[160px] rounded-md bg-blue-600 active:scale-95 active:bg-blue-700 flex justify-center items-center"
+                    className="w-[120px] sm:w-[160px] rounded-md bg-blue-600 active:scale-95 active:bg-blue-700 flex justify-center items-center text-sm sm:text-base"
                     onClick={handleUpdateProfileCover}
                   >
                     {!isLoading && "Save changes"}
