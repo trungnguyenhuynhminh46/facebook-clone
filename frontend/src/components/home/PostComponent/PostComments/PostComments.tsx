@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Post } from "@/types/Post.type";
-import { Comment } from "@/types/Comment.type";
-import { Link } from "react-router-dom";
 import { User } from "@/types/User.type";
 import {
   useAddCommentMutation,
   useGetRootCommentsByPostIdQuery,
-  useUpdateCommentMutation,
 } from "@/store/api/commentsApi";
 import { ClipLoader } from "react-spinners";
 import PostCommentsList from "./PostCommentsList";
@@ -17,6 +14,7 @@ type Props = {
   currentUser: User;
   showComments: boolean;
   setShowComments: React.Dispatch<React.SetStateAction<boolean>>;
+  setLocalPost: React.Dispatch<React.SetStateAction<Post>>;
 };
 
 const PostComments: React.FC<Props> = ({
@@ -24,6 +22,7 @@ const PostComments: React.FC<Props> = ({
   currentUser,
   showComments,
   setShowComments,
+  setLocalPost,
 }) => {
   const {
     data: rootComments,
@@ -35,27 +34,30 @@ const PostComments: React.FC<Props> = ({
     },
     { skip: !showComments }
   );
-  // rootComments && console.log(rootComments);
   const [addComment, { isLoading: commentIsBeingAdded }] =
     useAddCommentMutation();
-  const [updateComment, { isLoading: commentIsBeingUpdated }] =
-    useUpdateCommentMutation();
   return (
     <>
       <div className="my-2 mx-4">
         <PostCreateComment
-          postId={post._id}
+          post={post}
           currentUser={currentUser}
           addComment={addComment}
           commentIsBeingAdded={commentIsBeingAdded}
-          updateComment={updateComment}
-          commentIsBeingUpdated={commentIsBeingUpdated}
+          setLocalPost={setLocalPost}
         />
+        {commentIsBeingAdded && (
+          <span className="italic text-sm text-gray-600 px-12">Posting...</span>
+        )}
       </div>
       {rootComments && rootComments.length > 0 && (
         <div className="p-4 pt-0 pr-10">
           {/* Root comments */}
-          <PostCommentsList commentsList={rootComments} />
+          <PostCommentsList
+            post={post}
+            setLocalPost={setLocalPost}
+            commentsList={rootComments}
+          />
         </div>
       )}
       {isLoading && (

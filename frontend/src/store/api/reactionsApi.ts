@@ -1,21 +1,14 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Reaction } from "@/types/Reaction.type";
-import { RootState } from "../store";
 import { Post } from "@/types/Post.type";
 import { Comment } from "@/types/Comment.type";
+import { apiSlice } from "./apiSlice";
+// reaction-{reactionId}
+// comment-reactions-{commentId}
+// post-reactions-{postId}
+// ? SINGLE-{postID}, SINGLE-{commentId}
+// reactions-detail-{postId}, reactions-detail-{commentId}
 
-export const reactionsApi = createApi({
-  reducerPath: "reactionsApi",
-  tagTypes: ["Reactions"],
-  baseQuery: fetchBaseQuery({
-    baseUrl: `${import.meta.env.VITE_BACKEND_URL}/`,
-    prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as RootState).user.user?.token;
-      if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
-      }
-    },
-  }),
+export const reactionsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getReactionsByPostId: builder.query<Reaction[], { postId: string }>({
       query(body) {
@@ -30,7 +23,7 @@ export const reactionsApi = createApi({
             ...reactions.map(({ _id }) => {
               return {
                 type: "Reactions" as const,
-                id: `reaction ${_id}`,
+                id: `reaction-${_id}`,
               };
             }),
             {
@@ -61,7 +54,7 @@ export const reactionsApi = createApi({
             ...reactions.map(({ _id }) => {
               return {
                 type: "Reactions" as const,
-                id: `reaction ${_id}`,
+                id: `reaction-${_id}`,
               };
             }),
             {
@@ -210,7 +203,8 @@ export const reactionsApi = createApi({
         return [
           {
             type: "Reactions" as const,
-            id: `comment-reactions-${commentId}`,
+
+            id: `SINGLE-${commentId}`,
           },
         ];
       },

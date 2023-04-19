@@ -1,34 +1,37 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { User } from "@/types/User.type";
 import PostHeader from "./PostHeader";
 import PostContent from "./PostContent";
 import PostButton from "./PostButton";
 import PostInteract from "./PostInteract";
 import PostComments from "./PostComments";
-import { useSelector } from "react-redux";
-import { selectPostById } from "@/store/slices/posts";
-import { RootState } from "@/store/store";
+import { Post } from "@/types/Post.type";
 
 type Props = {
-  postId: string;
   currentUser: User;
+  post: Post;
 };
 
-const PostComponent: React.FC<Props> = ({ postId, currentUser }) => {
+const PostComponent: React.FC<Props> = ({ currentUser, post }) => {
+  const [localPost, setLocalPost] = useState<Post>(post);
   const [showComments, setShowComments] = useState<boolean>(false);
-  const post = useSelector((state: RootState) => selectPostById(state, postId));
   if (post) {
     return (
       <div className="w-full flex flex-col justify-start rounded-lg bg-white shadow2 mb-3">
-        <PostHeader post={post} currentUser={currentUser} />
-        <PostContent post={post} />
-        <PostInteract post={post} setShowComments={setShowComments} />
-        <PostButton post={post} currentUser={currentUser} />
+        <PostHeader post={localPost} currentUser={currentUser} />
+        <PostContent post={localPost} />
+        <PostInteract post={localPost} setShowComments={setShowComments} />
+        <PostButton
+          post={localPost}
+          currentUser={currentUser}
+          setLocalPost={setLocalPost}
+        />
         <PostComments
-          post={post}
+          post={localPost}
           currentUser={currentUser}
           showComments={showComments}
           setShowComments={setShowComments}
+          setLocalPost={setLocalPost}
         />
       </div>
     );

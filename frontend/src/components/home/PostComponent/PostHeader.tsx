@@ -5,9 +5,6 @@ import { Link } from "react-router-dom";
 import { Dots } from "@/svg";
 import Tippy from "@tippyjs/react/headless";
 import { User } from "@/types/User.type";
-import { useDispatch } from "react-redux";
-import { removePost } from "@/store/slices/posts";
-import { useDeletePostMutation } from "@/store/api/postsApi";
 import DeleteConfirmForm from "../DeleteConfirmForm/DeleteConfirmForm";
 
 type Props = {
@@ -55,8 +52,6 @@ const MenuItem: React.FC<PropsMenuItem> = ({
 };
 
 const PostHeader: React.FC<Props> = ({ post, currentUser }) => {
-  const dispatch = useDispatch();
-  const [handleDeletePost] = useDeletePostMutation();
   const isOwner = post.user._id === currentUser.id;
   const imagesLength = post.imagesList?.length || 0;
   const [showToolTip, setShowToolTip] = useState(false);

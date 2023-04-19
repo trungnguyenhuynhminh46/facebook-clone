@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Tippy from "@tippyjs/react/headless";
-import { Reaction } from "@/types/Reaction.type";
 import {
   useReactionDetailByCommentIdQuery,
   useReactionDetailByPostIdQuery,

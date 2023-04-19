@@ -1,8 +1,5 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
-import { RootState } from "../store";
 import { Post } from "@/types/Post.type";
-// all-posts
-// post-${postId}
+import { apiSlice } from "./apiSlice";
 
 type AddPostBodyType = {
   type: "onlyText" | "cover" | "withImages" | "profilePicture" | "profileCover";
@@ -16,18 +13,7 @@ type AddPostBodyType = {
   tagedFriends?: string[];
 };
 
-export const postsApi = createApi({
-  reducerPath: "postsApi",
-  tagTypes: ["Posts"],
-  baseQuery: fetchBaseQuery({
-    baseUrl: `${import.meta.env.VITE_BACKEND_URL}/`,
-    prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as RootState).user.user?.token;
-      if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
-      }
-    },
-  }),
+export const postsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllPosts: builder.query<{ posts: Post[] }, void>({
       query(body) {
@@ -61,6 +47,40 @@ export const postsApi = createApi({
         ];
       },
     }),
+    getPostsByEmail: builder.query<{ posts: Post[] }, { email?: string }>({
+      query(body) {
+        const { email } = body;
+        return `/posts/getPostsByEmail/${email}`;
+      },
+      providesTags(result, error, body) {
+        if (error || !result) {
+          return [];
+        }
+        const { email } = body;
+        const { posts } = result;
+        if (posts && posts.length > 0) {
+          const tags = [
+            ...posts.map((post) => {
+              return {
+                type: "Posts" as const,
+                id: `post-${post._id}`,
+              };
+            }),
+            {
+              type: "Posts" as const,
+              id: `posts-${email}`,
+            },
+          ];
+          return tags;
+        }
+        return [
+          {
+            type: "Posts",
+            id: `posts-${email}`,
+          },
+        ];
+      },
+    }),
     addPost: builder.mutation<Post, AddPostBodyType>({
       query(body) {
         return {
@@ -73,10 +93,15 @@ export const postsApi = createApi({
         if (error || !result) {
           return [];
         }
+        const { user } = result;
         return [
           {
             type: "Posts",
             id: `all-posts`,
+          },
+          {
+            type: "Posts",
+            id: `posts-${user.email}`,
           },
         ];
       },
@@ -94,7 +119,7 @@ export const postsApi = createApi({
         };
       },
       invalidatesTags(result, error, body) {
-        if (error || result) {
+        if (error || !result) {
           return [];
         }
         const { postId } = body;
@@ -119,12 +144,25 @@ export const postsApi = createApi({
           method: "DELETE",
         };
       },
+      invalidatesTags(result, error, body) {
+        if (error) {
+          return [];
+        }
+        const { postId } = body;
+        return [
+          {
+            type: "Posts" as const,
+            id: `post-${postId}`,
+          },
+        ];
+      },
     }),
   }),
 });
 
 export const {
   useGetAllPostsQuery,
+  useGetPostsByEmailQuery,
   useAddPostMutation,
   useDeletePostMutation,
   useUpdatePostMutation,

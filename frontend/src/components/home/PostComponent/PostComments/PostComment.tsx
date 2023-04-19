@@ -4,17 +4,15 @@ import { Comment } from "@/types/Comment.type";
 import Style from "./style.module.css";
 import {
   useGetReactionByCommentIdAndUserIdQuery,
-  useGetReactionsByCommentIdQuery,
   useHandleReactionCommentMutation,
 } from "@/store/api/reactionsApi";
 import { getTimeDiff, isoStringToDate } from "@/helpers/date";
 import ToolTip from "@/components/ToolTip";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/store/selectors/user";
 import { Dots } from "@/svg";
 import Tippy from "@tippyjs/react/headless";
 import {
-  useAddCommentMutation,
   useDeleteCommentMutation,
   useUpdateCommentMutation,
 } from "@/store/api/commentsApi";
@@ -23,16 +21,10 @@ import { Reaction } from "@/types/Reaction.type";
 import reactions from "@/data/reactions";
 import CommentReactions from "./CommentReactions";
 import ToolTipReactions from "@/components/ToolTipReactions";
-import { updatePost } from "@/store/slices/posts";
-// const reactionsInfo = {
-//   like: 0,
-//   love: 100,
-//   haha: 20,
-//   wow: 30,
-//   sad: 40,
-//   angry: 0,
-// };
+import { Post } from "@/types/Post.type";
 type PropsComment = {
+  post: Post;
+  setLocalPost: React.Dispatch<React.SetStateAction<Post>>;
   comment: Comment;
   setEditCommentId: React.Dispatch<React.SetStateAction<string>>;
   editCommentId: string;
@@ -45,6 +37,8 @@ type PropsCommentFunction = {
   comment: Comment;
   setEditCommentId: React.Dispatch<React.SetStateAction<string>>;
   deleteComment: any;
+  post: Post;
+  setLocalPost: React.Dispatch<React.SetStateAction<Post>>;
 };
 const ReactionsInfo: React.FC<PropsReactionsInfo> = ({
   comment,
@@ -92,22 +86,16 @@ const CommentFunction: React.FC<PropsCommentFunction> = ({
   comment,
   setEditCommentId,
   deleteComment,
+  post,
+  setLocalPost,
 }) => {
-  const dispatch = useDispatch();
   const [showTooltip, setShowTooltip] = useState(false);
   const handleDeleteComment = async () => {
     try {
       const { post: newPost } = await deleteComment({
         commentId: comment._id,
       }).unwrap();
-      dispatch(
-        updatePost({
-          id: newPost._id,
-          changes: {
-            commentsCount: newPost.commentsCount,
-          },
-        })
-      );
+      setLocalPost({ ...post, commentsCount: newPost.commentsCount });
     } catch (error) {}
   };
   return (
@@ -158,45 +146,26 @@ const CommentFunction: React.FC<PropsCommentFunction> = ({
   );
 };
 const PostComment: React.FC<PropsComment> = ({
+  post,
+  setLocalPost,
   comment,
   setEditCommentId,
   editCommentId,
 }) => {
+  const [localComment, setLocalComment] = useState<Comment>(comment);
   const currentUser = useSelector(selectCurrentUser);
-  const {
-    data: commentReactions,
-    isLoading: reactionsIsLoading,
-    isFetching: reactionsIsFetching,
-  } = useGetReactionsByCommentIdQuery({ commentId: comment._id });
-  let currentReaction: Reaction | undefined = commentReactions
-    ? commentReactions.find((reaction: Reaction) => {
-        return reaction.user === currentUser.id;
-      })
-    : undefined;
   // console.log(currentReaction);
-  const reactionsInfo: Record<string, number> = commentReactions
-    ? commentReactions.reduce(
-        (acc: Record<string, number>, { reaction }: Reaction) => {
-          acc[reaction] = (acc[reaction] || 0) + 1;
-          return acc;
-        },
-        {}
-      )
-    : {
-        like: 0,
-        love: 0,
-        haha: 0,
-        wow: 0,
-        sad: 0,
-        angry: 0,
-      };
-  const [addComment, { isLoading: commentIsBeingAdded }] =
-    useAddCommentMutation();
+  // Current reaction
+  const {
+    data: currentReaction,
+    isLoading: currentReactionIsLoading,
+    isFetching: currentReactionIsFetching,
+  } = useGetReactionByCommentIdAndUserIdQuery({ commentId: comment._id });
   const [updateComment, { isLoading: commentIsBeingUpdated }] =
     useUpdateCommentMutation();
   const [deleteComment, { isLoading: commentIsBeingDeleted }] =
     useDeleteCommentMutation();
-  useGetReactionByCommentIdAndUserIdQuery({ commentId: comment._id });
+
   const [handleReactionComment, { isLoading: isHandlingCommentReaction }] =
     useHandleReactionCommentMutation();
   const [showReactions, setShowReactions] = useState(false);
@@ -207,27 +176,31 @@ const PostComment: React.FC<PropsComment> = ({
   ) => {
     try {
       // Prevent spaming reaction
-      if (reactionsIsFetching || isHandlingCommentReaction) {
+      if (currentReactionIsLoading || isHandlingCommentReaction) {
         return;
       }
       const newComment = await handleReactionComment({
         commentId,
         reaction,
       }).unwrap();
+      setLocalComment({
+        ...localComment,
+        reactionsInfo: newComment.reactionsInfo,
+      });
     } catch (error) {
       console.log(error);
     }
   };
   return (
     <>
-      <div className="relative flex gap-1 mb-1">
+      <div className="relative flex gap-1 mb-1 last:mb-0">
         {/* {hasChild && (
           <div className="absolute left-5 top-[44px] h-full w-[2px] bg-gray-900"></div>
         )} */}
         {showReactions && (
-          <div className="w-full absolute top-0 left-8 translate-y-[58px] z-10">
+          <div className="w-full absolute bottom-0 -translate-y-6 left-8 z-10">
             <CommentReactions
-              comment={comment}
+              comment={localComment}
               timeOutId={timeOutId}
               setTimeOutId={setTimeOutId}
               setShowReactions={setShowReactions}
@@ -235,14 +208,14 @@ const PostComment: React.FC<PropsComment> = ({
             />
           </div>
         )}
-        {editCommentId !== comment._id && (
+        {editCommentId !== localComment._id && (
           <>
             <Link
               to="/"
               className="relative w-10 h-10 rounded-full border border-solid border-gray-200 overflow-hidden hover--overlay"
             >
               <img
-                src={comment.user.picture}
+                src={localComment.user.picture}
                 alt=""
                 className="w-full h-full object-cover"
               />
@@ -252,22 +225,24 @@ const PostComment: React.FC<PropsComment> = ({
                 <div className="flex gap-2 items-center">
                   <div className="flex flex-col rounded-xl bg-gray-100 py-2 px-3 w-fit">
                     <p className="text-sm font-medium">
-                      {comment.user.username}
+                      {localComment.user.username}
                     </p>
-                    <p className="text-[15px]">{comment.text}</p>
+                    <p className="text-[15px]">{localComment.text}</p>
                   </div>
-                  {currentUser.id === comment.user._id && (
+                  {currentUser.id === localComment.user._id && (
                     <CommentFunction
-                      comment={comment}
+                      comment={localComment}
                       setEditCommentId={setEditCommentId}
                       deleteComment={deleteComment}
+                      post={post}
+                      setLocalPost={setLocalPost}
                     />
                   )}
                 </div>
-                {comment.image && (
+                {localComment.image && (
                   <div className="my-1">
                     <img
-                      src={comment.image}
+                      src={localComment.image}
                       alt=""
                       className="max-h-[200px] w-auto rounded-xl"
                     />
@@ -294,7 +269,7 @@ const PostComment: React.FC<PropsComment> = ({
                         );
                       }}
                       onClick={async () => {
-                        await handleButtonReactClick(comment._id, "like");
+                        await handleButtonReactClick(localComment._id, "like");
                       }}
                     >
                       {!currentReaction && (
@@ -318,37 +293,37 @@ const PostComment: React.FC<PropsComment> = ({
                     </button>
                     <ToolTip
                       title={isoStringToDate(
-                        comment.createdAt,
+                        localComment.createdAt,
                         "EEEE, MMMM d, yyyy 'at' h:mm a"
                       )}
                     >
                       <span className="text-[12px] cursor-pointer hover:underline">
-                        {getTimeDiff(new Date(comment.createdAt))}
+                        {getTimeDiff(new Date(localComment.createdAt))}
                       </span>
                     </ToolTip>
                   </div>
                   <ReactionsInfo
-                    comment={comment}
-                    reactionsInfo={reactionsInfo}
+                    comment={localComment}
+                    reactionsInfo={localComment.reactionsInfo}
                   />
                 </div>
               </div>
             </div>
           </>
         )}
-        {editCommentId === comment._id && (
+        {editCommentId === localComment._id && (
           <PostCreateComment
             autoFocus={true}
-            key={comment._id}
-            postId={comment.post}
+            key={localComment._id}
+            post={post}
+            setLocalPost={setLocalPost}
             currentUser={currentUser}
-            addComment={addComment}
-            commentIsBeingAdded={commentIsBeingAdded}
             updateComment={updateComment}
             commentIsBeingUpdated={commentIsBeingUpdated}
-            replyTo={comment.parrentComment || undefined}
-            commentContent={comment}
+            replyTo={localComment.parrentComment || undefined}
+            commentContent={localComment}
             setEditCommentId={setEditCommentId}
+            setLocalComment={setLocalComment}
           />
         )}
       </div>

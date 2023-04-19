@@ -11,8 +11,6 @@ import {
   useAddPostMutation,
   useUpdatePostMutation,
 } from "@/store/api/postsApi";
-import { useDispatch } from "react-redux";
-import { addPost } from "@/store/slices/posts";
 
 type Props = {
   setIsShown: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,7 +27,6 @@ const MainForm: React.FC<Props> = ({
   setInputText,
   setCurrentForm,
 }) => {
-  const dispatch = useDispatch();
   const [handleAddPost, { isLoading: postIsBeingAdded }] = useAddPostMutation();
   const [handleUpdatePost, { isLoading: postIsBeingUpdated }] =
     useUpdatePostMutation();
@@ -72,7 +69,7 @@ const MainForm: React.FC<Props> = ({
       // type: cover
       if (coverState) {
         try {
-          const addedPost = await handleAddPost({
+          await handleAddPost({
             type: "cover",
             user: currentUser.id,
             text: inputText,
@@ -83,7 +80,6 @@ const MainForm: React.FC<Props> = ({
             checkedOutAt: "",
             tagedFriends: [],
           }).unwrap();
-          dispatch(addPost(addedPost));
         } catch (error: any) {
           console.log(error);
           setError("Something went wrong, please try again!");
@@ -105,7 +101,7 @@ const MainForm: React.FC<Props> = ({
             setLoading(false);
             return;
           }
-          const addedPost = await handleAddPost({
+          await handleAddPost({
             type: "withImages",
             user: currentUser.id,
             text: inputText,
@@ -116,7 +112,6 @@ const MainForm: React.FC<Props> = ({
             checkedOutAt: "",
             tagedFriends: [],
           }).unwrap();
-          dispatch(addPost(addedPost));
         } catch (error: any) {
           console.log(error);
           setError("Something went wrong, please try again!");
@@ -127,7 +122,7 @@ const MainForm: React.FC<Props> = ({
       // type: textOnly
       else if (inputText) {
         try {
-          const addedPost = await handleAddPost({
+          await handleAddPost({
             type: "onlyText",
             user: currentUser.id,
             text: inputText,
@@ -138,7 +133,6 @@ const MainForm: React.FC<Props> = ({
             checkedOutAt: "",
             tagedFriends: [],
           }).unwrap();
-          dispatch(addPost(addedPost));
         } catch (error) {
           console.log(error);
           setError("Something went wrong, please try again!");

@@ -49,8 +49,8 @@ const PostContent: React.FC<Props> = ({ post }) => {
               <div className="relative">
                 {post.imagesList.length - 5 > 0 && (
                   <>
-                    <div className="absolute inset-0 bg-gray-800 opacity-20 z-10"></div>
-                    <div className="absolute inset-0 flex justify-center items-center text-3xl text-white font-medium z-20">
+                    <div className="absolute inset-0 bg-gray-800 opacity-20 z-[8]"></div>
+                    <div className="absolute inset-0 flex justify-center items-center text-3xl text-white font-medium z-[9]">
                       +{post.imagesList.length - 5}
                     </div>
                   </>

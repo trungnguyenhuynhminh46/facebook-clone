@@ -1,25 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import _ from "lodash";
 import { Post } from "@/types/Post.type";
 import { User } from "@/types/User.type";
-import { Reaction } from "@/types/Reaction.type";
 import PostReactions from "./PostReactions";
 import reactions from "@data/reactions";
 import {
   useGetReactionByPostIdAndUserIdQuery,
   useHandleReactionPostMutation,
 } from "@/store/api/reactionsApi";
-import axios from "axios";
-import { useDispatch } from "react-redux";
-import { updatePost } from "@store/slices/posts";
 
 type Props = {
   currentUser: User;
   post: Post;
+  setLocalPost: React.Dispatch<React.SetStateAction<Post>>;
 };
 
-const PostButton: React.FC<Props> = ({ currentUser, post }) => {
-  const dispatch = useDispatch();
+const PostButton: React.FC<Props> = ({ currentUser, post, setLocalPost }) => {
   const { data: currentReaction, isFetching: currentReactionIsFetching } =
     useGetReactionByPostIdAndUserIdQuery({ postId: post._id });
   const [handleReactionPost, { isLoading: isHandlingPostReaction }] =
@@ -37,17 +33,12 @@ const PostButton: React.FC<Props> = ({ currentUser, post }) => {
         postId,
         reaction,
       }).unwrap();
-      // console.log(newPost);
-      // Update post state
-      dispatch(
-        updatePost({
-          id: newPost._id,
-          changes: {
-            reactions: newPost.reactions,
-            reactionsInfo: newPost.reactionsInfo,
-          },
-        })
-      );
+      // Update local state
+      setLocalPost({
+        ...post,
+        reactionsInfo: newPost.reactionsInfo,
+        reactions: newPost.reactions,
+      });
     } catch (error) {
       console.log(error);
     }

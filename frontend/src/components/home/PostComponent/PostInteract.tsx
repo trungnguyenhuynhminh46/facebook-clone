@@ -1,11 +1,9 @@
 import { Post } from "@/types/Post.type";
 import { useMediaQuery } from "react-responsive";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React from "react";
 import Style from "./style.module.css";
 import ToolTipReactions from "@/components/ToolTipReactions";
 import ToolTipComments from "@/components/ToolTipComments";
-import { ClipLoader } from "react-spinners";
-import { useReactionDetailByPostIdQuery } from "@/store/api/reactionsApi";
 
 type Props = {
   post: Post;

@@ -1,4 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
+import { User } from "@/types/User.type";
+import { Comment } from "@/types/Comment.type";
+import EmojiPicker from "@/components/EmojiPicker";
+import ToolTip from "@components/ToolTip";
+import uploadImages from "@/helpers/upload";
+import { ClipLoader } from "react-spinners";
+import { Post } from "@/types/Post.type";
 import { MutationTrigger } from "@reduxjs/toolkit/dist/query/react/buildHooks";
 import {
   BaseQueryFn,
@@ -7,36 +14,26 @@ import {
   FetchBaseQueryMeta,
   MutationDefinition,
 } from "@reduxjs/toolkit/dist/query";
-import { Post } from "@/types/Post.type";
-import { User } from "@/types/User.type";
-import { Comment } from "@/types/Comment.type";
-import EmojiPicker from "@/components/EmojiPicker";
-import ToolTip from "@components/ToolTip";
-import { useAddCommentMutation } from "@/store/api/commentsApi";
-import { useUpdateCommentMutation } from "@/store/api/commentsApi";
-import { useDeleteCommentMutation } from "@/store/api/commentsApi";
-import uploadImages from "@/helpers/upload";
-import { ClipLoader } from "react-spinners";
-import { useDispatch } from "react-redux";
-import { updatePost } from "@/store/slices/posts";
 
 type Props = {
   autoFocus?: boolean;
   currentUser: User;
-  postId: string;
-  addComment: any;
-  commentIsBeingAdded: boolean;
-  updateComment: any;
-  commentIsBeingUpdated: boolean;
+  post: Post;
+  addComment?: any;
+  commentIsBeingAdded?: boolean;
+  updateComment?: any;
+  commentIsBeingUpdated?: boolean;
   replyTo?: string;
   commentContent?: Comment;
   setEditCommentId?: React.Dispatch<React.SetStateAction<string>>;
+  setLocalPost?: React.Dispatch<React.SetStateAction<Post>>;
+  setLocalComment?: React.Dispatch<React.SetStateAction<Comment>>;
 };
 
 const PostCreateComment: React.FC<Props> = ({
   autoFocus = false,
   currentUser,
-  postId,
+  post,
   addComment,
   commentIsBeingAdded,
   updateComment,
@@ -44,9 +41,9 @@ const PostCreateComment: React.FC<Props> = ({
   replyTo,
   commentContent,
   setEditCommentId,
+  setLocalPost,
+  setLocalComment,
 }) => {
-  const dispatch = useDispatch();
-  // commentContent && console.log(commentContent.text);
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputText, setInputText] = useState<string>(
     commentContent ? commentContent.text : ""
@@ -117,118 +114,101 @@ const PostCreateComment: React.FC<Props> = ({
     }
   };
   const handleAddComment = async () => {
-    // With image
-    if (imageUrl) {
-      let cloudinaryURLs = [imageUrl];
-      if (!cloudinaryURLs[0].startsWith("https")) {
-        // Upload images
-        cloudinaryURLs = await uploadImages(
-          [imageUrl],
-          `${currentUser.email}/comments/${postId}`,
-          currentUser.token
-        );
+    // If there is add Comment Function
+    if (addComment) {
+      // With image
+      if (imageUrl) {
+        let cloudinaryURLs = [imageUrl];
+        if (!cloudinaryURLs[0].startsWith("https")) {
+          // Upload images
+          cloudinaryURLs = await uploadImages(
+            [imageUrl],
+            `${currentUser.email}/comments/${post._id}`,
+            currentUser.token
+          );
+        }
+        if (typeof cloudinaryURLs === "string") {
+          console.log(cloudinaryURLs);
+          setError(cloudinaryURLs);
+          return;
+        }
+        // Add comment here
+        const newPost = await addComment({
+          userId: currentUser.id,
+          text: inputText,
+          image: cloudinaryURLs[0],
+          postId: post._id,
+          parentId: replyTo,
+        }).unwrap();
+        setLocalPost &&
+          setLocalPost({ ...post, commentsCount: newPost.commentsCount });
       }
-      if (typeof cloudinaryURLs === "string") {
-        console.log(cloudinaryURLs);
-        setError(cloudinaryURLs);
-        return;
+      // Without image
+      if (!imageUrl) {
+        const newPost = await addComment({
+          userId: currentUser.id,
+          text: inputText,
+          image: "",
+          postId: post._id,
+          parentId: replyTo,
+        }).unwrap();
+        setLocalPost &&
+          setLocalPost({ ...post, commentsCount: newPost.commentsCount });
       }
-      // Add comment here
-      const newPost = await addComment({
-        userId: currentUser.id,
-        text: inputText,
-        image: cloudinaryURLs[0],
-        postId: postId,
-        parentId: replyTo,
-      }).unwrap();
-      // Update comments counts of post
-      dispatch(
-        updatePost({
-          id: newPost._id,
-          changes: {
-            commentsCount: newPost.commentsCount,
-          },
-        })
-      );
-    }
-    // Without image
-    if (!imageUrl) {
-      const newPost = await addComment({
-        userId: currentUser.id,
-        text: inputText,
-        image: "",
-        postId: postId,
-        parentId: replyTo,
-      }).unwrap();
-      // Update comments counts of post
-      dispatch(
-        updatePost({
-          id: newPost._id,
-          changes: {
-            commentsCount: newPost.commentsCount,
-          },
-        })
-      );
     }
   };
   const handleUpdateComment = async () => {
-    // With image
-    if (imageUrl) {
-      let cloudinaryURLs = [imageUrl];
-      if (!cloudinaryURLs[0].startsWith("https")) {
-        // Upload images
-        cloudinaryURLs = await uploadImages(
-          [imageUrl],
-          `${currentUser.email}/comments/${postId}`,
-          currentUser.token
-        );
+    if (updateComment) {
+      // With image
+      if (imageUrl) {
+        let cloudinaryURLs = [imageUrl];
+        if (!cloudinaryURLs[0].startsWith("https")) {
+          // Upload images
+          cloudinaryURLs = await uploadImages(
+            [imageUrl],
+            `${currentUser.email}/comments/${post._id}`,
+            currentUser.token
+          );
+        }
+        if (typeof cloudinaryURLs === "string") {
+          console.log(cloudinaryURLs);
+          setError(cloudinaryURLs);
+          return;
+        }
+        // Update comment here
+        if (commentContent) {
+          const { newPost, newComment } = await updateComment({
+            commentId: commentContent?._id,
+            userId: currentUser.id,
+            postId: post._id,
+            text: inputText,
+            image: cloudinaryURLs[0],
+            parentId: replyTo,
+          }).unwrap();
+          setLocalPost &&
+            setLocalPost({ ...post, commentsCount: newPost.commentsCount });
+          setLocalComment && setLocalComment(newComment);
+        }
       }
-      if (typeof cloudinaryURLs === "string") {
-        console.log(cloudinaryURLs);
-        setError(cloudinaryURLs);
-        return;
+      // Without image
+      if (!imageUrl) {
+        if (commentContent) {
+          const { newPost, newComment } = await updateComment({
+            commentId: commentContent?._id,
+            userId: currentUser.id,
+            text: inputText,
+            image: "",
+            postId: post._id,
+            parentId: replyTo,
+          }).unwrap();
+          setLocalPost &&
+            setLocalPost({ ...post, commentsCount: newPost.commentsCount });
+          setLocalComment && setLocalComment(newComment);
+        }
       }
-      // Add comment here
-      const newPost = await updateComment({
-        commentId: commentContent?._id,
-        userId: currentUser.id,
-        postId: postId,
-        text: inputText,
-        image: cloudinaryURLs[0],
-        parentId: replyTo,
-      }).unwrap();
-      // Update comments counts of post
-      dispatch(
-        updatePost({
-          id: newPost._id,
-          changes: {
-            commentsCount: newPost.commentsCount,
-          },
-        })
-      );
+      // Reset state edit comment
+      setEditCommentId && setEditCommentId("");
     }
-    // Without image
-    if (!imageUrl) {
-      const newPost = await updateComment({
-        commentId: commentContent?._id,
-        userId: currentUser.id,
-        text: inputText,
-        image: "",
-        postId: postId,
-        parentId: replyTo,
-      }).unwrap();
-      // Update comments counts of post
-      dispatch(
-        updatePost({
-          id: newPost._id,
-          changes: {
-            commentsCount: newPost.commentsCount,
-          },
-        })
-      );
-    }
-    // Reset state edit comment
-    setEditCommentId && setEditCommentId("");
   };
   const handleKeyDownInput = async (
     e: React.KeyboardEvent<HTMLInputElement>
@@ -325,7 +305,7 @@ const PostCreateComment: React.FC<Props> = ({
             >
               <label
                 htmlFor={`image-picker-${
-                  commentContent ? commentContent._id : postId
+                  commentContent ? commentContent._id : post._id
                 }`}
                 className="cursor-pointer w-7 h-7 rounded-full bg-transparent hover:bg-gray-200 flex justify-center items-center outline-none"
               >
@@ -334,10 +314,10 @@ const PostCreateComment: React.FC<Props> = ({
                   hidden
                   accept="image/jpeg, image/png, image/gif, image/webp"
                   name={`image-picker-${
-                    commentContent ? commentContent._id : postId
+                    commentContent ? commentContent._id : post._id
                   }`}
                   id={`image-picker-${
-                    commentContent ? commentContent._id : postId
+                    commentContent ? commentContent._id : post._id
                   }`}
                   onChange={handleSelectImage}
                 />
@@ -373,7 +353,6 @@ const PostCreateComment: React.FC<Props> = ({
             </button>
           </p>
         )}
-
         {(imageUrl || imageIsLoading) && (
           <div className="relative max-h-[200px] min-h-[20px]">
             <button
@@ -395,6 +374,9 @@ const PostCreateComment: React.FC<Props> = ({
               />
             )}
           </div>
+        )}
+        {commentIsBeingUpdated && (
+          <span className="italic text-sm text-gray-600 px-2">Updating...</span>
         )}
       </div>
     </div>

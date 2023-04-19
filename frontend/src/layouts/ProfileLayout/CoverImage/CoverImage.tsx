@@ -10,7 +10,6 @@ import {
 import { useDispatch } from "react-redux";
 import { updateCoverImage } from "@/store/slices/user";
 import uploadImages from "@/helpers/upload";
-import { addPost } from "@/store/slices/posts";
 import { useAddPostMutation } from "@/store/api/postsApi";
 import { BeatLoader, ClipLoader } from "react-spinners";
 import useOnClickOutside from "@/hooks/useOnClickOutside";
@@ -186,15 +185,8 @@ const CoverImage: React.FC<Props> = ({ isOwner, userInfo, currentUser }) => {
               cover: currentCoverPicture,
             })
           );
-          // Update posts
-          // dispatch(
-          //   updateCoversByEmail({
-          //     email,
-          //     cover: currentCoverPicture,
-          //   })
-          // );
           // Create post
-          const addedPost = await handleAddPost({
+          await handleAddPost({
             type: "profileCover",
             user: currentUser.id,
             text: "",
@@ -205,7 +197,6 @@ const CoverImage: React.FC<Props> = ({ isOwner, userInfo, currentUser }) => {
             checkedOutAt: "",
             tagedFriends: [],
           }).unwrap();
-          dispatch(addPost(addedPost));
           setIsLoading(false);
         } else {
           console.log("No cropped image");

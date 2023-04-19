@@ -90,7 +90,10 @@ const updateComment = async (req, res) => {
     {
       returnDocument: "after",
     }
-  );
+  ).populate({
+    path: "user",
+    select: "first_name last_name username email picture cover gender",
+  });
   const postId = updatedComment.post;
   const post = await Post.findById(postId).populate({
     path: "user",
@@ -103,7 +106,9 @@ const updateComment = async (req, res) => {
   if (!updatedComment) {
     throw new customError(`Comment with id ${commentId} is not existed`);
   }
-  return res.status(StatusCodes.OK).json(post);
+  return res
+    .status(StatusCodes.OK)
+    .json({ newPost: post, newComment: updatedComment });
 };
 const deleteComment = async (req, res) => {
   const { commentId } = req.params;

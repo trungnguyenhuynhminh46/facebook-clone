@@ -7,7 +7,6 @@ const Reaction = require("../models/Reaction");
 const customError = require("../error/customError");
 const { ObjectId } = mongoose.Types;
 const handleReactionPost = async (req, res) => {
-  // console.log("OK");
   const { id: userId } = req.user;
   const user = await User.findById(userId);
   if (!user) {

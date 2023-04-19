@@ -2,31 +2,18 @@ import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
 // Reducers
 import userReducer from "./slices/user";
-import postReducer from "./slices/posts";
 // Api
-import { reactionsApi } from "./api/reactionsApi";
-import { commentsApi } from "./api/commentsApi";
-import { postsApi } from "./api/postsApi";
-import { usersApi } from "./api/usersApi";
+import { apiSlice } from "./api/apiSlice";
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
-    posts: postReducer,
-    [reactionsApi.reducerPath]: reactionsApi.reducer,
-    [commentsApi.reducerPath]: commentsApi.reducer,
-    [postsApi.reducerPath]: postsApi.reducer,
-    [usersApi.reducerPath]: usersApi.reducer,
+    [apiSlice.reducerPath]: apiSlice.reducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(
-      reactionsApi.middleware,
-      commentsApi.middleware,
-      postsApi.middleware,
-      usersApi.middleware
-    ),
+    getDefaultMiddleware().concat(apiSlice.middleware),
 });
 
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors

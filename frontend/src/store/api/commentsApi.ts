@@ -1,23 +1,11 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
-import { RootState } from "../store";
+import { apiSlice } from "./apiSlice";
 import { Comment } from "@/types/Comment.type";
 import { Post } from "@/types/Post.type";
 // comment-{id}
 // root-comments-{postID}
 // comment-by-parent-{parentID}
 
-export const commentsApi = createApi({
-  reducerPath: "commentsApi",
-  tagTypes: ["Comments"],
-  baseQuery: fetchBaseQuery({
-    baseUrl: `${import.meta.env.VITE_BACKEND_URL}/`,
-    prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as RootState).user.user?.token;
-      if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
-      }
-    },
-  }),
+export const commentsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getRootCommentsByPostId: builder.query<Comment[], { postId: string }>({
       query(body) {
@@ -159,7 +147,7 @@ export const commentsApi = createApi({
       },
     }),
     updateComment: builder.mutation<
-      Post,
+      { newPost: Post; newComment: Comment },
       {
         commentId: string;
         userId: string;
@@ -218,7 +206,6 @@ export const commentsApi = createApi({
     }),
   }),
 });
-
 export const {
   useGetCommentsByParentCommentQuery,
   useGetRootCommentsByPostIdQuery,

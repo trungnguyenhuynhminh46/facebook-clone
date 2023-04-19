@@ -1,19 +1,7 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
-import { RootState } from "../store";
+import { apiSlice } from "./apiSlice";
 import { Details } from "@/types/Details";
 
-export const usersApi = createApi({
-  reducerPath: "usersApi",
-  tagTypes: ["Users", "Images"],
-  baseQuery: fetchBaseQuery({
-    baseUrl: `${import.meta.env.VITE_BACKEND_URL}/`,
-    prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as RootState).user.user?.token;
-      if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
-      }
-    },
-  }),
+export const usersApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getUserInfoByUserEmail: builder.query<any, { email: string }>({
       query(body) {

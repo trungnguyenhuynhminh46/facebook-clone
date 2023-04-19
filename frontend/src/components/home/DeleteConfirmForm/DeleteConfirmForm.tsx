@@ -1,8 +1,6 @@
 import { useDeletePostMutation } from "@/store/api/postsApi";
 import React from "react";
 import ReactDOM from "react-dom";
-import { useDispatch } from "react-redux";
-import { removePost } from "@/store/slices/posts";
 import { toast } from "react-toastify";
 
 type Props = {
@@ -11,7 +9,6 @@ type Props = {
 };
 
 const DeleteConfirmForm: React.FC<Props> = ({ postId, setIsShown }) => {
-  const dispatch = useDispatch();
   const [handleDeletePost] = useDeletePostMutation();
   return ReactDOM.createPortal(
     <div className="fixed inset-0 z-20">
@@ -49,7 +46,6 @@ const DeleteConfirmForm: React.FC<Props> = ({ postId, setIsShown }) => {
               className="relative px-10 flex justify-center items-center bg-blue-600 font-medium text-white rounded-md hover--overlay"
               onClick={async () => {
                 await handleDeletePost({ postId });
-                dispatch(removePost(postId));
                 setIsShown(false);
                 toast("You post is deleted");
               }}

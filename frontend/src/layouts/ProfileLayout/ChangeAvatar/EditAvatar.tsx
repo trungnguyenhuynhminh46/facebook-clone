@@ -12,10 +12,8 @@ import uploadImages from "@/helpers/upload";
 import { useUpdateProfilePictureByEmailMutation } from "@/store/api/usersApi";
 import Cookies from "js-cookie";
 import { updateProfileImage } from "@/store/slices/user";
-import { updatePicturesByEmail } from "@/store/slices/posts";
 import { BeatLoader } from "react-spinners";
 import { useAddPostMutation } from "@/store/api/postsApi";
-import { addPost } from "@/store/slices/posts";
 
 type Props = {
   imageUrl: string;
@@ -149,9 +147,9 @@ const EditAvatar: React.FC<Props> = ({
           );
           dispatch(updateProfileImage({ profileUrl: currentProfilePicture }));
           // Update profile picture of post's owner
-          // dispatch(updatePicturesByEmail({ email, currentProfilePicture }));
+
           // Create Post
-          const addedPost = await handleAddPost({
+          await handleAddPost({
             type: "profilePicture",
             user: currentUser.id,
             text: "",
@@ -162,7 +160,6 @@ const EditAvatar: React.FC<Props> = ({
             checkedOutAt: "",
             tagedFriends: [],
           }).unwrap();
-          dispatch(addPost(addedPost));
           setIsLoading(false);
         } catch (error: any) {
           console.log(error);
@@ -202,9 +199,9 @@ const EditAvatar: React.FC<Props> = ({
         );
         dispatch(updateProfileImage({ profileUrl: currentProfilePicture }));
         // Update profile picture of post's owner
-        dispatch(updatePicturesByEmail({ email, currentProfilePicture }));
+
         // Create Post
-        const addedPost = await handleAddPost({
+        await handleAddPost({
           type: "profilePicture",
           user: currentUser.id,
           text: "",
@@ -215,7 +212,6 @@ const EditAvatar: React.FC<Props> = ({
           checkedOutAt: "",
           tagedFriends: [],
         }).unwrap();
-        dispatch(addPost(addedPost));
         setIsLoading(false);
       } catch (error: any) {
         console.log(error);

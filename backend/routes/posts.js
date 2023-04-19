@@ -4,6 +4,7 @@ const route = express.Router();
 const {
   createPost,
   getAllPosts,
+  getPostsByEmail,
   updatePost,
   deletePost,
 } = require("../controllers/posts");
@@ -11,6 +12,7 @@ const {
 const authorizationMiddleware = require("../middleware/auth");
 
 route.get("/getAllPosts", authorizationMiddleware, getAllPosts);
+route.get("/getPostsByEmail/:email", authorizationMiddleware, getPostsByEmail);
 route.post("/createPost", authorizationMiddleware, createPost);
 route.patch("/:postId", authorizationMiddleware, updatePost);
 route.delete("/:postId", authorizationMiddleware, deletePost);
