@@ -34,25 +34,31 @@ const updatePost = async (req, res) => {
 };
 const deletePost = async (req, res) => {
   const { postId } = req.params;
-  await Post.findByIdAndDelete(postId);
-  return res.status(StatusCodes.OK).json(null);
+  const deletedPost = await Post.findByIdAndDelete(postId, {
+    returnDocument: "before",
+  }).populate({
+    path: "user",
+    select: "first_name last_name username email picture cover gender",
+  });
+  return res.status(StatusCodes.OK).json({ email: deletedPost.user.email });
 };
-const getAllPosts = async (req, res) => {
-  try {
-    const allPosts = await Post.find({})
-      .populate({
-        path: "user",
-        select: "first_name last_name username email picture cover gender",
-      })
-      .sort({ createdAt: "desc" });
-    return res.status(StatusCodes.OK).json({
-      posts: allPosts,
-    });
-  } catch (err) {
-    throw new customError(err.message, StatusCodes.INTERNAL_SERVER_ERROR);
-  }
+const getPostsForHomePage = async (req, res) => {
+  // Page: page number
+  // Limit: numbers of items per page
+  const { _page, _limit } = req.query;
+  const posts = await Post.find({})
+    .skip((_page - 1) * _limit)
+    .limit(_limit)
+    .populate({
+      path: "user",
+      select: "first_name last_name username email picture cover gender",
+    })
+    .sort({ createdAt: "desc" });
+  const count = await Post.countDocuments({});
+  return res.status(StatusCodes.OK).json({ posts, count });
 };
 const getPostsByEmail = async (req, res) => {
+  const { _page, _limit } = req.query;
   const { email } = req.params;
   const author = await User.findOne({ email });
   if (!author) {
@@ -64,21 +70,26 @@ const getPostsByEmail = async (req, res) => {
   const postsByEmail = await Post.find({
     user: author._id,
   })
+    .skip((_page - 1) * _limit)
+    .limit(_limit)
     .populate({
       path: "user",
       select: "first_name last_name username email picture cover gender",
     })
     .sort({ createdAt: "desc" });
+  const count = await Post.countDocuments({
+    user: author._id,
+  });
   if (!postsByEmail) {
-    return res.status(StatusCodes.OK).json({ posts: [] });
+    return res.status(StatusCodes.OK).json({ posts: [], count: 0 });
   }
-  return res.status(StatusCodes.OK).json({ posts: postsByEmail });
+  return res.status(StatusCodes.OK).json({ posts: postsByEmail, count: count });
 };
 
 module.exports = {
   createPost,
-  getAllPosts,
   getPostsByEmail,
   updatePost,
   deletePost,
+  getPostsForHomePage,
 };
