@@ -22,10 +22,11 @@ const validateImages = async (req, res, next) => {
       throw new customError("Invalid type of file", StatusCodes.BAD_REQUEST);
     }
     // Handler size is too large
-    if (file.size > 1024 * 1024) {
+    if (file.size > 5 * 1024 * 1024) {
+      // console.log(file.size);
       removeFile(file.tempFilePath);
       throw new customError(
-        "Files can't be larger than 1Mb",
+        "Files can't be larger than 5Mb",
         StatusCodes.BAD_REQUEST
       );
     }

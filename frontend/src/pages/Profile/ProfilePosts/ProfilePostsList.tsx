@@ -32,7 +32,7 @@ const ProfilePostsList = (props: Props) => {
             No posts available yet
           </div>
         ))}
-      {posts && count && posts.length > 0 && (
+      {!!posts && !!count && posts.length > 0 && (
         <InfiniteScroll
           dataLength={posts.length}
           next={() => {

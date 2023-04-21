@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Style from "./style.module.css";
 import covers from "@data/covers";
 import { getAverageColorFromImageUrl } from "@/helpers/getAverageRGB";
+import classNames from "classnames";
 
 type Props = {
   post: Post;
@@ -25,14 +26,22 @@ const PostContent: React.FC<Props> = ({ post }) => {
       }
     })();
   }, []);
+  const fontSize = {
+    ["text-2xl"]: post.text?.length ? post.text?.length < 100 : false,
+    ["text-xl"]: post.text?.length ? post.text?.length < 50 : false,
+  };
   return (
     <>
       {post.type === "onlyText" && (
-        <div className="w-full text-2xl px-4 mb-2">{post.text}</div>
+        <div className="w-full text-2xl px-4 mb-2 break-words">{post.text}</div>
       )}
       {post.type === "withImages" && post.imagesList && (
         <div>
-          <p className="text-[15px] leading-4 px-4 mb-3">{post.text}</p>
+          <p
+            className={classNames("text-[15px] leading-4 px-4 mb-3", fontSize)}
+          >
+            {post.text}
+          </p>
           <div
             className={`${
               Style[
@@ -73,7 +82,10 @@ const PostContent: React.FC<Props> = ({ post }) => {
             className="w-full h-auto"
           />
           <p
-            className="max-w-[400px] text-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[30px] font-semibold"
+            className={classNames(
+              "w-[80%] text-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[30px] font-semibold break-words",
+              fontSize
+            )}
             style={{
               caretColor: cover?.caretColor,
               color: cover?.color,

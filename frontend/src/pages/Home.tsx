@@ -60,7 +60,7 @@ const Home: React.FC<Props> = () => {
           <Stories currentUser={user} stories={stories} />
           <CreatePosts currentUser={user} className="mt-4 mb-3" />
 
-          {posts && count && (
+          {posts && count !== undefined && (
             <InfiniteScroll
               dataLength={posts.length}
               next={() => {

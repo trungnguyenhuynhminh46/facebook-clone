@@ -49,7 +49,7 @@ const ManageImagesMenu: React.FC<Props> = ({ folder }) => {
         </div>
       )}
       {!thereIsNoImage && !isError && (
-        <div className="grid grid-cols-3 grid-rows-3 gap-1">
+        <div className="grid grid-cols-3 gap-1">
           {data.imagesUrl.slice(0, 9).map((imageUrl) => {
             return (
               <div

@@ -1,20 +1,12 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import CreatePosts from "@/components/home/CreatePosts";
-import CreatePostPopUp from "@/components/home/CreatePostPopUp";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/store/selectors/user";
-import { Outlet, useOutletContext, useParams } from "react-router-dom";
-import classNames from "classnames";
-import Style from "./style.module.css";
-import { NavLink } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import { useContextProfileLayout } from "@/layouts/ProfileLayout/ProfileLayout";
 // Components
 import ManagePostsMenu from "./ManagePostsMenu";
 import IntroMenu from "./IntroMenu";
-import {
-  useGetImagesQuery,
-  useGetUserInfoByUserEmailQuery,
-} from "@/store/api/usersApi";
 import ManageImagesMenu from "./ManageImagesMenu";
 import ManageFriends from "./ManageFriends";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
@@ -43,18 +35,19 @@ const ProfilePosts = (props: Props) => {
   const { email } = useParams();
   const currentUser = useSelector(selectCurrentUser);
   const {
-    userInfo,
+    data,
     userInfoIsLoading,
     userInfoIsFetching,
     userInfoIsError,
     isOwner,
   } = useContextProfileLayout();
-  const folder = userInfo?.email ? `${userInfo.email}/postsImages` : "";
+  const folder =
+    data && data.userInfo?.email ? `${data.userInfo.email}/postsImages` : "";
 
   return (
     <div className="flex flex-col gap-[15px] mt-[15px] max-w-[1032px] px-4 mx-auto md:flex-row">
       {/* Left column */}
-      <div className="w-full md:basis-2/5 relative">
+      <div className="w-full md:w-2/5 relative">
         <div
           className="flex flex-col gap-[15px] sticky"
           ref={leftRef}
@@ -62,10 +55,10 @@ const ProfilePosts = (props: Props) => {
             top: `-${leftHeight - screenHeight}px`,
           }}
         >
-          <IntroMenu isOwner={isOwner} userInfo={userInfo} />
+          <IntroMenu isOwner={isOwner} userInfo={data.userInfo} />
           <ManageImagesMenu folder={folder} />
           <ManageFriends
-            userInfo={userInfo}
+            userInfo={data.userInfo}
             userInfoIsLoading={userInfoIsLoading}
             userInfoIsFetching={userInfoIsFetching}
             userInfoIsError={userInfoIsError}
@@ -73,7 +66,7 @@ const ProfilePosts = (props: Props) => {
         </div>
       </div>
       {/* Right column */}
-      <div className="w-full md:basis-3/5 flex flex-col gap-[15px]">
+      <div className="w-full md:w-3/5 flex flex-col gap-[15px]">
         {isOwner && <CreatePosts currentUser={currentUser} />}
         {/* Posts grid */}
         <ManagePostsMenu isOwner={isOwner} />

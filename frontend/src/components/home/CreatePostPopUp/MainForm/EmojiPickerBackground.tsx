@@ -67,10 +67,14 @@ const EmojiPickerBackground: React.FC<Props> = ({
     if (inputText.length === 0) {
       setShowCoverPickerIcon(true);
     }
-    if (inputText.length > 70) {
+    if (inputText.length > 300) {
       setShowCoverPickerIcon(false);
       setShowCoverPicker(false);
       setCoverState(undefined);
+    }
+    if (inputText.length <= 300) {
+      setShowCoverPickerIcon(true);
+      setShowCoverPicker(true);
     }
   }, [inputText]);
   const handleEmojiSelect = (emoji: any) => {
@@ -111,6 +115,9 @@ const EmojiPickerBackground: React.FC<Props> = ({
             "text-[18px]": !showPrev && isSmallScreen,
             "text-[24px]":
               !showPrev && !isSmallScreen && inputText.length <= 75,
+            "text-[16px]":
+              (!showPrev && isSmallScreen) ||
+              (!showPrev && !isSmallScreen && inputText.length > 75),
           },
           {
             "overflow-y-scroll":

@@ -3,7 +3,18 @@ import { Details } from "@/types/Details";
 
 export const usersApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getUserInfoByUserEmail: builder.query<any, { email: string }>({
+    getUserInfoByUserEmail: builder.query<
+      {
+        userInfo: any;
+        relationShip: {
+          isYourFriend: boolean;
+          isFollowedByYou: boolean;
+          receivedRequest: boolean;
+          sentRequest: boolean;
+        };
+      },
+      { email: string }
+    >({
       query(body) {
         const { email } = body;
         return `/user/getUserInfoByUserEmail/${email}`;

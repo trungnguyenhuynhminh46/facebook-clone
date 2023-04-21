@@ -59,7 +59,7 @@ const PostHeader: React.FC<Props> = ({ post, currentUser }) => {
     useState<boolean>(false);
   return (
     <div className="flex items-center py-3 px-4 gap-2">
-      <Link to={`/user`}>
+      <Link to={`/profile/${post.user.email}`}>
         <div className="relative hover--overlay h-10 w-10 rounded-full border border-solid border-gray-300 overflow-hidden">
           <img
             src={post.user.picture}

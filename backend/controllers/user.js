@@ -19,11 +19,11 @@ const register = async (req, res) => {
   let user = await User.create({
     first_name,
     last_name,
-    username: last_name + " " + first_name || "",
+    username: first_name + " " + last_name || "",
     password: hashedPassword,
     ...rest,
   });
-  const token = generateToken({ id: user._id }, "30m");
+  const token = generateToken({ id: user._id }, "30d");
   sendVerificationEmail(
     user.email,
     user.first_name,
@@ -236,6 +236,15 @@ const resetPassword = async (req, res) => {
   });
 };
 const getUserInfoByUserEmail = async (req, res) => {
+  const currentUser = await User.findById(req.user.id);
+  // To render on UI
+  const relationShip = {
+    isYourFriend: false,
+    isFollowedByYou: false,
+    //
+    receivedRequest: false,
+    sentRequest: false,
+  };
   const { email } = req.params;
   const userInfo = await User.findOne({
     email,
@@ -251,7 +260,25 @@ const getUserInfoByUserEmail = async (req, res) => {
       StatusCodes.NOT_FOUND
     );
   }
-  return res.status(StatusCodes.OK).json(userInfo);
+  if (userInfo._id.toString() === currentUser._id.toString()) {
+    return res.status(StatusCodes.OK).json({
+      userInfo,
+      relationShip,
+    });
+  }
+  relationShip.isYourFriend =
+    currentUser.friends.includes(userInfo._id) &&
+    userInfo.friends.includes(currentUser._id);
+  relationShip.isFollowedByYou =
+    currentUser.following.includes(userInfo._id) &&
+    userInfo.followers.includes(currentUser._id);
+  relationShip.receivedRequest = currentUser.requests.includes(userInfo._id);
+  relationShip.sentRequest = userInfo.requests.includes(currentUser._id);
+
+  return res.status(StatusCodes.OK).json({
+    userInfo,
+    relationShip,
+  });
 };
 const updateProfilePicture = async (req, res) => {
   const { email, pictureUrl } = req.body;
@@ -322,6 +349,185 @@ const updateProfileDetails = async (req, res) => {
     newDetails: user.details,
   });
 };
+// Sender's action
+const toggleFriendRequest = async (req, res) => {
+  const senderId = req.user.id;
+  const receiverId = req.params.id;
+  if (senderId.toString() === receiverId.toString()) {
+    throw new customError(
+      "You can not send request to yourself!",
+      StatusCodes.BAD_REQUEST
+    );
+  }
+  const sender = await User.findById(senderId);
+  if (!sender) {
+    throw new customError(`User with id ${senderId} is not found!`);
+  }
+  const receiver = await User.findById(receiverId);
+  if (!receiver) {
+    throw new customError(`User with id ${receiverId} is not found!`);
+  }
+  if (receiver.friends.includes(sender._id)) {
+    throw new customError("Already friend!", StatusCodes.BAD_REQUEST);
+  }
+  // Request is sended
+  if (receiver.requests.includes(sender._id)) {
+    receiver.requests = receiver.requests.filter((id) => {
+      return id !== sender._id;
+    });
+    receiver.followers = receiver.followers.filter((id) => {
+      return id !== sender._id;
+    });
+    sender.following = sender.following.filter((id) => {
+      return id !== receiver._id;
+    });
+    sender.save();
+    receiver.save();
+    return res.status(StatusCodes.OK).json("OK");
+  }
+  // Request is not sended
+  if (!receiver.requests.includes(sender._id)) {
+    receiver.requests.push(sender._id);
+    receiver.followers.push(sender._id);
+    sender.following.push(receiver._id);
+    sender.save();
+    receiver.save();
+    return res.status(StatusCodes.OK).json("OK");
+  }
+  throw new customError("Check again", StatusCodes.BAD_REQUEST);
+};
+// Receiver's action
+const acceptRequest = async (req, res) => {
+  const receiverId = req.user.id;
+  const senderId = req.params.id;
+  if (senderId.toString() === receiverId.toString()) {
+    throw new customError(
+      "You can not accept your own request!",
+      StatusCodes.BAD_REQUEST
+    );
+  }
+  const sender = await User.findById(senderId);
+  if (!sender) {
+    throw new customError(`User with id ${senderId} is not found!`);
+  }
+  const receiver = await User.findById(receiverId);
+  if (!receiver) {
+    throw new customError(`User with id ${receiverId} is not found!`);
+  }
+  // Is not friend + there is request
+  if (
+    !receiver.friends.includes(sender._id) &&
+    receiver.requests.includes(sender._id)
+  ) {
+    // Receiver
+    receiver.friends.push(sender._id);
+    receiver.requests = receiver.requests.filter((id) => id !== sender._id);
+    // Sender
+    sender.friends.push(receiver._id);
+    receiver.save();
+    sender.save();
+    return res.status(StatusCodes.OK).json("OK");
+  }
+  throw new customError("Check again", StatusCodes.BAD_REQUEST);
+};
+const declineRequest = async (req, res) => {
+  const receiverId = req.user.id;
+  const senderId = req.params.id;
+  if (senderId.toString() === receiverId.toString()) {
+    throw new customError(
+      "You can not decline your own request!",
+      StatusCodes.BAD_REQUEST
+    );
+  }
+  const sender = await User.findById(senderId);
+  if (!sender) {
+    throw new customError(`User with id ${senderId} is not found!`);
+  }
+  const receiver = await User.findById(receiverId);
+  if (!receiver) {
+    throw new customError(`User with id ${receiverId} is not found!`);
+  }
+  // Is not friend + there is request
+  if (
+    !receiver.friends.includes(sender._id) &&
+    receiver.requests.includes(sender._id)
+  ) {
+    receiver.requests = receiver.requests.filter((id) => id !== sender._id);
+    receiver.followers = receiver.followers.filter((id) => id !== sender._id);
+    sender.following = sender.following.filter((id) => id !== receiver._id);
+    sender.save();
+    receiver.save();
+    return res.status(StatusCodes.OK).json("OK");
+  }
+  throw new customError("Check again", StatusCodes.BAD_REQUEST);
+};
+//
+const toggleFollow = async (req, res) => {
+  const userId = req.user.id;
+  const targetId = req.body.id;
+  if (userId === targetId) {
+    throw new customError(
+      `You can not follow yourself!`,
+      StatusCodes.BAD_REQUEST
+    );
+  }
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new customError(`User with id ${userId} is not found!`);
+  }
+  const target = await User.findById(targetId);
+  if (!target) {
+    throw new customError(`User with id ${userId} is not found!`);
+  }
+  // If not following
+  if (!user.following.includes(target._id)) {
+    user.following.push(target._id);
+    target.followers.push(user._id);
+    user.save();
+    target.save();
+    return res.statusCode(StatusCodes.OK).json("OK");
+  }
+  // If following
+  if (user.following.includes(target._id)) {
+    user.following = user.following.filter((id) => id !== target._id);
+    target.followers = target.followers.filter((id) => id !== user._id);
+    user.save();
+    target.save();
+    return res.statusCode(StatusCodes.OK).json("OK");
+  }
+  throw new customError("Check again", StatusCodes.BAD_REQUEST);
+};
+const unfriend = async (req, res) => {
+  const userId = req.user.id;
+  const targetId = req.body.id;
+  if (userId === targetId) {
+    throw new customError(
+      `You can not follow yourself!`,
+      StatusCodes.BAD_REQUEST
+    );
+  }
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new customError(`User with id ${userId} is not found!`);
+  }
+  const target = await User.findById(targetId);
+  if (!target) {
+    throw new customError(`User with id ${userId} is not found!`);
+  }
+  // If is friend
+  if (user.friends.includes(target._id) && target.friends.includes(user._id)) {
+    user.friends = user.friends.filter((id) => id !== target._id);
+    user.following = user.following.filter((id) => id !== target._id);
+    user.followers = user.followers.filter((id) => id !== target._id);
+    target.friends = target.friends.filter((id) => id !== user._id);
+    target.following = target.following.filter((id) => id !== user._id);
+    target.followers = target.followers.filter((id) => id !== user._id);
+    user.save();
+    target.save();
+    return res.status(StatusCodes.OK).json("OK");
+  }
+  throw new customError("Check again", StatusCodes.BAD_REQUEST);
+};
 
 module.exports = {
   register,
@@ -336,4 +542,9 @@ module.exports = {
   updateProfilePicture,
   updateProfileCover,
   updateProfileDetails,
+  toggleFriendRequest,
+  acceptRequest,
+  declineRequest,
+  toggleFollow,
+  unfriend,
 };

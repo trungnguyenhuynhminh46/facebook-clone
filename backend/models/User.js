@@ -100,7 +100,7 @@ const userSchema = mongoose.Schema(
       default: [],
     },
     requests: {
-      type: Array,
+      type: [{ type: ObjectId, ref: "User" }],
       default: [],
     },
     search: [

@@ -13,6 +13,11 @@ const {
   updateProfilePicture,
   updateProfileCover,
   updateProfileDetails,
+  toggleFriendRequest,
+  acceptRequest,
+  declineRequest,
+  toggleFollow,
+  unfriend,
 } = require("../controllers/user");
 // Middlewares
 const authorizationMiddleware = require("../middleware/auth");
@@ -41,5 +46,15 @@ router.patch(
   authorizationMiddleware,
   updateProfileDetails
 );
+// Friends, follow
+router.patch(
+  "/toggleFriendRequest/:id",
+  authorizationMiddleware,
+  toggleFriendRequest
+);
+router.patch("/acceptRequest/:id", authorizationMiddleware, acceptRequest);
+router.patch("/declineRequest/:id", authorizationMiddleware, declineRequest);
+router.patch("/toggleFollow/:id", authorizationMiddleware, toggleFollow);
+router.patch("/unfriend/:id", authorizationMiddleware, unfriend);
 
 module.exports = router;
