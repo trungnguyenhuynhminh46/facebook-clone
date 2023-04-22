@@ -9,23 +9,18 @@ import {
 import Style from "./style.module.css";
 import classNames from "classnames";
 import { Outlet } from "react-router-dom";
-import {
-  useGetImagesQuery,
-  useGetUserInfoByUserEmailQuery,
-} from "@/store/api/usersApi";
+import { useGetUserInfoByUserEmailQuery } from "@/store/api/usersApi";
 import NotFound from "@/pages/NotFound";
-import { isError } from "lodash";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/store/selectors/user";
 import CoverImage from "./CoverImage";
 import UserImage from "./UserImage";
-import useOnClickOutside from "@/hooks/useOnClickOutside";
 import ProfileButtons from "./ProfileButtons";
 
 type ContextProfileLayout = {
   data: {
     userInfo: any;
-    relationShip: {
+    relationship: {
       isYourFriend: boolean;
       isFollowedByYou: boolean;
       receivedRequest: boolean;
@@ -51,9 +46,12 @@ const ProfileLayout = (props: Props) => {
     isLoading: userInfoIsLoading,
     isFetching: userInfoIsFetching,
     isError: userInfoIsError,
-  } = useGetUserInfoByUserEmailQuery({
-    email: email || "",
-  });
+  } = useGetUserInfoByUserEmailQuery(
+    {
+      email: email || "",
+    },
+    { refetchOnMountOrArgChange: true }
+  );
   const [isOwner, setIsOwner] = useState<boolean>(false);
   useEffect(() => {
     if (data && data.userInfo) {
@@ -61,15 +59,22 @@ const ProfileLayout = (props: Props) => {
       setIsOwner(data.userInfo.email === currentUser.email);
     }
   }, [data]);
-  const friends:
+  const [friends, setFriends] = useState<
     | {
         _id: string;
         username: string;
         picture: string;
         email: string;
       }[]
-    | undefined = data && data.userInfo?.friends;
-  const relationship = data && data.relationShip;
+    | undefined
+  >(data && data.userInfo?.friends);
+  useEffect(() => {
+    if (data?.userInfo) {
+      setFriends(data.userInfo.friends);
+    }
+  }, [data]);
+  // console.log(friends);
+  const relationship = data && data.relationship;
   return (
     <>
       {!userInfoIsError &&
@@ -111,7 +116,7 @@ const ProfileLayout = (props: Props) => {
                               return (
                                 <div
                                   key={friend._id}
-                                  className="relative w-8 h-8 border-[2px] border-solid border-white rounded-full cursor-pointer -ml-[8px] overflow-hidden"
+                                  className="relative w-8 h-8 border-[2px] border-solid border-gray-100 rounded-full cursor-pointer -ml-[8px] overflow-hidden"
                                 >
                                   <img
                                     src={friend.picture}
@@ -122,7 +127,7 @@ const ProfileLayout = (props: Props) => {
                               );
                             })}
                           {friends.length > 6 && (
-                            <div className="relative w-8 h-8 border-[2px] border-solid border-white rounded-full cursor-pointer -ml-[8px] overflow-hidden">
+                            <div className="relative w-8 h-8 border-[2px] border-solid border-gray-100 rounded-full cursor-pointer -ml-[8px] overflow-hidden">
                               <img
                                 src={friends[6].picture}
                                 alt=""
@@ -146,6 +151,9 @@ const ProfileLayout = (props: Props) => {
                   <ProfileButtons
                     isOwner={isOwner}
                     relationship={relationship}
+                    userInfo={data.userInfo}
+                    friends={friends}
+                    setFriends={setFriends}
                   />
                   {/* Navigation */}
                   <div className="flex py-1 border-t-[0.5px] border-solid border-gray-400 mt-4">

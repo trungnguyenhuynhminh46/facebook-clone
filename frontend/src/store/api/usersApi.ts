@@ -6,7 +6,7 @@ export const usersApi = apiSlice.injectEndpoints({
     getUserInfoByUserEmail: builder.query<
       {
         userInfo: any;
-        relationShip: {
+        relationship: {
           isYourFriend: boolean;
           isFollowedByYou: boolean;
           receivedRequest: boolean;
@@ -117,6 +117,80 @@ export const usersApi = apiSlice.injectEndpoints({
         };
       },
     }),
+    toggleFriendRequest: builder.mutation<string, { id: string }>({
+      query(body) {
+        const { id } = body;
+        return {
+          url: `/user/toggleFriendRequest/${id}`,
+          method: "PATCH",
+        };
+      },
+    }),
+    acceptRequest: builder.mutation<string, { id: string; email: string }>({
+      query(body) {
+        const { id } = body;
+        return {
+          url: `/user/acceptRequest/${id}`,
+          method: "PATCH",
+        };
+      },
+      invalidatesTags(result, error, body) {
+        const { email } = body;
+        return [
+          {
+            type: "Users",
+            id: `user-${email}`,
+          },
+        ];
+      },
+    }),
+    declineRequest: builder.mutation<string, { id: string }>({
+      query(body) {
+        const { id } = body;
+        return {
+          url: `/user/declineRequest/${id}`,
+          method: "PATCH",
+        };
+      },
+    }),
+    toggleFollow: builder.mutation<
+      string,
+      {
+        id: string;
+      }
+    >({
+      query(body) {
+        const { id } = body;
+        return {
+          url: `/user/toggleFollow/${id}`,
+          method: "PATCH",
+        };
+      },
+    }),
+    unfriend: builder.mutation<
+      string,
+      {
+        id: string;
+        email: string;
+      }
+    >({
+      query(body) {
+        const { id } = body;
+        return {
+          url: `/user/unfriend/${id}`,
+          method: "PATCH",
+        };
+      },
+      invalidatesTags(result, error, body) {
+        const { email } = body;
+        return [
+          {
+            type: "Users",
+            id: `user-${email}`,
+          },
+        ];
+      },
+    }),
   }),
 });
 
@@ -126,4 +200,9 @@ export const {
   useUpdateProfilePictureByEmailMutation,
   useUpdateProfileCoverByEmailMutation,
   useUpdateProfileDetailsByEmailMutation,
+  useToggleFriendRequestMutation,
+  useAcceptRequestMutation,
+  useDeclineRequestMutation,
+  useToggleFollowMutation,
+  useUnfriendMutation,
 } = usersApi;

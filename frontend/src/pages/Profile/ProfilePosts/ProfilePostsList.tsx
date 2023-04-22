@@ -15,11 +15,14 @@ const ProfilePostsList = (props: Props) => {
   // Data here
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
-  const { data, isLoading, isFetching } = useGetPostsByEmailQuery({
-    email,
-    _page: page,
-    _limit: limit,
-  });
+  const { data, isLoading, isFetching } = useGetPostsByEmailQuery(
+    {
+      email,
+      _page: page,
+      _limit: limit,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
   const posts =
     data?.postsEntityState && Object.values(data?.postsEntityState.entities);
   const count = data?.count;

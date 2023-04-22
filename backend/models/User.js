@@ -99,6 +99,7 @@ const userSchema = mongoose.Schema(
       type: [{ type: ObjectId, ref: "User" }],
       default: [],
     },
+    // Request that is received
     requests: {
       type: [{ type: ObjectId, ref: "User" }],
       default: [],

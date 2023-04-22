@@ -1,5 +1,3 @@
-const mongoose = require("mongoose");
-const { ObjectId } = mongoose.Types;
 const { StatusCodes } = require("http-status-codes");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
@@ -243,16 +241,19 @@ const getUserInfoByUserEmail = async (req, res) => {
   const relationship = {
     isYourFriend: false,
     isFollowedByYou: false,
-    // You received a request
+    //
     receivedRequest: false,
-    // You sent a request
     sentRequest: false,
   };
   const { email } = req.params;
-  let userInfo = await User.findOne({
+  const userInfo = await User.findOne({
     email,
-  }).select("-password");
-
+  })
+    .select("-password")
+    .populate({
+      path: "friends",
+      select: "_id username picture email",
+    });
   if (!userInfo) {
     throw new customError(
       `The user with email ${email} is not found`,
@@ -271,13 +272,8 @@ const getUserInfoByUserEmail = async (req, res) => {
   relationship.isFollowedByYou =
     currentUser.following.includes(userInfo._id) &&
     userInfo.followers.includes(currentUser._id);
-  relationship.receivedRequest = currentUser.requests.includes(userInfo._id);
-  relationship.sentRequest = userInfo.requests.includes(currentUser._id);
-
-  userInfo = await userInfo.populate({
-    path: "friends",
-    select: "_id username picture email",
-  });
+  relationship.receivedRequest = userInfo.requests.includes(currentUser._id);
+  relationship.sentRequest = currentUser.requests.includes(userInfo._id);
   return res.status(StatusCodes.OK).json({
     userInfo,
     relationship,
@@ -352,214 +348,207 @@ const updateProfileDetails = async (req, res) => {
     newDetails: user.details,
   });
 };
+// Sender's action
 const toggleFriendRequest = async (req, res) => {
-  let status = "error";
-  const currentId = req.user.id;
-  const targetId = req.params.id;
-  if (currentId === targetId) {
+  const status = "error";
+  const senderId = req.user.id;
+  const receiverId = req.params.id;
+  if (senderId.toString() === receiverId.toString()) {
     throw new customError(
       "You can not send request to yourself!",
       StatusCodes.BAD_REQUEST
     );
   }
-  const currentUser = await User.findById(new ObjectId(currentId));
-  if (!currentUser) {
-    throw new customError(`User with id ${currentId} is not found!`);
+  const sender = await User.findById(senderId);
+  if (!sender) {
+    throw new customError(`User with id ${senderId} is not found!`);
   }
-  const target = await User.findById(new ObjectId(targetId));
-  if (!target) {
-    throw new customError(`User with id ${targetId} is not found!`);
+  const receiver = await User.findById(receiverId);
+  if (!receiver) {
+    throw new customError(`User with id ${receiverId} is not found!`);
   }
-  if (target.friends.includes(currentUser._id)) {
+  if (receiver.friends.includes(sender._id)) {
     throw new customError("Already friend!", StatusCodes.BAD_REQUEST);
   }
-  // console.log(target.requests.includes(currentUser._id));
   // Request is sended
-  if (target.requests.includes(currentUser._id)) {
-    status = "cancel";
-    target.requests = target.requests.filter((id) => {
-      return id.toString() !== currentUser._id.toString();
+  if (receiver.requests.includes(sender._id)) {
+    status = "add";
+    receiver.requests = receiver.requests.filter((id) => {
+      return id !== sender._id;
     });
-    target.followers = target.followers.filter((id) => {
-      return id.toString() !== currentUser._id.toString();
+    receiver.followers = receiver.followers.filter((id) => {
+      return id !== sender._id;
     });
-    currentUser.following = currentUser.following.filter((id) => {
-      return id.toString() !== target._id.toString();
+    sender.following = sender.following.filter((id) => {
+      return id !== receiver._id;
     });
-    currentUser.save();
-    target.save();
+    sender.save();
+    receiver.save();
   }
-  // Request is canceled
-  else if (!target.requests.includes(currentUser._id)) {
-    status = "send";
-    target.requests.push(currentUser._id);
-    target.followers.push(currentUser._id);
-    currentUser.following.push(target._id);
-    currentUser.save();
-    target.save();
+  // Request is not sended
+  else if (!receiver.requests.includes(sender._id)) {
+    status = "remove";
+    receiver.requests.push(sender._id);
+    receiver.followers.push(sender._id);
+    sender.following.push(receiver._id);
+    sender.save();
+    receiver.save();
   } else {
     throw new customError("Check again", StatusCodes.BAD_REQUEST);
   }
 
-  return res.status(StatusCodes.OK).json(status);
+  return res.status(StatusCodes.OK).json({
+    status,
+    friend: receiver.select("_id username picture email"),
+  });
 };
+// Receiver's action
 const acceptRequest = async (req, res) => {
-  const currentId = req.user.id;
-  const targetId = req.params.id;
-  if (targetId.toString() === currentId.toString()) {
+  const receiverId = req.user.id;
+  const senderId = req.params.id;
+  if (senderId.toString() === receiverId.toString()) {
     throw new customError(
       "You can not accept your own request!",
       StatusCodes.BAD_REQUEST
     );
   }
-  const target = await User.findById(targetId);
-  if (!target) {
-    throw new customError(`User with id ${targetId} is not found!`);
+  const sender = await User.findById(senderId);
+  if (!sender) {
+    throw new customError(`User with id ${senderId} is not found!`);
   }
-  const currentUser = await User.findById(currentId);
-  if (!currentUser) {
-    throw new customError(`User with id ${currentId} is not found!`);
+  const receiver = await User.findById(receiverId);
+  if (!receiver) {
+    throw new customError(`User with id ${receiverId} is not found!`);
   }
   // Is not friend + there is request
   if (
-    !currentUser.friends.includes(target._id) &&
-    currentUser.requests.includes(target._id)
+    !receiver.friends.includes(sender._id) &&
+    receiver.requests.includes(sender._id)
   ) {
-    currentUser.friends.push(target._id);
-    currentUser.requests = currentUser.requests.filter(
-      (id) => id.toString() !== target._id.toString()
-    );
-    currentUser.following.push(target._id);
-    target.followers.push(currentUser._id);
-    target.friends.push(currentUser._id);
-    currentUser.save();
-    target.save();
+    // Receiver
+    receiver.friends.push(sender._id);
+    receiver.requests = receiver.requests.filter((id) => id !== sender._id);
+    // Sender
+    sender.friends.push(receiver._id);
+    receiver.save();
+    sender.save();
+    // Prepare return data
+    const relationship = {
+      isYourFriend: false,
+      isFollowedByYou: false,
+      //
+      receivedRequest: false,
+      sentRequest: false,
+    };
+    relationship.isYourFriend =
+      sender.friends.includes(receiver._id) &&
+      receiver.friends.includes(sender._id);
+    relationship.isFollowedByYou =
+      receiver.following.includes(sender._id) &&
+      sender.followers.includes(receiver._id);
+    relationship.receivedRequest = sender.requests.includes(receiver._id);
+    relationship.sentRequest = receiver.requests.includes(sender._id);
 
-    return res.status(StatusCodes.OK).json("OK");
+    return res.status(StatusCodes.OK).json({
+      relationship,
+      friend: receiver.select("_id username picture email"),
+    });
   }
-  // The case that target not accept yet and you canceled
   throw new customError("Check again", StatusCodes.BAD_REQUEST);
 };
 const declineRequest = async (req, res) => {
-  const currentId = req.user.id;
-  const targetId = req.params.id;
-  if (targetId.toString() === currentId.toString()) {
+  const receiverId = req.user.id;
+  const senderId = req.params.id;
+  if (senderId.toString() === receiverId.toString()) {
     throw new customError(
       "You can not decline your own request!",
       StatusCodes.BAD_REQUEST
     );
   }
-  const target = await User.findById(targetId);
-  if (!target) {
-    throw new customError(`User with id ${targetId} is not found!`);
+  const sender = await User.findById(senderId);
+  if (!sender) {
+    throw new customError(`User with id ${senderId} is not found!`);
   }
-  const currentUser = await User.findById(currentId);
-  if (!currentUser) {
-    throw new customError(`User with id ${currentId} is not found!`);
+  const receiver = await User.findById(receiverId);
+  if (!receiver) {
+    throw new customError(`User with id ${receiverId} is not found!`);
   }
   // Is not friend + there is request
   if (
-    !currentUser.friends.includes(target._id) &&
-    currentUser.requests.includes(target._id)
+    !receiver.friends.includes(sender._id) &&
+    receiver.requests.includes(sender._id)
   ) {
-    currentUser.requests = currentUser.requests.filter(
-      (id) => id.toString() !== target._id.toString()
-    );
-    currentUser.followers = currentUser.followers.filter(
-      (id) => id.toString() !== target._id.toString()
-    );
-    target.following = target.following.filter(
-      (id) => id.toString() !== currentUser._id.toString()
-    );
-    target.save();
-    currentUser.save();
+    receiver.requests = receiver.requests.filter((id) => id !== sender._id);
+    receiver.followers = receiver.followers.filter((id) => id !== sender._id);
+    sender.following = sender.following.filter((id) => id !== receiver._id);
+    sender.save();
+    receiver.save();
     return res.status(StatusCodes.OK).json("OK");
   }
   throw new customError("Check again", StatusCodes.BAD_REQUEST);
 };
+//
 const toggleFollow = async (req, res) => {
-  let status = "follow";
-  const currentId = req.user.id;
-  const targetId = req.params.id;
-  if (currentId === targetId) {
+  const userId = req.user.id;
+  const targetId = req.body.id;
+  if (userId === targetId) {
     throw new customError(
       `You can not follow yourself!`,
       StatusCodes.BAD_REQUEST
     );
   }
-  const currentUser = await User.findById(currentId);
-  if (!currentUser) {
-    throw new customError(`User with id ${currentId} is not found!`);
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new customError(`User with id ${userId} is not found!`);
   }
   const target = await User.findById(targetId);
   if (!target) {
-    throw new customError(`User with id ${targetId} is not found!`);
+    throw new customError(`User with id ${userId} is not found!`);
   }
   // If not following
-  if (!currentUser.following.includes(target._id)) {
-    status = "follow";
-    currentUser.following.push(target._id);
-    target.followers.push(currentUser._id);
-    currentUser.save();
+  if (!user.following.includes(target._id)) {
+    user.following.push(target._id);
+    target.followers.push(user._id);
+    user.save();
     target.save();
-    return res.status(StatusCodes.OK).json(status);
+    return res.statusCode(StatusCodes.OK).json("OK");
   }
   // If following
-  if (currentUser.following.includes(target._id)) {
-    status = "unfollow";
-    currentUser.following = currentUser.following.filter(
-      (id) => id.toString() !== target._id.toString()
-    );
-    target.followers = target.followers.filter(
-      (id) => id.toString() !== currentUser._id.toString()
-    );
-    currentUser.save();
+  if (user.following.includes(target._id)) {
+    user.following = user.following.filter((id) => id !== target._id);
+    target.followers = target.followers.filter((id) => id !== user._id);
+    user.save();
     target.save();
-    return res.status(StatusCodes.OK).json(status);
+    return res.statusCode(StatusCodes.OK).json("OK");
   }
   throw new customError("Check again", StatusCodes.BAD_REQUEST);
 };
 const unfriend = async (req, res) => {
-  const currentId = req.user.id;
-  const targetId = req.params.id;
-  if (currentId === targetId) {
+  const userId = req.user.id;
+  const targetId = req.body.id;
+  if (userId === targetId) {
     throw new customError(
       `You can not follow yourself!`,
       StatusCodes.BAD_REQUEST
     );
   }
-  const currentUser = await User.findById(currentId);
-  if (!currentUser) {
-    throw new customError(`User with id ${currentId} is not found!`);
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new customError(`User with id ${userId} is not found!`);
   }
   const target = await User.findById(targetId);
   if (!target) {
-    throw new customError(`User with id ${currentId} is not found!`);
+    throw new customError(`User with id ${userId} is not found!`);
   }
   // If is friend
-  if (
-    currentUser.friends.includes(target._id) &&
-    target.friends.includes(currentUser._id)
-  ) {
-    currentUser.friends = currentUser.friends.filter(
-      (id) => id.toString() !== target._id.toString()
-    );
-    currentUser.following = currentUser.following.filter(
-      (id) => id.toString() !== target._id.toString()
-    );
-    currentUser.followers = currentUser.followers.filter(
-      (id) => id.toString() !== target._id.toString()
-    );
-    target.friends = target.friends.filter(
-      (id) => id.toString() !== currentUser._id.toString()
-    );
-    target.following = target.following.filter(
-      (id) => id.toString() !== currentUser._id.toString()
-    );
-    target.followers = target.followers.filter(
-      (id) => id.toString() !== currentUser._id.toString()
-    );
-    currentUser.save();
+  if (user.friends.includes(target._id) && target.friends.includes(user._id)) {
+    user.friends = user.friends.filter((id) => id !== target._id);
+    user.following = user.following.filter((id) => id !== target._id);
+    user.followers = user.followers.filter((id) => id !== target._id);
+    target.friends = target.friends.filter((id) => id !== user._id);
+    target.following = target.following.filter((id) => id !== user._id);
+    target.followers = target.followers.filter((id) => id !== user._id);
+    user.save();
     target.save();
     return res.status(StatusCodes.OK).json("OK");
   }

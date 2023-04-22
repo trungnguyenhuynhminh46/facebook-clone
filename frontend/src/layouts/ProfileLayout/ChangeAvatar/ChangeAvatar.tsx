@@ -12,11 +12,14 @@ type Props = {
 
 const ChangeAvatar: React.FC<Props> = ({ userInfo, setShowPopUp }) => {
   const folder = `${userInfo.email}/profile_pictures`;
-  const { data, isLoading, isFetching } = useGetImagesQuery({
-    folder,
-    sort: "desc",
-    max: 12,
-  });
+  const { data, isLoading, isFetching } = useGetImagesQuery(
+    {
+      folder,
+      sort: "desc",
+      max: 12,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
 
   const [error, setError] = useState<string>("");
   const [imageUrl, setImageUrl] = useState<string>("");
