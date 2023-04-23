@@ -11,6 +11,11 @@ import { Navigate } from "react-router-dom";
 // Layouts
 import HomeLayout from "@layouts/HomeLayout";
 import ProfileLayout from "@layouts/ProfileLayout";
+import FriendsLayout from "./layouts/FriendsLayout/FriendsLayout";
+import FriendsHome from "./pages/Friends/FriendsHome";
+import Friends from "./pages/Friends";
+import ReceivedRequests from "./pages/Friends/ReceivedRequests";
+import SentRequests from "./pages/Friends/SentRequests";
 import BookMarks from "@pages/BookMarks/BookMarks";
 import { ToastContainer } from "react-toastify";
 import ProfilePosts from "@pages/Profile/ProfilePosts";
@@ -43,6 +48,12 @@ function App() {
                 <Route path="friends" element={<ProfileFriends />}></Route>
                 {/* Photos */}
                 <Route path="photos" element={<ProfilePhotos />}></Route>
+              </Route>
+              <Route path="/friends" element={<FriendsLayout />}>
+                <Route index element={<FriendsHome />} />
+                <Route path="friends" element={<Friends />} />
+                <Route path="received" element={<ReceivedRequests />} />
+                <Route path="sent" element={<SentRequests />} />
               </Route>
               <Route path="/bookmarks" element={<BookMarks />} />
               <Route path="*" element={<NotFound />} />

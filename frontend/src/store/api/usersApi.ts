@@ -57,6 +57,18 @@ export const usersApi = apiSlice.injectEndpoints({
         ];
       },
     }),
+    getFriendsPageData: builder.query<
+      {
+        friends: any;
+        receivedRequests: any;
+        sentRequests: any;
+      },
+      void
+    >({
+      query(body) {
+        return `/user/getFriendsPageData`;
+      },
+    }),
     updateProfilePictureByEmail: builder.mutation<
       { email: string; currentProfilePicture: string },
       { email: string; pictureUrl: string }
@@ -197,6 +209,7 @@ export const usersApi = apiSlice.injectEndpoints({
 export const {
   useGetUserInfoByUserEmailQuery,
   useGetImagesQuery,
+  useGetFriendsPageDataQuery,
   useUpdateProfilePictureByEmailMutation,
   useUpdateProfileCoverByEmailMutation,
   useUpdateProfileDetailsByEmailMutation,

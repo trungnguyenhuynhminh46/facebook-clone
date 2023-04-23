@@ -54,7 +54,7 @@ const ManageFriends: React.FC<Props> = (props) => {
         </div>
       )}
       {!thereIsNoFriends && !userInfoIsError && (
-        <div className="grid grid-cols-3 grid-rows-3 gap-3">
+        <div className="grid grid-cols-3 gap-3">
           {userInfo.friends
             .slice(0, 9)
             .map(

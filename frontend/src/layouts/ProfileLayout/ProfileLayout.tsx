@@ -16,6 +16,7 @@ import { selectCurrentUser } from "@/store/selectors/user";
 import CoverImage from "./CoverImage";
 import UserImage from "./UserImage";
 import ProfileButtons from "./ProfileButtons";
+import { Link } from "react-router-dom";
 
 type ContextProfileLayout = {
   data: {
@@ -114,7 +115,8 @@ const ProfileLayout = (props: Props) => {
                           {friends.length <= 6 &&
                             friends.slice(0, 6).map((friend) => {
                               return (
-                                <div
+                                <Link
+                                  to={`/profile/${friend.email}`}
                                   key={friend._id}
                                   className="relative w-8 h-8 border-[2px] border-solid border-gray-100 rounded-full cursor-pointer -ml-[8px] overflow-hidden"
                                 >
@@ -123,7 +125,7 @@ const ProfileLayout = (props: Props) => {
                                     alt=""
                                     className={`w-full h-full object-cover`}
                                   />
-                                </div>
+                                </Link>
                               );
                             })}
                           {friends.length > 6 && (

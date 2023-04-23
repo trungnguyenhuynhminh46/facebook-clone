@@ -206,4 +206,13 @@
   .filer-invert {
     -webkit-filter: invert(100%);
   }
+  .circle {
+    @apply w-9 h-9 rounded-full flex justify-center items-center bg-gray-300;
+  }
+  .btn-blue {
+    @apply cursor-pointer flex items-center justify-center gap-2 flex-grow h-9 bg-blue-600 text-white font-semibold rounded-md active:scale-95 active:bg-blue-700;
+  }
+  .btn-gray {
+    @apply cursor-pointer flex items-center justify-center gap-2 flex-grow h-9 rounded-md bg-gray-300 active:scale-95 active:bg-gray-300 text-black font-semibold;
+  }
 }

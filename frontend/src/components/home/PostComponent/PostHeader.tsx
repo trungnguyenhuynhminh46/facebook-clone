@@ -70,9 +70,12 @@ const PostHeader: React.FC<Props> = ({ post, currentUser }) => {
       </Link>
       <div className="flex flex-col">
         <div>
-          <span className="text-[15px] font-semibold">
+          <Link
+            to={`/profile/${post.user.email}`}
+            className="text-[15px] font-semibold"
+          >
             {post.user.username}
-          </span>
+          </Link>
           {post.type === "profilePicture" && (
             <span className="text-gray-500 font-light">
               {" "}

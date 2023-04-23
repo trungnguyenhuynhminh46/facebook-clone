@@ -259,12 +259,6 @@ const getUserInfoByUserEmail = async (req, res) => {
       StatusCodes.NOT_FOUND
     );
   }
-  if (userInfo._id.toString() === currentUser._id.toString()) {
-    return res.status(StatusCodes.OK).json({
-      userInfo,
-      relationship,
-    });
-  }
   relationship.isYourFriend =
     currentUser.friends.includes(userInfo._id) &&
     userInfo.friends.includes(currentUser._id);
@@ -565,6 +559,49 @@ const unfriend = async (req, res) => {
   }
   throw new customError("Check again", StatusCodes.BAD_REQUEST);
 };
+const getFriendsPageData = async (req, res) => {
+  const userId = req.user.id;
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new customError(
+      `User with id ${userId} is not found`,
+      StatusCodes.NOT_FOUND
+    );
+  }
+  // const friends = user.friends;
+  const { friends } = await user.populate({
+    path: "friends",
+    select: "_id picture username email friends",
+    populate: {
+      path: "friends",
+      select: "_id picture username email",
+    },
+  });
+  // Received requests
+  const { requests: receivedRequests } = await user.populate({
+    path: "requests",
+    select: "_id picture username email friends",
+    populate: {
+      path: "friends",
+      select: "_id picture username email",
+    },
+  });
+  // Sent requests
+  const sentRequests = await User.find({
+    requests: new ObjectId(userId),
+  })
+    .select("_id picture username email friends")
+    .populate({
+      path: "friends",
+      select: "_id picture username email",
+    });
+
+  return res.status(StatusCodes.OK).json({
+    friends,
+    receivedRequests,
+    sentRequests,
+  });
+};
 
 module.exports = {
   register,
@@ -584,4 +621,5 @@ module.exports = {
   declineRequest,
   toggleFollow,
   unfriend,
+  getFriendsPageData,
 };

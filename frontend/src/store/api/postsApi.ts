@@ -34,6 +34,7 @@ export const postsApi = apiSlice.injectEndpoints({
         return `/posts/getPostsForHomePage?_page=${_page}&_limit=${_limit}`;
       },
       transformResponse: (response: { posts: Post[]; count: number }) => {
+        // console.log(response.count);
         const postsEntityState = itemsAdapter.addMany(
           itemsAdapter.getInitialState(),
           response.posts
@@ -48,11 +49,20 @@ export const postsApi = apiSlice.injectEndpoints({
       serializeQueryArgs: ({ endpointName, queryArgs }) => {
         return endpointName;
       },
-      merge: (currenState, incomingState) => {
-        itemsAdapter.addMany(
-          currenState.postsEntityState,
-          itemsSelectors.selectAll(incomingState.postsEntityState)
-        );
+      merge: (currentCache, incomingState, otherArg) => {
+        if (otherArg.arg._page === 1) {
+          itemsAdapter.setAll(
+            currentCache.postsEntityState,
+            itemsSelectors.selectAll(incomingState.postsEntityState)
+          );
+        }
+        if (otherArg.arg._page > 1) {
+          itemsAdapter.addMany(
+            currentCache.postsEntityState,
+            itemsSelectors.selectAll(incomingState.postsEntityState)
+          );
+        }
+        currentCache.count = incomingState.count;
       },
     }),
     getPostsByEmail: builder.query<
@@ -81,11 +91,20 @@ export const postsApi = apiSlice.injectEndpoints({
       serializeQueryArgs: ({ endpointName, queryArgs }) => {
         return `${endpointName}-${queryArgs.email}`;
       },
-      merge: (currenState, incomingState) => {
-        itemsAdapter.addMany(
-          currenState.postsEntityState,
-          itemsSelectors.selectAll(incomingState.postsEntityState)
-        );
+      merge: (currentCache, incomingState, otherArg) => {
+        if (otherArg.arg._page === 1) {
+          itemsAdapter.setAll(
+            currentCache.postsEntityState,
+            itemsSelectors.selectAll(incomingState.postsEntityState)
+          );
+        }
+        if (otherArg.arg._page > 1) {
+          itemsAdapter.addMany(
+            currentCache.postsEntityState,
+            itemsSelectors.selectAll(incomingState.postsEntityState)
+          );
+        }
+        currentCache.count = incomingState.count;
       },
     }),
     addPost: builder.mutation<Post, AddPostBodyType>({

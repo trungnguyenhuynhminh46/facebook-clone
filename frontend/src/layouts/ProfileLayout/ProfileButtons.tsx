@@ -238,7 +238,7 @@ const ProfileButtons: React.FC<Props> = ({
           {localRelationship && localRelationship.receivedRequest && (
             <div
               ref={button}
-              className="cursor-pointer flex items-center justify-center gap-2 flex-grow h-9 bg-blue-600 text-white font-semibold rounded-md active:scale-95 active:bg-blue-700 active:z-10 relative"
+              className="btn-blue active:z-10 relative"
               onClick={() => {
                 setShowRespondMenu(!showRespondMenu);
               }}
@@ -271,7 +271,7 @@ const ProfileButtons: React.FC<Props> = ({
           {localRelationship && localRelationship.isYourFriend && (
             <div
               ref={button}
-              className="cursor-pointer flex items-center justify-center gap-2 flex-grow h-9 bg-blue-600 text-white font-semibold rounded-md active:scale-95 active:bg-blue-700 active:z-10 relative"
+              className="btn-blue active:z-10 relative"
               onClick={() => {
                 setShowFriendMenu(!showFriendMenu);
               }}

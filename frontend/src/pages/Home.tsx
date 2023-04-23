@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/store/selectors/user";
@@ -13,16 +13,19 @@ import CreatePosts from "@/components/home/CreatePosts";
 import PostComponent from "@/components/home/PostComponent/PostComponent";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PostSkeleton from "@/components/skeleton/PostSkeleton";
-import { Post } from "@/types/Post.type";
 
 type Props = {};
 const Home: React.FC<Props> = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1100px)" });
   const isMediumScreen = useMediaQuery({ query: "(max-width: 900px)" });
   const user = useSelector(selectCurrentUser);
   // Data here
   const [page, setPage] = useState<number>(1);
-  const [limit, setLimit] = useState<number>(10);
+  // console.log(page);
+  const [limit, setLimit] = useState<number>(4);
   const { data, isLoading, isFetching } = useGetPostsForHomePageQuery(
     {
       _page: page,
@@ -32,7 +35,7 @@ const Home: React.FC<Props> = () => {
   );
   const posts =
     data?.postsEntityState && Object.values(data?.postsEntityState.entities);
-  const count = data?.count;
+  const count = data?.count || 0;
   return (
     <>
       {!isTabletOrMobile && <LeftSidebar />}
@@ -62,14 +65,18 @@ const Home: React.FC<Props> = () => {
         <div className="mx-4">
           <Stories currentUser={user} stories={stories} />
           <CreatePosts currentUser={user} className="mt-4 mb-3" />
-
-          {posts && count !== undefined && (
+          {(!posts || posts.length === 0) && (
+            <div className="text-center py-4 text-xl font-bold text-gray-400">
+              No posts available yet
+            </div>
+          )}
+          {posts && posts.length > 0 && (
             <InfiniteScroll
               dataLength={posts.length}
               next={() => {
                 setPage(page + 1);
               }}
-              hasMore={posts.length < count}
+              hasMore={count > 0}
               loader={<PostSkeleton />}
               endMessage={
                 <p className="text-center text-lg text-gray-400 font-semibold pt-2">

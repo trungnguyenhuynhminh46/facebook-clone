@@ -218,9 +218,9 @@ const Header: React.FC<Props> = (props: Props) => {
           </ToolTip>
         )}
         {!isSmallScreen && (
-          <ToolTip title="Groups">
+          <ToolTip title="Friends">
             <NavLink
-              to="/groups"
+              to="/friends"
               className={({ isActive }) => {
                 return isActive
                   ? `${

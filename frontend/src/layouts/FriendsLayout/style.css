@@ -1,0 +1,12 @@
+.menu-item {
+  @apply relative cursor-pointer flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100;
+}
+.menu-item.active {
+  @apply bg-gray-100;
+}
+.menu-item.active .circle {
+  @apply !bg-blue-500;
+}
+.menu-item.active .circle i {
+  @apply invert;
+}

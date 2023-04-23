@@ -6,7 +6,6 @@
   height: 20px;
   background-repeat: no-repeat;
   display: inline-block;
-  -webkit-filter: invert(100%);
 }
 .friends_suggestions_icon {
   background-image: url(/icons/icons11.png);
@@ -787,6 +786,15 @@
   background-size: 34px 402px;
   width: 16px;
   height: 16px;
+  background-repeat: no-repeat;
+  display: inline-block;
+}
+.friends_home_icon {
+  background-image: url(/icons/icons41.png);
+  background-position: 0px -423px;
+  background-size: auto;
+  width: 20px;
+  height: 20px;
   background-repeat: no-repeat;
   display: inline-block;
 }

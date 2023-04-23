@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/store/selectors/user";
@@ -10,6 +10,9 @@ import PostSkeleton from "@/components/skeleton/PostSkeleton";
 type Props = {};
 
 const ProfilePostsList = (props: Props) => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const currentUser = useSelector(selectCurrentUser);
   const { email } = useParams();
   // Data here
@@ -25,23 +28,23 @@ const ProfilePostsList = (props: Props) => {
   );
   const posts =
     data?.postsEntityState && Object.values(data?.postsEntityState.entities);
-  const count = data?.count;
+  const count = data?.count || 0;
+  // console.log(posts?.length);
   return (
     <>
       {/* Loading ???  */}
-      {!posts ||
-        (posts.length === 0 && (
-          <div className="text-center py-4 text-xl font-bold text-gray-400">
-            No posts available yet
-          </div>
-        ))}
-      {!!posts && !!count && posts.length > 0 && (
+      {(!posts || posts.length === 0) && (
+        <div className="text-center py-4 text-xl font-bold text-gray-400">
+          No posts available yet
+        </div>
+      )}
+      {!!posts && posts.length > 0 && (
         <InfiniteScroll
           dataLength={posts.length}
           next={() => {
             setPage(page + 1);
           }}
-          hasMore={posts.length < count}
+          hasMore={count > 0}
           loader={<PostSkeleton />}
           endMessage={
             <p className="text-center text-lg text-gray-400 font-semibold pb-2">

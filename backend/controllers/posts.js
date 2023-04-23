@@ -54,7 +54,7 @@ const getPostsForHomePage = async (req, res) => {
       select: "first_name last_name username email picture cover gender",
     })
     .sort({ createdAt: "desc" });
-  const count = await Post.countDocuments({});
+  const count = posts ? posts.length : 0;
   return res.status(StatusCodes.OK).json({ posts, count });
 };
 const getPostsByEmail = async (req, res) => {
@@ -77,12 +77,10 @@ const getPostsByEmail = async (req, res) => {
       select: "first_name last_name username email picture cover gender",
     })
     .sort({ createdAt: "desc" });
-  const count = await Post.countDocuments({
-    user: author._id,
-  });
-  if (!postsByEmail) {
-    return res.status(StatusCodes.OK).json({ posts: [], count: 0 });
-  }
+  const count = postsByEmail ? postsByEmail.length : 0;
+  // if (!postsByEmail) {
+  //   return res.status(StatusCodes.OK).json({ posts: [], count: 0 });
+  // }
   return res.status(StatusCodes.OK).json({ posts: postsByEmail, count: count });
 };
 
