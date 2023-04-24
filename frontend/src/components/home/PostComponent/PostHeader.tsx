@@ -6,6 +6,11 @@ import { Dots } from "@/svg";
 import Tippy from "@tippyjs/react/headless";
 import { User } from "@/types/User.type";
 import DeleteConfirmForm from "../DeleteConfirmForm/DeleteConfirmForm";
+import { saveAs } from "file-saver";
+import { useToggleSavePostMutation } from "@/store/api/usersApi";
+import { useDispatch } from "react-redux";
+import { updateSavedPosts } from "@/store/slices/user";
+import Cookies from "js-cookie";
 
 type Props = {
   post: Post;
@@ -52,11 +57,52 @@ const MenuItem: React.FC<PropsMenuItem> = ({
 };
 
 const PostHeader: React.FC<Props> = ({ post, currentUser }) => {
+  // post.imagesList && post.imagesList.length > 0 && console.log(post.imagesList);
+  const dispatch = useDispatch();
+  const [savePost, { isLoading: isSavingPost }] = useToggleSavePostMutation();
+  const [isSaved, setIsSaved] = useState<boolean>(
+    !!currentUser.savedPosts.find((p) => {
+      return p.post === post._id;
+    })
+  );
   const isOwner = post.user._id === currentUser.id;
   const imagesLength = post.imagesList?.length || 0;
   const [showToolTip, setShowToolTip] = useState(false);
   const [showDeleteConfirmForm, setShowDeleteConfirmForm] =
     useState<boolean>(false);
+  const downloadImages = async () => {
+    if (post.imagesList && post.imagesList.length > 0) {
+      post.imagesList.forEach((image_url) => {
+        const list = image_url.split("/");
+        const image_name = list[list.length - 1];
+        saveAs(image_url, image_name);
+      });
+    }
+  };
+  const handleToggleSavePost = async () => {
+    if (isSavingPost) {
+      return;
+    }
+    try {
+      const { savedPosts } = await savePost({ postId: post._id }).unwrap();
+      console.log(savedPosts);
+      Cookies.set(
+        "user",
+        JSON.stringify({
+          ...currentUser,
+          savedPosts,
+        })
+      );
+      dispatch(updateSavedPosts({ savedPosts }));
+      setIsSaved(
+        !!savedPosts.find((p) => {
+          return p.post === post._id;
+        })
+      );
+    } catch (err: any) {
+      console.log(err);
+    }
+  };
   return (
     <div className="flex items-center py-3 px-4 gap-2">
       <Link to={`/profile/${post.user.email}`}>
@@ -130,8 +176,13 @@ const PostHeader: React.FC<Props> = ({ post, currentUser }) => {
             <MenuItem
               setShowToolTip={setShowToolTip}
               icon="save_icon"
-              title="Save Post"
-              subTitle="Add this to your saved items."
+              title={isSaved ? "Unsave Post" : "Save Post"}
+              subTitle={
+                isSaved
+                  ? "Remove from your saved items."
+                  : "Add this to your saved items."
+              }
+              onClick={handleToggleSavePost}
             />
             <div className="spacer my-3"></div>
             {isOwner && (
@@ -146,6 +197,7 @@ const PostHeader: React.FC<Props> = ({ post, currentUser }) => {
                 setShowToolTip={setShowToolTip}
                 icon="download_icon"
                 title="Download"
+                onClick={downloadImages}
               />
             )}
             {imagesLength > 0 && (

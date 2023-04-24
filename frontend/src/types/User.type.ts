@@ -10,4 +10,8 @@ export interface User {
   optional_gender: string;
   token: string;
   verified: boolean;
+  savedPosts: {
+    post: string;
+    savedAt: Date;
+  }[];
 }

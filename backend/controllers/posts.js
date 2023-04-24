@@ -45,8 +45,14 @@ const deletePost = async (req, res) => {
 const getPostsForHomePage = async (req, res) => {
   // Page: page number
   // Limit: numbers of items per page
+  const { following } = await User.findById(req.user.id);
   const { _page, _limit } = req.query;
-  const posts = await Post.find({})
+  const posts = await Post.find({
+    $or: [
+      { user: { $in: following } },
+      { user: { $eq: new mongoose.Types.ObjectId(req.user.id) } },
+    ],
+  })
     .skip((_page - 1) * _limit)
     .limit(_limit)
     .populate({

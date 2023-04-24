@@ -19,6 +19,7 @@ const {
   toggleFollow,
   unfriend,
   getFriendsPageData,
+  toggleSavePost,
 } = require("../controllers/user");
 // Middlewares
 const authorizationMiddleware = require("../middleware/auth");
@@ -58,5 +59,6 @@ router.patch("/declineRequest/:id", authorizationMiddleware, declineRequest);
 router.patch("/toggleFollow/:id", authorizationMiddleware, toggleFollow);
 router.patch("/unfriend/:id", authorizationMiddleware, unfriend);
 router.get("/getFriendsPageData", authorizationMiddleware, getFriendsPageData);
+router.post("/toggleSavePost/:id", authorizationMiddleware, toggleSavePost);
 
 module.exports = router;

@@ -203,6 +203,23 @@ export const usersApi = apiSlice.injectEndpoints({
         ];
       },
     }),
+    toggleSavePost: builder.mutation<
+      {
+        savedPosts: {
+          post: string;
+          savedAt: Date;
+        }[];
+      },
+      { postId: string }
+    >({
+      query(body) {
+        const { postId } = body;
+        return {
+          url: `/user/toggleSavePost/${postId}`,
+          method: "POST",
+        };
+      },
+    }),
   }),
 });
 
@@ -218,4 +235,5 @@ export const {
   useDeclineRequestMutation,
   useToggleFollowMutation,
   useUnfriendMutation,
+  useToggleSavePostMutation,
 } = usersApi;

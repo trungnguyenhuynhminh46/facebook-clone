@@ -13,6 +13,7 @@ const { BASE_URL } = process.env;
 const getRandomCode = require("../helpers/getRandomCode");
 const User = require("../models/User");
 const Code = require("../models/Code");
+const Post = require("../models/Post");
 
 const register = async (req, res) => {
   const { first_name, last_name, password, ...rest } = req.body;
@@ -45,6 +46,7 @@ const register = async (req, res) => {
       optional_gender: user.optional_gender,
       token: token,
       verified: user.verified,
+      savedPosts: user.savedPosts,
     },
   });
 };
@@ -88,6 +90,7 @@ const verify = async (req, res) => {
       optional_gender: user.optional_gender,
       token: token,
       verified: user.verified,
+      savedPosts: user.savedPosts,
     },
   });
 };
@@ -125,6 +128,7 @@ const login = async (req, res) => {
       optional_gender: user.optional_gender,
       token: token,
       verified: user.verified,
+      savedPosts: user.savedPosts,
     },
   });
 };
@@ -602,6 +606,45 @@ const getFriendsPageData = async (req, res) => {
     sentRequests,
   });
 };
+const toggleSavePost = async (req, res) => {
+  const postId = req.params.id;
+  const userId = req.user.id;
+  const post = await Post.findById(postId);
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new customError(
+      `User with id ${userId} is not found`,
+      StatusCodes.NOT_FOUND
+    );
+  }
+  if (!post) {
+    throw new customError(
+      `Post with id ${postId} is not found`,
+      StatusCodes.NOT_FOUND
+    );
+  }
+  const savedPosts = user.savedPosts;
+  const postIsSaved = savedPosts.find((p) => {
+    return p.post.toString() === post._id.toString();
+  });
+  // If post is saved
+  if (!!postIsSaved) {
+    user.savedPosts = user.savedPosts.filter((p) => {
+      return p.post.toString() !== post._id.toString();
+    });
+  }
+  // If post is not saved
+  if (!postIsSaved) {
+    user.savedPosts.push({
+      post: post._id,
+      savedAt: new Date(),
+    });
+  }
+  user.save();
+  return res.status(StatusCodes.OK).json({
+    savedPosts: user.savedPosts,
+  });
+};
 
 module.exports = {
   register,
@@ -622,4 +665,5 @@ module.exports = {
   toggleFollow,
   unfriend,
   getFriendsPageData,
+  toggleSavePost,
 };

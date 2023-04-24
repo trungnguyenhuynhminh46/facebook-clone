@@ -29,10 +29,21 @@ const userSlice = createSlice({
         state.user.cover = cover;
       }
     },
+    updateSavedPosts: (state, action) => {
+      const { savedPosts } = action.payload;
+      if (state.user?.savedPosts) {
+        state.user.savedPosts = savedPosts;
+      }
+    },
   },
 });
 
-export const { login, logout, updateProfileImage, updateCoverImage } =
-  userSlice.actions;
+export const {
+  login,
+  logout,
+  updateProfileImage,
+  updateCoverImage,
+  updateSavedPosts,
+} = userSlice.actions;
 
 export default userSlice.reducer;
