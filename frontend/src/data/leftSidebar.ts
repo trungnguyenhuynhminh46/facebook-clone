@@ -2,6 +2,7 @@ export const left = [
   {
     text: "Find friends",
     img: "friends",
+    to: "/friends",
   },
   {
     text: "Memories",

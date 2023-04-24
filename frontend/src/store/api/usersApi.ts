@@ -220,6 +220,112 @@ export const usersApi = apiSlice.injectEndpoints({
         };
       },
     }),
+    searchUser: builder.query<
+      {
+        users: {
+          _id: string;
+          email: string;
+          username: string;
+          picture: string;
+        }[];
+        count: number;
+      },
+      { query: string; page: number; limit: number }
+    >({
+      query(body) {
+        const { query, page, limit } = body;
+        return `/user/searchUser?query=${query}&page=${page}&limit=${limit}`;
+      },
+      forceRefetch: ({ currentArg, previousArg }) => {
+        return (
+          !!currentArg?.query &&
+          (currentArg?.page !== previousArg?.page ||
+            currentArg?.query !== previousArg?.query)
+        );
+      },
+      serializeQueryArgs: ({ endpointName, queryArgs }) => {
+        return `${endpointName}-${queryArgs.query}`;
+      },
+      merge: (currentCache, incomingState, otherArg) => {
+        if (otherArg.arg.page === 1) {
+          currentCache.users = incomingState.users;
+        }
+        if (otherArg.arg.page > 1) {
+          incomingState.users.forEach((user) => {
+            if (
+              !currentCache.users.find((u) => {
+                return u._id === user._id;
+              })
+            ) {
+              incomingState.users.push(user);
+            }
+          });
+        }
+        currentCache.count = incomingState.count;
+      },
+    }),
+    getSearchHistory: builder.query<
+      {
+        search: {
+          user: {
+            _id: string;
+            email: string;
+            username: string;
+            picture: string;
+          };
+          savedAt: Date;
+        }[];
+      },
+      void
+    >({
+      query(body) {
+        return `/user/getSearchHistory`;
+      },
+    }),
+    saveSearchedUserToHistory: builder.mutation<
+      {
+        newSearch: {
+          user: {
+            _id: string;
+            email: string;
+            username: string;
+            picture: string;
+          };
+          savedAt: Date;
+        }[];
+      },
+      { userId: string }
+    >({
+      query(body) {
+        return {
+          url: `/user/saveSearchedUserToHistory`,
+          method: "POST",
+          body,
+        };
+      },
+    }),
+    deleteSearchedUserFromHistory: builder.mutation<
+      {
+        newSearch: {
+          user: {
+            _id: string;
+            email: string;
+            username: string;
+            picture: string;
+          };
+          savedAt: Date;
+        }[];
+      },
+      { userId: string }
+    >({
+      query(body) {
+        return {
+          url: `/user/deleteSearchedUserFromHistory`,
+          method: "DELETE",
+          body,
+        };
+      },
+    }),
   }),
 });
 
@@ -236,4 +342,8 @@ export const {
   useToggleFollowMutation,
   useUnfriendMutation,
   useToggleSavePostMutation,
+  useSearchUserQuery,
+  useGetSearchHistoryQuery,
+  useSaveSearchedUserToHistoryMutation,
+  useDeleteSearchedUserFromHistoryMutation,
 } = usersApi;

@@ -33,9 +33,27 @@ const LeftSidebar = (props: Props) => {
           </p>
         </Link>
         {left.slice(0, numItems).map((item, index) => {
+          if (!item.to) {
+            return (
+              <button
+                key={index}
+                className="flex gap-3 items-center p-2 rounded-lg hover:bg-gray-200"
+              >
+                <div>
+                  <img src={`/left/${item.img}.png`} alt="" />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <p className="text-[#050505] font-medium text-[15px]">
+                    {item.text}
+                  </p>
+                  <p className={leftSideStyles["alert"]}>5 news</p>
+                </div>
+              </button>
+            );
+          }
           return (
             <Link
-              to="/"
+              to={item.to}
               key={index}
               className="flex gap-3 items-center p-2 rounded-lg hover:bg-gray-200"
             >

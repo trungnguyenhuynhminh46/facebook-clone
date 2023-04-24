@@ -110,6 +110,10 @@ const userSchema = mongoose.Schema(
           type: ObjectId,
           ref: "User",
         },
+        savedAt: {
+          type: Date,
+          require: true,
+        },
       },
     ],
     details: {

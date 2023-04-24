@@ -20,6 +20,10 @@ const {
   unfriend,
   getFriendsPageData,
   toggleSavePost,
+  searchUser,
+  saveSearchedUserToHistory,
+  deleteSearchedUserFromHistory,
+  getSearchHistory,
 } = require("../controllers/user");
 // Middlewares
 const authorizationMiddleware = require("../middleware/auth");
@@ -60,5 +64,17 @@ router.patch("/toggleFollow/:id", authorizationMiddleware, toggleFollow);
 router.patch("/unfriend/:id", authorizationMiddleware, unfriend);
 router.get("/getFriendsPageData", authorizationMiddleware, getFriendsPageData);
 router.post("/toggleSavePost/:id", authorizationMiddleware, toggleSavePost);
+router.get("/searchUser", authorizationMiddleware, searchUser);
+router.post(
+  "/saveSearchedUserToHistory",
+  authorizationMiddleware,
+  saveSearchedUserToHistory
+);
+router.delete(
+  "/deleteSearchedUserFromHistory",
+  authorizationMiddleware,
+  deleteSearchedUserFromHistory
+);
+router.get("/getSearchHistory", authorizationMiddleware, getSearchHistory);
 
 module.exports = router;

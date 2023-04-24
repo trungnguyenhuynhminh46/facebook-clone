@@ -14,4 +14,13 @@ export interface User {
     post: string;
     savedAt: Date;
   }[];
+  search: {
+    user: {
+      _id: string;
+      email: string;
+      username: string;
+      picture: string;
+    };
+    savedAt: Date;
+  }[];
 }

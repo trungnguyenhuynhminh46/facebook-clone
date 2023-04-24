@@ -35,6 +35,12 @@ const userSlice = createSlice({
         state.user.savedPosts = savedPosts;
       }
     },
+    updateSearch: (state, action) => {
+      const { newSearch } = action.payload;
+      if (state.user?.search) {
+        state.user.search = newSearch;
+      }
+    },
   },
 });
 
@@ -44,6 +50,7 @@ export const {
   updateProfileImage,
   updateCoverImage,
   updateSavedPosts,
+  updateSearch,
 } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -47,6 +47,7 @@ const register = async (req, res) => {
       token: token,
       verified: user.verified,
       savedPosts: user.savedPosts,
+      search: user.search,
     },
   });
 };
@@ -54,7 +55,10 @@ const verify = async (req, res) => {
   const currentUser = req.user;
   const { token } = req.body;
   const { id } = jwt.verify(token, process.env.JWT_SECRET);
-  const user = await User.findById(id);
+  const user = await User.findById(id).populate({
+    path: "search.user",
+    select: "_id email username picture",
+  });
   if (!id || !user) {
     throw new customError(
       "User is not found in the database!",
@@ -91,12 +95,16 @@ const verify = async (req, res) => {
       token: token,
       verified: user.verified,
       savedPosts: user.savedPosts,
+      search: user.search,
     },
   });
 };
 const login = async (req, res) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).populate({
+    path: "search.user",
+    select: "_id email username picture",
+  });
   if (!user) {
     throw new customError(
       "Your email is not associated with any accounts!",
@@ -129,6 +137,7 @@ const login = async (req, res) => {
       token: token,
       verified: user.verified,
       savedPosts: user.savedPosts,
+      search: user.search,
     },
   });
 };
@@ -643,7 +652,80 @@ const toggleSavePost = async (req, res) => {
   user.save();
   return res.status(StatusCodes.OK).json({
     savedPosts: user.savedPosts,
+    search: user.search,
   });
+};
+const searchUser = async (req, res) => {
+  const { query, page, limit } = req.query;
+  const searchedUsers = await User.find({
+    username: new RegExp(query, "i"),
+  })
+    .skip((page - 1) * limit)
+    .limit(limit)
+    .select("_id email username picture");
+  return res.status(StatusCodes.OK).json({
+    users: searchedUsers,
+    count: searchedUsers ? searchedUsers.length : 0,
+  });
+};
+const saveSearchedUserToHistory = async (req, res) => {
+  const { userId } = req.body;
+  const currentUserId = req.user.id;
+  const currentUser = await User.findById(currentUserId).populate({
+    path: "search.user",
+    select: "_id email username picture",
+  });
+  if (!currentUser) {
+    throw new customError(`No user with id ${currentUserId} is founded!`);
+  }
+  const user = await User.findById(userId).select("_id email username picture");
+  if (!user) {
+    throw new customError(`No user with id ${userId} is founded!`);
+  }
+  const check = !!currentUser.search.find(({ user: u }) => {
+    return u._id.toString() === user._id.toString();
+  });
+  if (!check) {
+    currentUser.search.push({
+      user,
+      savedAt: new Date(),
+    });
+  }
+  currentUser.save();
+  return res.status(StatusCodes.OK).json({ newSearch: currentUser.search });
+};
+const deleteSearchedUserFromHistory = async (req, res) => {
+  const { userId } = req.body;
+  const currentUserId = req.user.id;
+  const currentUser = await User.findById(currentUserId).populate({
+    path: "search.user",
+    select: "_id email username picture",
+  });
+  if (!currentUser) {
+    throw new customError(`No user with id ${currentUserId} is founded!`);
+  }
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new customError(`No user with id ${userId} is founded!`);
+  }
+  // console.log(currentUser.search);
+  currentUser.search = currentUser.search.filter((u) => {
+    return u.user._id.toString() !== user._id.toString();
+  });
+  currentUser.save();
+  return res.status(StatusCodes.OK).json({ newSearch: currentUser.search });
+};
+const getSearchHistory = async (req, res) => {
+  const currentUserId = req.user.id;
+  const currentUser = await User.findById(currentUserId).populate({
+    path: "search.user",
+    select: "_id email username picture",
+  });
+  if (!currentUser) {
+    throw new customError(`No user with id ${currentUserId} is founded!`);
+  }
+  const search = currentUser.search;
+  return res.status(StatusCodes.OK).json({ search });
 };
 
 module.exports = {
@@ -666,4 +748,8 @@ module.exports = {
   unfriend,
   getFriendsPageData,
   toggleSavePost,
+  searchUser,
+  saveSearchedUserToHistory,
+  deleteSearchedUserFromHistory,
+  getSearchHistory,
 };

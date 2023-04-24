@@ -34,6 +34,7 @@ import AccountMenu from "@layouts/Header/AccountMenu";
 type Props = {};
 
 const Header: React.FC<Props> = (props: Props) => {
+  const [inputText, setInputText] = useState<string>("");
   const user = useSelector(selectCurrentUser);
   // Screen
   const isBelowLarge = useMediaQuery({ query: "(max-width: 1260px)" });
@@ -103,14 +104,20 @@ const Header: React.FC<Props> = (props: Props) => {
               onFocus={() => {
                 setCurrentMenu("search");
               }}
+              value={inputText}
+              onChange={(e) => {
+                setInputText(e.target.value);
+              }}
             />
           )}
         </div>
         {currentMenu === "search" && (
           <SearchMenu
+            query={inputText}
             setHideMenu={() => {
               setCurrentMenu("");
             }}
+            setInputText={setInputText}
           />
         )}
       </div>
