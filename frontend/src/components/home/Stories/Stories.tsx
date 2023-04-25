@@ -60,18 +60,18 @@ const Stories: React.FC<Props> = ({ currentUser, stories }) => {
     <div className={`${Style["carousel"]}`}>
       {left > 0 && (
         <button
-          className={`${Style["btn"]} ${Style["btn--prev"]}`}
+          className={`${Style["btn"]} ${Style["btn--prev"]} dark:bg-[#3A3B3C]`}
           onClick={handlePrevButtonClick}
         >
-          <ArrowRight color="#65676b" />
+          <ArrowRight />
         </button>
       )}
       {left < leftMax && (
         <button
-          className={`${Style["btn"]} ${Style["btn--next"]}`}
+          className={`${Style["btn"]} ${Style["btn--next"]} dark:bg-[#3A3B3C]`}
           onClick={handleNextButtonClick}
         >
-          <ArrowRight color="#65676b" />
+          <ArrowRight />
         </button>
       )}
 
@@ -85,7 +85,7 @@ const Stories: React.FC<Props> = ({ currentUser, stories }) => {
               className={Style["background_image"]}
             />
           </div>
-          <div className="absolute bottom-0 left-0 right-0 bg-white text-center pt-7 pb-2 text-[12px] font-medium">
+          <div className="absolute bottom-0 left-0 right-0 bg-white dark:bg-[#242526] text-center pt-7 pb-2 text-[12px] font-medium dark:text-[#E4E6EB]">
             Create story
           </div>
           <div className="absolute bottom-9 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full flex justify-center items-center text-white text-2xl border-4 border-solid border-white bg-[var(--blue-color)]">

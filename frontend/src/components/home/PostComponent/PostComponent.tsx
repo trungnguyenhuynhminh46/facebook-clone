@@ -17,7 +17,7 @@ const PostComponent: React.FC<Props> = ({ currentUser, post }) => {
   const [showComments, setShowComments] = useState<boolean>(false);
   if (post) {
     return (
-      <div className="w-full flex flex-col justify-start rounded-lg bg-white shadow2 mb-3">
+      <div className="w-full flex flex-col justify-start rounded-lg bg-white dark:bg-[#242526] shadow2 mb-3">
         <PostHeader post={localPost} currentUser={currentUser} />
         <PostContent post={localPost} />
         <PostInteract post={localPost} setShowComments={setShowComments} />

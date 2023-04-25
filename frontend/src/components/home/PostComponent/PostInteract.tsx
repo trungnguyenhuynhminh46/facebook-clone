@@ -32,7 +32,7 @@ const PostInteract: React.FC<Props> = ({ post, setShowComments }) => {
                     <img
                       key={reaction}
                       src={`/reacts/${reaction}.svg`}
-                      className="w-[22px]"
+                      className="w-[22px] dark:border-[#242526]"
                       alt=""
                     />
                   );

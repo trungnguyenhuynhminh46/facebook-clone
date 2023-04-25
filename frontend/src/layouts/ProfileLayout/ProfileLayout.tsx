@@ -83,7 +83,7 @@ const ProfileLayout = (props: Props) => {
         !userInfoIsFetching &&
         data && (
           <>
-            <div className="w-full bg-white">
+            <div className="w-full bg-white dark:bg-[#242526]">
               <div className="relative w-full max-w-[1094px] mx-auto mt-14">
                 {/* Cover image edit */}
                 <CoverImage
@@ -97,18 +97,18 @@ const ProfileLayout = (props: Props) => {
                   <UserImage isOwner={isOwner} userInfo={data.userInfo} />
                   {/* User info */}
                   <div className="flex flex-col gap-1 items-center pt-[100px] md:items-start md:ml-[200px] md:pt-6 min-h-[128px]">
-                    <h1 className="text-3xl font-bold">
+                    <h1 className="text-3xl font-bold dark:text-[#E4E6EB]">
                       {data.userInfo.username}
                     </h1>
                     {data.userInfo.details.otherName && (
-                      <span className="tracking-wide text-xl text-gray-500 font-semibold">
+                      <span className="tracking-wide text-xl text-gray-500 font-semibold dark:text-[#b0b3b8]">
                         ({data.userInfo.details.otherName})
                       </span>
                     )}
                     {friends && friends.length > 0 && (
                       // _id username picture email
                       <>
-                        <span className="text-[#65676B] font-medium -mt-1 mb-2">
+                        <span className="text-[#65676B] font-medium -mt-1 mb-2 dark:text-[#b0b3b8]">
                           {friends.length} friends
                         </span>
                         <div className="flex">
@@ -118,7 +118,7 @@ const ProfileLayout = (props: Props) => {
                                 <Link
                                   to={`/profile/${friend.email}`}
                                   key={friend._id}
-                                  className="relative w-8 h-8 border-[2px] border-solid border-gray-100 rounded-full cursor-pointer -ml-[8px] overflow-hidden"
+                                  className="relative w-8 h-8 border-[2px] border-solid border-gray-100 dark:border-black rounded-full cursor-pointer -ml-[8px] overflow-hidden"
                                 >
                                   <img
                                     src={friend.picture}
@@ -136,7 +136,7 @@ const ProfileLayout = (props: Props) => {
                                 className={`w-full h-full object-cover`}
                               />
                               <div className="absolute inset-0 flex justify-center items-center z-[9] bg-gray-800 opacity-80">
-                                <Dots fill="gray" width="16" height="16" />
+                                <Dots width="16" height="16" />
                               </div>
                             </div>
                           )}
@@ -158,7 +158,7 @@ const ProfileLayout = (props: Props) => {
                     setFriends={setFriends}
                   />
                   {/* Navigation */}
-                  <div className="flex py-1 border-t-[0.5px] border-solid border-gray-400 mt-4">
+                  <div className="flex py-1 border-t-[0.5px] border-solid border-gray-400 dark:border-[#3E4042] mt-4">
                     <NavLink
                       end
                       to={`/profile/${email || ""}`}

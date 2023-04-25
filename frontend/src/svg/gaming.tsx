@@ -1,13 +1,16 @@
 import React from "react";
-interface Props {}
-const Gaming: React.FC<Props> = () => {
+interface Props {
+  className?: string;
+}
+const Gaming: React.FC<Props> = ({
+  className = "fill-[#65676B] dark:fill-[#b0b3b8]",
+}) => {
   return (
     <svg
-      fill="#65676B"
       viewBox="0 0 24 24"
       width="28px"
       height="28px"
-      className="x1lliihq x1k90msu x2h7rmj x1qfuztq xcza8v6 x1fgtraw xgd8bvy"
+      className={`x1lliihq x1k90msu x2h7rmj x1qfuztq xcza8v6 x1fgtraw xgd8bvy ${className}`}
     >
       <g fillRule="evenodd" transform="translate(-444 -204)">
         <g>

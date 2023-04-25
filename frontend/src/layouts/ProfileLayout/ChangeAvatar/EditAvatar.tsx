@@ -36,21 +36,23 @@ const DiscardForm: React.FC<DiscardFormProps> = ({
   return ReactDom.createPortal(
     <div className="fixed inset-0 flex justify-center items-center z-20">
       {/* Background */}
-      <div className="absolute inset-0 bg-white opacity-80"></div>
+      <div className="absolute inset-0 bg-white dark:bg-[#242526] opacity-80"></div>
       {/* Form */}
-      <div className="relative flex-1 max-w-[548px] rounded-lg shadow2 bg-white overflow-hidden border border-solid border-gray-200 mx-4">
+      <div className="relative flex-1 max-w-[548px] rounded-lg shadow2 bg-white dark:bg-[#242526] overflow-hidden border border-solid border-gray-200 dark:border-[#3E4042] mx-4">
         {/* Header */}
-        <div className="w-full relative flex justify-center items-center border-b border-solid border-gray-300">
-          <h1 className="py-5 text-xl font-bold">Discard Changes</h1>
+        <div className="w-full relative flex justify-center items-center border-b border-solid border-gray-300 dark:border-[#3E4042]">
+          <h1 className="py-5 text-xl font-bold dark:text-[#E4E6EB] dark:border-[#3E4042]">
+            Discard Changes
+          </h1>
           <button
-            className="absolute top-1/2 -translate-y-1/2 right-4 flex justify-center items-center rounded-full bg-gray-200 p-2"
+            className="absolute top-1/2 -translate-y-1/2 right-4 flex justify-center items-center rounded-full bg-gray-200 dark:bg-[#4E4F50] p-2"
             onClick={() => setShowDiscardForm(false)}
           >
-            <i className="exit_icon scale-80"></i>
+            <i className="exit_icon scale-80 dark:invert"></i>
           </button>
         </div>
         {/* Alert */}
-        <h1 className="w-full text-left px-4 pt-2 mb-5">
+        <h1 className="w-full text-left px-4 pt-2 mb-5 dark:text-[#E4E6EB]">
           Are you sure you want to discard your changes?
         </h1>
         {/* Form options */}
@@ -239,12 +241,12 @@ const EditAvatar: React.FC<Props> = ({
         />
       )}
       {/* Background */}
-      <div className="absolute inset-0 bg-white opacity-80"></div>
+      <div className="absolute inset-0 bg-white dark:bg-[#242526] opacity-80"></div>
       {/* Form */}
-      <div className="relative flex-1 max-w-[700px] rounded-lg shadow2 bg-white overflow-hidden border border-solid border-gray-200 mx-4">
+      <div className="relative flex-1 max-w-[700px] rounded-lg shadow2 bg-white dark:bg-[#242526] overflow-hidden border border-solid border-gray-200 dark:border-[#3E4042] mx-4">
         {/* Error */}
         {error && (
-          <div className="absolute z-10 inset-0 bg-white bg-opacity-95 flex justify-center items-center gap-4">
+          <div className="absolute z-10 inset-0 bg-white dark:bg-[#3E4042] dark:bg-opacity-95 bg-opacity-95 flex justify-center items-center gap-4">
             <p className="font-medium text-red-600">{error}</p>
             <button
               className=" py-1 px-3 bg-blue-600 text-white rounded-md active:scale-95 active:bg-blue-700"
@@ -270,19 +272,21 @@ const EditAvatar: React.FC<Props> = ({
           </div>
         )}
         {/* Header */}
-        <div className="w-full relative flex justify-center items-center border-b border-solid border-gray-300">
-          <h1 className="py-5 text-xl font-bold">Update profile picture</h1>
+        <div className="w-full relative flex justify-center items-center border-b border-solid border-gray-300 dark:border-[#3E4042]">
+          <h1 className="py-5 text-xl font-bold dark:text-[#E4E6EB]">
+            Update profile picture
+          </h1>
           <button
-            className="absolute top-1/2 -translate-y-1/2 right-4 flex justify-center items-center rounded-full bg-gray-200 p-2"
+            className="absolute top-1/2 -translate-y-1/2 right-4 flex justify-center items-center rounded-full bg-gray-200 dark:bg-[#4E4F50] p-2"
             onClick={() => {
               setShowDiscardForm(true);
             }}
           >
-            <i className="exit_icon scale-80"></i>
+            <i className="exit_icon scale-80 dark:invert"></i>
           </button>
         </div>
         {/* Content */}
-        <div className="relative w-full p-3 min-h-[400px] overflow-y-auto group border-b border-solid border-gray-300">
+        <div className="relative w-full p-3 min-h-[400px] overflow-y-auto group border-b border-solid border-gray-300 dark:border-[#3E4042]">
           <textarea
             name="desc"
             id="desc"
@@ -291,7 +295,7 @@ const EditAvatar: React.FC<Props> = ({
             onChange={(e) => {
               setInputText(inputRef.current?.value || "");
             }}
-            className="relative resize-none w-full min-h-[100px] rounded-md border border-solid border-gray-300 outline-blue-400 outline-offset-4 py-6 px-4"
+            className="relative resize-none w-full min-h-[100px] rounded-md border border-solid border-gray-300 dark:border-[#3E4042] outline-blue-400 outline-offset-4 py-6 px-4 dark:bg-[#242526] dark:text-[#E4E6EB]"
             onFocus={() => {
               setIsFocus(true);
             }}
@@ -301,7 +305,7 @@ const EditAvatar: React.FC<Props> = ({
           ></textarea>
           <span
             className={classNames(
-              "absolute top-6 left-6 text-gray-500 transition-all duration-100 ease-linear",
+              "absolute top-6 left-6 text-gray-500 dark:text-[#E4E6EB] transition-all duration-100 ease-linear",
               {
                 ["-translate-y-1 text-sm"]:
                   isFocus || !!inputRef.current?.value,
@@ -375,9 +379,9 @@ const EditAvatar: React.FC<Props> = ({
             </button>
           </div>
           {/* Note */}
-          <p className="px-4 text-gray-500 text-lg tracking-wide">
+          <p className="px-4 text-gray-500 dark:text-[#b0b3b8] text-lg tracking-wide">
             Your profile picture for{" "}
-            <span className="text-gray-600 font-semibold">
+            <span className="text-gray-600 font-semibold dark:text-[#b0b3b8]">
               {userInfo.username}
             </span>{" "}
             will also be updated on Instagram.{" "}

@@ -57,7 +57,7 @@ const ReactionsInfo: React.FC<PropsReactionsInfo> = ({
   return (
     <ToolTipReactions commentId={comment._id}>
       <div
-        className={`relative flex gap-1 items-center p-[1px] shadow4 rounded-full hover--overlay overflow-hidden cursor-pointer ${
+        className={`relative flex gap-1 items-center p-[1px] shadow4 rounded-full hover--overlay overflow-hidden cursor-pointer dark:bg-[#303132] ${
           total > 20 ? "ml-auto" : ""
         }`}
       >
@@ -68,7 +68,7 @@ const ReactionsInfo: React.FC<PropsReactionsInfo> = ({
                 <img
                   key={reaction}
                   src={`/reacts/${reaction}.svg`}
-                  className="w-[22px]"
+                  className="w-[22px] dark:border-[#242526]"
                   alt=""
                 />
               );
@@ -111,12 +111,12 @@ const CommentFunction: React.FC<PropsCommentFunction> = ({
       interactive={true}
       render={(attrs) => (
         <div
-          className="min-h-10 bg-white rounded-lg shadow3 p-2 flex flex-col w-[200px]"
+          className="min-h-10 bg-white dark:bg-[#242526] rounded-lg shadow3 p-2 flex flex-col w-[200px]"
           tabIndex={-1}
           {...attrs}
         >
           <button
-            className="w-full rounded-md hover:bg-gray-200 transition-all duration-200 ease-linear p-2 text-[15px] font-medium leading-5 px-3 text-start"
+            className="w-full rounded-md hover--overlay relative overflow-hidden transition-all duration-200 ease-linear p-2 text-[15px] font-medium leading-5 px-3 text-start dark:text-[#E4E6EB]"
             onClick={() => {
               setEditCommentId(comment._id);
             }}
@@ -124,7 +124,7 @@ const CommentFunction: React.FC<PropsCommentFunction> = ({
             Edit comment
           </button>
           <button
-            className="w-full rounded-md hover:bg-gray-200 transition-all duration-200 ease-linear p-2 text-[15px] font-medium leading-5 px-3 text-start"
+            className="w-full rounded-md hover--overlay relative overflow-hidden transition-all duration-200 ease-linear p-2 text-[15px] font-medium leading-5 px-3 text-start dark:text-[#E4E6EB]"
             onClick={async () => {
               await handleDeleteComment();
             }}
@@ -135,7 +135,7 @@ const CommentFunction: React.FC<PropsCommentFunction> = ({
       )}
     >
       <div
-        className=" h-8 w-8 rounded-full hover:bg-gray-200 transition-all duration-200 ease-linear cursor-pointer flex justify-center items-center"
+        className=" h-8 w-8 rounded-full hover--overlay relative overflow-hidden transition-all duration-200 ease-linear cursor-pointer flex justify-center items-center"
         onClick={() => {
           setShowTooltip(!showTooltip);
         }}
@@ -223,11 +223,13 @@ const PostComment: React.FC<PropsComment> = ({
             <div className="relative flex-1 flex flex-col mr-10">
               <div>
                 <div className="flex gap-2 items-center">
-                  <div className="flex flex-col rounded-xl bg-gray-100 py-2 px-3 w-fit">
-                    <p className="text-sm font-medium">
+                  <div className="flex flex-col rounded-xl bg-gray-100 dark:bg-[#3A3B3C] py-2 px-3 w-fit">
+                    <p className="text-sm font-medium dark:text-[#E4E6EB]">
                       {localComment.user.username}
                     </p>
-                    <p className="text-[15px]">{localComment.text}</p>
+                    <p className="text-[15px] dark:text-[#E4E6EB]">
+                      {localComment.text}
+                    </p>
                   </div>
                   {currentUser.id === localComment.user._id && (
                     <CommentFunction
@@ -273,7 +275,7 @@ const PostComment: React.FC<PropsComment> = ({
                       }}
                     >
                       {!currentReaction && (
-                        <span className="text-[12px] font-semibold hover:underline">
+                        <span className="text-[12px] font-semibold hover:underline dark:text-[#b0b3b8]">
                           Like
                         </span>
                       )}
@@ -288,7 +290,7 @@ const PostComment: React.FC<PropsComment> = ({
                         </span>
                       )}
                     </button>
-                    <button className="text-[12px] font-semibold hover:underline">
+                    <button className="text-[12px] font-semibold hover:underline dark:text-[#b0b3b8]">
                       Reply
                     </button>
                     <ToolTip
@@ -297,7 +299,7 @@ const PostComment: React.FC<PropsComment> = ({
                         "EEEE, MMMM d, yyyy 'at' h:mm a"
                       )}
                     >
-                      <span className="text-[12px] cursor-pointer hover:underline">
+                      <span className="text-[12px] cursor-pointer hover:underline dark:text-[#b0b3b8]">
                         {getTimeDiff(new Date(localComment.createdAt))}
                       </span>
                     </ToolTip>

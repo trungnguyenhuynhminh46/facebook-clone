@@ -106,11 +106,11 @@ const SearchItem: React.FC<Props> = ({
   };
   return (
     <div
-      className="flex items-center gap-2 p-2 rounded-lg cursor-pointer hover:bg-gray-100"
+      className="relative overflow-hidden flex items-center gap-2 p-2 rounded-lg cursor-pointer hover--overlay"
       onClick={handleSaveSearch}
     >
       <img src={item.picture} alt="" className="w-10 h-10 rounded-full" />
-      <span>{item.username}</span>
+      <span className="dark:text-[#E0E2E7]">{item.username}</span>
       {isHistory && (
         <button
           className="flex justify-center items-center ml-auto z-[1] p-2 rounded-full"

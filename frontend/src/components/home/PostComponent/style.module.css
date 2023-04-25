@@ -47,8 +47,7 @@
   display: flex;
 }
 .reactions-container img {
-  @apply rounded-full;
-  border: 2px solid white;
+  @apply rounded-full border-2 border-solid border-white;
 }
 .reactions-container img:not(:first-child) {
   margin-left: -4px;

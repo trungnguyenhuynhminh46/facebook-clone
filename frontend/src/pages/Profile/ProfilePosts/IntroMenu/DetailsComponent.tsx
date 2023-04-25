@@ -57,8 +57,12 @@ const DetailsComponent: React.FC<Props> = ({
         )}
         {content && (
           <>
-            <img src={`/icons/${iconMap[name]}.png`} alt="" />
-            <span>{content}</span>
+            <img
+              src={`/icons/${iconMap[name]}.png`}
+              className="dark:invert"
+              alt=""
+            />
+            <span className="dark:text-[#E4E6EB]">{content}</span>
             <i className="edit_icon ml-auto"></i>
           </>
         )}

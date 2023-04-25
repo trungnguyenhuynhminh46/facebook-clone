@@ -247,7 +247,7 @@ const PostCreateComment: React.FC<Props> = ({
         />
       </button>
       <div className="flex-1 flex-shrink-0 flex flex-col gap-2">
-        <div className="relative basis-[32px] flex items-center h-[32px] px-3 rounded-full bg-gray-100">
+        <div className="relative basis-[32px] flex items-center h-[32px] px-3 rounded-full bg-gray-100 dark:bg-[#3A3B3C]">
           {(commentIsBeingAdded || commentIsBeingUpdated) && (
             <ClipLoader
               color={"gray"}
@@ -267,20 +267,21 @@ const PostCreateComment: React.FC<Props> = ({
             }}
             onKeyDown={handleKeyDownInput}
             type="text"
-            className="flex-1 placeholder:text-gray-400 text-gray-800 caret-gray-800 border-none outline-none bg-transparent max-w-[111px] sm:max-w-none text-[12px] sm:text-[15px]"
+            className="flex-1 placeholder:text-gray-400 text-gray-800 caret-gray-800 border-none outline-none bg-transparent max-w-[111px] sm:max-w-none text-[12px] sm:text-[15px] dark:text-[#E4E6EB] dark:caret-[#E4E6EB]"
             disabled={commentIsBeingAdded}
             placeholder={`${commentIsBeingAdded ? "" : "Write a comment..."}`}
           />
           <div className="flex-shrink-0 flex relative ml-auto">
             <div
-              id="comment-emoji"
-              className="absolute left-0 top-0 -translate-x-full z-10"
+              id={`comment-emoji-${post._id}`}
+              className="absolute left-0 top-0 -translate-x-full -translate-y-1/2 z-10"
             >
               {showEmojiPicker && (
                 <EmojiPicker
                   onEmojiSelect={handleEmojiSelect}
                   setShowEmojiPicker={setShowEmojiPicker}
-                  containerId="comment-emoji"
+                  containerId={`comment-emoji-${post._id}`}
+                  theme={document.body.className}
                 />
               )}
             </div>
@@ -289,14 +290,14 @@ const PostCreateComment: React.FC<Props> = ({
               placement="bottom"
               offset={[0, 2]}
             >
-              <button
-                className="w-7 h-7 rounded-full bg-transparent hover:bg-gray-200 flex justify-center items-center outline-none"
+              <div
+                className="w-7 h-7 cursor-pointer rounded-full bg-transparent relative hover--overlay overflow-hidden flex justify-center items-center outline-none"
                 onClick={() => {
                   setShowEmojiPicker(!showEmojiPicker);
                 }}
               >
-                <i className="emoji_icon scale-[85%]"></i>
-              </button>
+                <i className="emoji_icon scale-[85%] dark:invert"></i>
+              </div>
             </ToolTip>
             <ToolTip
               title={imageMoreInfoText}
@@ -307,7 +308,7 @@ const PostCreateComment: React.FC<Props> = ({
                 htmlFor={`image-picker-${
                   commentContent ? commentContent._id : post._id
                 }`}
-                className="cursor-pointer w-7 h-7 rounded-full bg-transparent hover:bg-gray-200 flex justify-center items-center outline-none"
+                className="cursor-pointer w-7 h-7 rounded-full bg-transparent relative hover--overlay overflow-hidden flex justify-center items-center outline-none"
               >
                 <input
                   type="file"
@@ -321,12 +322,12 @@ const PostCreateComment: React.FC<Props> = ({
                   }`}
                   onChange={handleSelectImage}
                 />
-                <i className="camera_icon scale-[85%]"></i>
+                <i className="camera_icon scale-[85%] dark:invert"></i>
               </label>
             </ToolTip>
             <ToolTip title={gifMoreInfoText} placement="bottom" offset={[0, 2]}>
-              <button className="w-7 h-7 rounded-full bg-transparent hover:bg-gray-200 flex justify-center items-center outline-none">
-                <i className="gif_icon scale-[85%]"></i>
+              <button className="w-7 h-7 rounded-full bg-transparent relative hover--overlay overflow-hidden flex justify-center items-center outline-none">
+                <i className="gif_icon scale-[85%] dark:invert"></i>
               </button>
             </ToolTip>
             <ToolTip
@@ -334,8 +335,8 @@ const PostCreateComment: React.FC<Props> = ({
               placement="bottom"
               offset={[0, 2]}
             >
-              <button className="w-7 h-7 rounded-full bg-transparent hover:bg-gray-200 flex justify-center items-center outline-none">
-                <i className="sticker_icon scale-[85%]"></i>
+              <button className="w-7 h-7 rounded-full bg-transparent relative hover--overlay overflow-hidden flex justify-center items-center outline-none">
+                <i className="sticker_icon scale-[85%] dark:invert"></i>
               </button>
             </ToolTip>
           </div>

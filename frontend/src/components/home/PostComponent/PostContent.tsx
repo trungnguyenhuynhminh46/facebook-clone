@@ -33,12 +33,17 @@ const PostContent: React.FC<Props> = ({ post }) => {
   return (
     <>
       {post.type === "onlyText" && (
-        <div className="w-full text-2xl px-4 mb-2 break-words">{post.text}</div>
+        <div className="w-full text-2xl px-4 mb-2 break-words dark:text-white">
+          {post.text}
+        </div>
       )}
       {post.type === "withImages" && post.imagesList && (
         <div>
           <p
-            className={classNames("text-[15px] leading-4 px-4 mb-3", fontSize)}
+            className={classNames(
+              "text-[15px] leading-4 px-4 mb-3 dark:text-white",
+              fontSize
+            )}
           >
             {post.text}
           </p>

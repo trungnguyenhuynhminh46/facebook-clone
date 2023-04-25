@@ -30,6 +30,7 @@ import ToolTip from "@/components/ToolTip";
 import SearchMenu from "@layouts/Header/SearchMenu";
 import AllMenu from "@layouts/Header/AllMenu";
 import AccountMenu from "@layouts/Header/AccountMenu";
+import classNames from "classnames";
 
 type Props = {};
 
@@ -75,14 +76,14 @@ const Header: React.FC<Props> = (props: Props) => {
   });
 
   return (
-    <header className="fixed w-full top-0 left-0 px-4 py-1 flex justify-between shadow-md bg-white z-10">
+    <header className="fixed w-full top-0 left-0 px-4 py-1 flex justify-between shadow-md bg-white dark:bg-[#242526] z-10">
       {/* left */}
       <div className={`${headerStyles["header-left"]}`} ref={searchRef}>
         <Link to="/">
           <Logo />
         </Link>
         <div
-          className={`cursor-pointer rounded-full flex justify-center items-center bg-[var(--bg-secondary)] fixed top-[8px] transition-all duration-150 delay-100 ease-linear z-40 ${
+          className={`cursor-pointer rounded-full flex justify-center items-center bg-[var(--bg-secondary)] dark:bg-[#3A3B3C] fixed top-[8px] transition-all duration-150 delay-100 ease-linear z-40 ${
             currentMenu === "search" ? "left-[52px] w-[252px]" : "left-[64px]"
           }`}
         >
@@ -99,7 +100,7 @@ const Header: React.FC<Props> = (props: Props) => {
           {(!isBelowLarge || (isBelowLarge && currentMenu === "search")) && (
             <input
               type="text"
-              className={`w-[200px] p-2 border-none outline-none bg-transparent -translate-x-3 transition-all duration-300 ease-linear placeholder:text-[var(--color-secondary)] tracking-wide font-[300]`}
+              className={`w-[200px] p-2 border-none outline-none bg-transparent -translate-x-3 transition-all duration-300 ease-linear placeholder:text-[var(--color-secondary)] dark:placeholder:text-[#b0b3b8] dark:text-[#b0b3b8] tracking-wide font-[300]`}
               placeholder="Search Facebook"
               onFocus={() => {
                 setCurrentMenu("search");
@@ -139,13 +140,13 @@ const Header: React.FC<Props> = (props: Props) => {
             <NavLink
               to="/"
               className={({ isActive }) => {
-                return isActive
-                  ? `${
-                      headerStyles["header-nav-item"] +
-                      " " +
-                      headerStyles["active"]
-                    }`
-                  : `${headerStyles["header-nav-item"]}`;
+                return classNames(
+                  "relative h-[48px] flex justify-center items-center flex-1 rounded-lg transition-all duration-200 ease-linear hover:bg-[var(--bg-secondary)] dark:hover:bg-[#3A3B3C]",
+                  {
+                    ["hover:bg-transparent dark:hover:bg-transparent " +
+                    headerStyles["active"]]: isActive,
+                  }
+                );
               }}
             >
               {({ isActive }) => {
@@ -169,13 +170,13 @@ const Header: React.FC<Props> = (props: Props) => {
             <NavLink
               to="/watch"
               className={({ isActive }) => {
-                return isActive
-                  ? `${
-                      headerStyles["header-nav-item"] +
-                      " " +
-                      headerStyles["active"]
-                    }`
-                  : `${headerStyles["header-nav-item"]}`;
+                return classNames(
+                  "relative h-[48px] flex justify-center items-center flex-1 rounded-lg transition-all duration-200 ease-linear hover:bg-[var(--bg-secondary)] dark:hover:bg-[#3A3B3C]",
+                  {
+                    ["hover:bg-transparent dark:hover:bg-transparent " +
+                    headerStyles["active"]]: isActive,
+                  }
+                );
               }}
             >
               {({ isActive }) => {
@@ -199,13 +200,13 @@ const Header: React.FC<Props> = (props: Props) => {
             <NavLink
               to="/market"
               className={({ isActive }) => {
-                return isActive
-                  ? `${
-                      headerStyles["header-nav-item"] +
-                      " " +
-                      headerStyles["active"]
-                    }`
-                  : `${headerStyles["header-nav-item"]}`;
+                return classNames(
+                  "relative h-[48px] flex justify-center items-center flex-1 rounded-lg transition-all duration-200 ease-linear hover:bg-[var(--bg-secondary)] dark:hover:bg-[#3A3B3C]",
+                  {
+                    ["hover:bg-transparent dark:hover:bg-transparent " +
+                    headerStyles["active"]]: isActive,
+                  }
+                );
               }}
             >
               {({ isActive }) => {
@@ -229,13 +230,13 @@ const Header: React.FC<Props> = (props: Props) => {
             <NavLink
               to="/friends"
               className={({ isActive }) => {
-                return isActive
-                  ? `${
-                      headerStyles["header-nav-item"] +
-                      " " +
-                      headerStyles["active"]
-                    }`
-                  : `${headerStyles["header-nav-item"]}`;
+                return classNames(
+                  "relative h-[48px] flex justify-center items-center flex-1 rounded-lg transition-all duration-200 ease-linear hover:bg-[var(--bg-secondary)] dark:hover:bg-[#3A3B3C]",
+                  {
+                    ["hover:bg-transparent dark:hover:bg-transparent " +
+                    headerStyles["active"]]: isActive,
+                  }
+                );
               }}
             >
               {({ isActive }) => {
@@ -259,13 +260,13 @@ const Header: React.FC<Props> = (props: Props) => {
             <NavLink
               to="/gaming"
               className={({ isActive }) => {
-                return isActive
-                  ? `${
-                      headerStyles["header-nav-item"] +
-                      " " +
-                      headerStyles["active"]
-                    }`
-                  : `${headerStyles["header-nav-item"]}`;
+                return classNames(
+                  "relative h-[48px] flex justify-center items-center flex-1 rounded-lg transition-all duration-200 ease-linear hover:bg-[var(--bg-secondary)] dark:hover:bg-[#3A3B3C]",
+                  {
+                    ["hover:bg-transparent dark:hover:bg-transparent " +
+                    headerStyles["active"]]: isActive,
+                  }
+                );
               }}
             >
               {({ isActive }) => {
@@ -289,13 +290,13 @@ const Header: React.FC<Props> = (props: Props) => {
             <NavLink
               to="/bookmarks"
               className={({ isActive }) => {
-                return isActive
-                  ? `${
-                      headerStyles["header-nav-item"] +
-                      " " +
-                      headerStyles["active"]
-                    }`
-                  : `${headerStyles["header-nav-item"]}`;
+                return classNames(
+                  "relative h-[48px] flex justify-center items-center flex-1 rounded-lg transition-all duration-200 ease-linear hover:bg-[var(--bg-secondary)] dark:hover:bg-[#3A3B3C]",
+                  {
+                    ["hover:bg-transparent dark:hover:bg-transparent " +
+                    headerStyles["active"]]: isActive,
+                  }
+                );
               }}
               style={
                 isSmallScreen
@@ -329,15 +330,13 @@ const Header: React.FC<Props> = (props: Props) => {
         <div ref={allMenuRef}>
           <ToolTip title="Menu">
             <button
-              className="relative w-[40px] h-[40px] rounded-full bg-gray-200 hover:bg-gray-300 flex justify-center items-center"
-              style={
-                currentMenu === "menu"
-                  ? {
-                      background: "#E7F3FF",
-                      color: "#1876F2",
-                    }
-                  : {}
-              }
+              className={classNames(
+                "relative w-[40px] h-[40px] rounded-full bg-gray-200 hover:bg-gray-300 dark:bg-[#3A3B3C] dark:hover:bg-[#313233] flex justify-center items-center dark:text-[#b0b3b8]",
+                {
+                  "!bg-[#E7F3FF] !text-[#1876F2] dark:!bg-[#253851]":
+                    currentMenu === "menu",
+                }
+              )}
               onClick={() => {
                 if (currentMenu === "menu") {
                   setCurrentMenu("");
@@ -356,15 +355,13 @@ const Header: React.FC<Props> = (props: Props) => {
         </div>
         <ToolTip title="Messenger">
           <button
-            className="relative w-[40px] h-[40px] rounded-full bg-gray-200 hover:bg-gray-300 flex justify-center items-center"
-            style={
-              currentMenu === "messenger"
-                ? {
-                    background: "#E7F3FF",
-                    color: "#1876F2",
-                  }
-                : {}
-            }
+            className={classNames(
+              "relative w-[40px] h-[40px] rounded-full bg-gray-200 hover:bg-gray-300 dark:bg-[#3A3B3C] dark:hover:bg-[#313233] flex justify-center items-center dark:text-[#b0b3b8]",
+              {
+                "!bg-[#E7F3FF] !text-[#1876F2] dark:!bg-[#253851]":
+                  currentMenu === "messenger",
+              }
+            )}
             onClick={() => {
               if (currentMenu === "messenger") {
                 setCurrentMenu("");
@@ -389,15 +386,13 @@ const Header: React.FC<Props> = (props: Props) => {
         </ToolTip>
         <ToolTip title="Notifications">
           <button
-            className="relative w-[40px] h-[40px] rounded-full bg-gray-200 hover:bg-gray-300 flex justify-center items-center"
-            style={
-              currentMenu === "notifications"
-                ? {
-                    background: "#E7F3FF",
-                    color: "#1876F2",
-                  }
-                : {}
-            }
+            className={classNames(
+              "relative w-[40px] h-[40px] rounded-full bg-gray-200 hover:bg-gray-300 dark:bg-[#3A3B3C] dark:hover:bg-[#313233] flex justify-center items-center dark:text-[#b0b3b8]",
+              {
+                "!bg-[#E7F3FF] !text-[#1876F2] dark:!bg-[#253851]":
+                  currentMenu === "notifications",
+              }
+            )}
             onClick={() => {
               if (currentMenu === "notifications") {
                 setCurrentMenu("");

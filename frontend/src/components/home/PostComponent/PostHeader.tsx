@@ -36,18 +36,22 @@ const MenuItem: React.FC<PropsMenuItem> = ({
 }) => {
   return (
     <button
-      className="flex gap-3 items-center justify-start p-2 rounded-md hover:bg-gray-200"
+      className="flex gap-3 items-center justify-start p-2 rounded-md hover--overlay relative overflow-hidden"
       onClick={() => {
         setShowToolTip(false);
         onClick && onClick();
       }}
     >
-      {icon && <i className={icon}></i>}
+      {icon && <i className={`${icon} dark:invert`}></i>}
       {img && <img src={img} alt="" />}
       <div className="flex flex-col">
-        {title && <p className="text-start font-medium leading-5">{title}</p>}
+        {title && (
+          <p className="text-start font-medium leading-5 dark:text-[#E4E6EB]">
+            {title}
+          </p>
+        )}
         {subTitle && (
-          <p className="text-start text-sm text-[var(--color-secondary)]">
+          <p className="text-start text-[12px] text-[var(--color-secondary)] dark:text-[#B0B3B8]">
             {subTitle}
           </p>
         )}
@@ -106,7 +110,7 @@ const PostHeader: React.FC<Props> = ({ post, currentUser }) => {
   return (
     <div className="flex items-center py-3 px-4 gap-2">
       <Link to={`/profile/${post.user.email}`}>
-        <div className="relative hover--overlay h-10 w-10 rounded-full border border-solid border-gray-300 overflow-hidden">
+        <div className="relative hover--overlay h-10 w-10 rounded-full border border-solid border-gray-300 dark:border-[#242526] overflow-hidden">
           <img
             src={post.user.picture}
             alt=""
@@ -118,7 +122,7 @@ const PostHeader: React.FC<Props> = ({ post, currentUser }) => {
         <div>
           <Link
             to={`/profile/${post.user.email}`}
-            className="text-[15px] font-semibold"
+            className="text-[15px] font-semibold dark:text-[#E4E6EB]"
           >
             {post.user.username}
           </Link>
@@ -136,17 +140,29 @@ const PostHeader: React.FC<Props> = ({ post, currentUser }) => {
           )}
         </div>
         <div className="flex gap-2 items-center">
-          <span className="text-[13px] text-[var(--color-secondary)] tracking-wide">
+          <span className="text-[13px] text-[var(--color-secondary)] dark:text-[#B0B3B8] tracking-wide">
             {isoStringToDate(post.createdAt, "MMMM d 'at' h:mm a")}
           </span>
           {post.isSharedTo === "public" && (
-            <img src="/icons/public.png" alt="" className="w-3 h-3" />
+            <img
+              src="/icons/public.png"
+              alt=""
+              className="w-3 h-3 dark:invert"
+            />
           )}
           {post.isSharedTo === "friends" && (
-            <img src="/icons/friends_post.png" alt="" className="w-3 h-3" />
+            <img
+              src="/icons/friends_post.png"
+              alt=""
+              className="w-3 h-3 dark:invert"
+            />
           )}
           {post.isSharedTo === "onlyMe" && (
-            <img src="/icons/private.png" alt="" className="w-3 h-3" />
+            <img
+              src="/icons/private.png"
+              alt=""
+              className="w-3 h-3 dark:invert"
+            />
           )}
         </div>
       </div>
@@ -162,7 +178,7 @@ const PostHeader: React.FC<Props> = ({ post, currentUser }) => {
         interactive={true}
         render={(attrs) => (
           <div
-            className="w-[300px] min-h-10 bg-white rounded-lg shadow3 p-2 flex flex-col"
+            className="w-[300px] min-h-10 bg-white dark:bg-[#242526] rounded-lg shadow3 p-2 flex flex-col"
             tabIndex={-1}
             {...attrs}
           >
@@ -279,7 +295,7 @@ const PostHeader: React.FC<Props> = ({ post, currentUser }) => {
         )}
       >
         <button
-          className="ml-auto h-9 w-9 rounded-full overflow-hidden hover:bg-gray-100 flex justify-center items-center outline-none"
+          className="ml-auto h-9 w-9 rounded-full overflow-hidden relative hover--overlay flex justify-center items-center outline-none"
           onClick={() => {
             setShowToolTip(!showToolTip);
           }}

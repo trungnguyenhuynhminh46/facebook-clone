@@ -31,8 +31,8 @@ const AddToPost: React.FC<Props> = ({
 }) => {
   const isSmallScreen = useMediaQuery({ query: "(max-width: 688px)" });
   return (
-    <div className="flex justify-between items-center p-3 rounded-lg border border-solid border-gray-200 mt-5">
-      <button className="text-base font-medium">Add to your post</button>
+    <div className="flex justify-between items-center p-3 rounded-lg border border-solid border-gray-200 dark:border-[#ffffff23] mt-5">
+      <button className="text-base font-medium dark:text-[#E4E6EB]">Add to your post</button>
       <div className="flex gap-2">
         <button
           className={`${

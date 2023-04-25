@@ -19,7 +19,7 @@ const CommentReactions: React.FC<Props> = ({
 }) => {
   return (
     <div
-      className="absolute top-0 left-0 -translate-y-full flex gap-3 p-1 bg-white rounded-full border border-solid border-gray-300 shadow2"
+      className="absolute top-0 left-0 -translate-y-full flex gap-3 p-1 bg-white dark:bg-[#2d2e2f] rounded-full border border-solid border-gray-300 dark:border-[#2d2e2f] shadow2"
       onMouseOver={() => {
         clearTimeout(timeOutId);
         setTimeOutId(
@@ -39,17 +39,21 @@ const CommentReactions: React.FC<Props> = ({
     >
       {Object.entries(reactions).map(([key, reaction]) => {
         return (
-          <img
+          <button
             key={key}
-            src={`/reacts/${reaction.name}.gif`}
-            alt=""
-            className="w-9 h-9 cursor-pointer transition-all duration-200 ease-in-out hover:scale-[135%]"
+            className="w-9 h-9 rounded-full overflow-hidden cursor-pointer transition-all duration-200 ease-in-out hover:scale-[135%] bg-white"
             onClick={async () => {
               await handleButtonReactClick(comment._id, reaction.name);
               clearTimeout(timeOutId);
               setShowReactions(false);
             }}
-          />
+          >
+            <img
+              src={`/reacts/${reaction.name}.gif`}
+              alt=""
+              className="w-full h-full object-cover scale-110"
+            />
+          </button>
         );
       })}
     </div>

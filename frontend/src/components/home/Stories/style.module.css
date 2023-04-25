@@ -49,5 +49,5 @@
   @apply w-full h-full object-cover;
 }
 .title {
-  @apply absolute left-0 bottom-0 p-2 text-white text-sm;
+  @apply absolute left-0 bottom-0 p-2 text-[#E4E6EB] text-sm;
 }

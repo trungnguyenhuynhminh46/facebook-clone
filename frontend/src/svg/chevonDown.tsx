@@ -1,15 +1,19 @@
 import React from "react";
 
-type Props = {};
+type Props = {
+  className?: string;
+};
 
-const ChevonDown = (props: Props) => {
+const ChevonDown: React.FC<Props> = ({
+  className = "fill-[#65676B] dark:fill-[#b0b3b8]",
+}) => {
   return (
     <svg
       fill="currentColor"
       viewBox="0 0 16 16"
       width="1em"
       height="1em"
-      className="x1lliihq x1k90msu x2h7rmj x1qfuztq x198g3q0 x1qx5ct2 xw4jnvo"
+      className={`x1lliihq x1k90msu x2h7rmj x1qfuztq x198g3q0 x1qx5ct2 xw4jnvo ${className}`}
     >
       <g fillRule="evenodd" transform="translate(-448 -544)">
         <path

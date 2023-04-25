@@ -67,12 +67,12 @@ const ChangeAvatar: React.FC<Props> = ({ userInfo, setShowPopUp }) => {
         onChange={handleImage}
       />
       {/* Background */}
-      <div className="absolute inset-0 bg-white opacity-80"></div>
+      <div className="absolute inset-0 bg-white dark:bg-[#242526] opacity-80"></div>
       {/* Form */}
-      <div className="relative flex-1 max-w-[700px] rounded-lg shadow2 bg-white overflow-hidden border border-solid border-gray-200 mx-4">
+      <div className="relative flex-1 max-w-[700px] rounded-lg shadow2 bg-white dark:bg-[#242526] overflow-hidden border border-solid border-gray-200 dark:border-[#3E4042] mx-4">
         {/* Error */}
-        {error && (
-          <div className="absolute z-10 inset-0 bg-white bg-opacity-95 flex justify-center items-center gap-4">
+        {!!error && (
+          <div className="absolute z-10 inset-0 bg-white dark:bg-[#3E4042] dark:bg-opacity-95 bg-opacity-95 flex justify-center items-center gap-4">
             <p className="font-medium text-red-600">{error}</p>
             <button
               className=" py-1 px-3 bg-blue-600 text-white rounded-md active:scale-95 active:bg-blue-700"
@@ -86,15 +86,17 @@ const ChangeAvatar: React.FC<Props> = ({ userInfo, setShowPopUp }) => {
           </div>
         )}
         {/* Header */}
-        <div className="w-full relative flex justify-center items-center border-b border-solid border-gray-300">
-          <h1 className="py-5 text-xl font-bold">Update profile picture</h1>
+        <div className="w-full relative flex justify-center items-center border-b border-solid border-gray-300 dark:border-[#3E4042]">
+          <h1 className="py-5 text-xl font-bold dark:text-[#b0b3b8]">
+            Update profile picture
+          </h1>
           <button
-            className="absolute top-1/2 -translate-y-1/2 right-4 flex justify-center items-center rounded-full bg-gray-200 p-2"
+            className="absolute top-1/2 -translate-y-1/2 right-4 flex justify-center items-center rounded-full bg-gray-200 dark:bg-[#4E4F50] p-2"
             onClick={() => {
               setShowPopUp(false);
             }}
           >
-            <i className="exit_icon scale-80"></i>
+            <i className="exit_icon scale-80 dark:invert"></i>
           </button>
         </div>
         {/* Content */}
@@ -102,7 +104,7 @@ const ChangeAvatar: React.FC<Props> = ({ userInfo, setShowPopUp }) => {
           {/* Buttons */}
           <div className="flex flex-col items-stretch gap-2">
             <button
-              className="relative hover--overlay flex justify-center items-center gap-2 bg-blue-50 text-blue-500 font-semibold py-2 outline-none"
+              className="relative hover--overlay flex justify-center items-center gap-2 bg-blue-50 dark:bg-[#3C4D63] text-blue-500 dark:text-[#418DF1] font-semibold py-2 outline-none rounded-md"
               onClick={() => {
                 refInput.current && refInput.current.click();
               }}
@@ -110,13 +112,15 @@ const ChangeAvatar: React.FC<Props> = ({ userInfo, setShowPopUp }) => {
               <span className="text-2xl font-normal -mt-1">+</span>
               <span>Upload photo</span>
             </button>
-            <button className="relative hover--overlay flex justify-center items-center gap-2 bg-gray-100 text-gray-900 font-semibold py-2 outline-none">
-              <i className="frame_icon"></i>
-              <span>Add Frame</span>
+            <button className="relative hover--overlay flex justify-center items-center gap-2 bg-gray-100 dark:bg-[#3A3B3C] text-gray-900 font-semibold py-2 outline-none rounded-md">
+              <i className="frame_icon dark:invert"></i>
+              <span className="dark:text-[#b0b3b8]">Add Frame</span>
             </button>
           </div>
           {/* Uploads */}
-          <h1 className="mt-5 mb-3 text-[17px] font-medium">Uploads</h1>
+          <h1 className="mt-5 mb-3 text-[17px] font-medium dark:text-[#E4E6EB]">
+            Uploads
+          </h1>
           {isLoading && (
             <div className="w-full flex justify-center items-center p-3">
               {/* Loading */}
@@ -129,13 +133,18 @@ const ChangeAvatar: React.FC<Props> = ({ userInfo, setShowPopUp }) => {
               />
             </div>
           )}
+          {!isLoading && (!data || data.imagesUrl.length === 0) && (
+            <div className="w-full flex justify-center items-center pb-10 text-lg text-[#b0b3b8]">
+              No profile picture is uploaded
+            </div>
+          )}
           {!isLoading && data && (
             <div className="grid grid-cols-6 gap-2 ">
               {data.imagesUrl.map((image) => {
                 return (
                   <button
                     key={image}
-                    className="relative w-full aspect-square border border-solid border-gray-200 hover--overlay rounded-md overflow-hidden"
+                    className="relative w-full aspect-square border border-solid border-gray-200 dark:border-[#3E4042] hover--overlay rounded-md overflow-hidden"
                     onClick={() => {
                       setImageUrl(image);
                     }}

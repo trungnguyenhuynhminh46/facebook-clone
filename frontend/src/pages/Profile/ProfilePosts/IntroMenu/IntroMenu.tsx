@@ -18,13 +18,13 @@ const DetailInfo: React.FC<DetailInfoProps> = ({ details }) => {
     <>
       {/* Details */}
       {details.job && !details.workplace && (
-        <div className="mt-[10px] flex items-center gap-[10px] text-[15px] text-[var(--color-primary)]">
+        <div className="mt-[10px] flex items-center gap-[10px] text-[15px] text-[var(--color-primary)] dark:text-[#E4E6EB]">
           <img src="/icons/job.png" alt="" className="invert-[60%]" />
           Works as {details?.job}
         </div>
       )}
       {details.job && details.workplace && (
-        <div className="mt-[10px] flex items-center gap-[10px] text-[15px] text-[var(--color-primary)]">
+        <div className="mt-[10px] flex items-center gap-[10px] text-[15px] text-[var(--color-primary)] dark:text-[#E4E6EB]">
           <img src="/icons/job.png" alt="" className="invert-[60%]" />
           <p>
             Works as {details?.job} at <b>{details?.workplace}</b>
@@ -32,43 +32,43 @@ const DetailInfo: React.FC<DetailInfoProps> = ({ details }) => {
         </div>
       )}
       {!details.job && details.workplace && (
-        <div className="mt-[10px] flex items-center gap-[10px] text-[15px] text-[var(--color-primary)]">
+        <div className="mt-[10px] flex items-center gap-[10px] text-[15px] text-[var(--color-primary)] dark:text-[#E4E6EB]">
           <img src="/icons/job.png" alt="" className="invert-[60%]" />
           <p>Works at {details?.workplace}</p>
         </div>
       )}
       {details.relationship && (
-        <div className="mt-[10px] flex items-center gap-[10px] text-[15px] text-[var(--color-primary)]">
+        <div className="mt-[10px] flex items-center gap-[10px] text-[15px] text-[var(--color-primary)] dark:text-[#E4E6EB]">
           <img src="/icons/relationship.png" alt="" className="invert-[60%]" />
           {details.relationship}
         </div>
       )}
       {details?.college && (
-        <div className="mt-[10px] flex items-center gap-[10px] text-[15px] text-[var(--color-primary)]">
+        <div className="mt-[10px] flex items-center gap-[10px] text-[15px] text-[var(--color-primary)] dark:text-[#E4E6EB]">
           <img src="/icons/studies.png" className="invert-[60%]" alt="" />
           Studied at {details?.college}
         </div>
       )}
       {details?.highSchool && (
-        <div className="mt-[10px] flex items-center gap-[10px] text-[15px] text-[var(--color-primary)]">
+        <div className="mt-[10px] flex items-center gap-[10px] text-[15px] text-[var(--color-primary)] dark:text-[#E4E6EB]">
           <img src="/icons/studies.png" className="invert-[60%]" alt="" />
           Studied at {details?.highSchool}
         </div>
       )}
       {details?.currentCity && (
-        <div className="mt-[10px] flex items-center gap-[10px] text-[15px] text-[var(--color-primary)]">
+        <div className="mt-[10px] flex items-center gap-[10px] text-[15px] text-[var(--color-primary)] dark:text-[#E4E6EB]">
           <img src="/icons/home.png" className="invert-[60%]" alt="" />
           Lives in {details?.currentCity}
         </div>
       )}
       {details?.hometown && (
-        <div className="mt-[10px] flex items-center gap-[10px] text-[15px] text-[var(--color-primary)]">
+        <div className="mt-[10px] flex items-center gap-[10px] text-[15px] text-[var(--color-primary)] dark:text-[#E4E6EB]">
           <img src="/icons/home.png" className="invert-[60%]" alt="" />
           From {details?.hometown}
         </div>
       )}
       {details?.hometown && (
-        <div className="mt-[10px] flex items-center gap-[10px] text-[15px] text-[var(--color-primary)]">
+        <div className="mt-[10px] flex items-center gap-[10px] text-[15px] text-[var(--color-primary)] dark:text-[#E4E6EB]">
           <img src="/icons/instagram.png" className="invert-[60%]" alt="" />
           <a
             href={`https://www.instagram.com/${details?.instagram}`}
@@ -138,10 +138,10 @@ const IntroMenu: React.FC<Props> = ({ isOwner, userInfo }) => {
     }
   };
   return (
-    <div className="rounded-lg bg-white w-full px-3 py-4 flex flex-col items-stretch gap-5">
-      <h1 className="text-xl font-bold">Intro</h1>
+    <div className="rounded-lg bg-white dark:bg-[#242526] w-full px-3 py-4 flex flex-col items-stretch gap-5">
+      <h1 className="text-xl font-bold dark:text-[#E4E6EB]">Intro</h1>
       {details.bio && !showEditBio && (
-        <p className="text-center">{details.bio}</p>
+        <p className="text-center dark:text-[#E4E6EB]">{details.bio}</p>
       )}
       {showEditBio && (
         <DetailsInput
@@ -155,7 +155,7 @@ const IntroMenu: React.FC<Props> = ({ isOwner, userInfo }) => {
       )}
       {isOwner && !showEditBio && (
         <button
-          className="rounded-lg bg-gray-200 font-semibold flex justify-center hover:bg-gray-300 active:scale-95 py-2"
+          className="dark:text-[#E4E6EB] rounded-lg bg-gray-200 dark:bg-[#3A3B3C] font-semibold flex justify-center hover:bg-gray-300 active:scale-95 py-2"
           onClick={() => {
             setShowEditBio(true);
             setBioEditorText(details.bio);
@@ -168,7 +168,7 @@ const IntroMenu: React.FC<Props> = ({ isOwner, userInfo }) => {
       <DetailInfo details={details} />
       {isOwner && (
         <button
-          className="rounded-lg bg-gray-200 font-semibold flex justify-center hover:bg-gray-300 active:scale-95 py-2"
+          className="dark:text-[#E4E6EB] rounded-lg bg-gray-200 dark:bg-[#3A3B3C] font-semibold flex justify-center hover:bg-gray-300 active:scale-95 py-2"
           onClick={() => {
             setShowEditBio(false);
             setShowEditDetails(true);

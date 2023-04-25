@@ -46,9 +46,9 @@ const SearchMenu: React.FC<Props> = ({ query, setHideMenu, setInputText }) => {
     { skip: !deboundedQuery }
   );
   return (
-    <div className="fixed top-0 left-0 w-[320px] bg-white z-20 rounded-lg shadow-xl shadow1">
+    <div className="fixed top-0 left-0 w-[320px] bg-white dark:bg-[#242526] z-20 rounded-lg shadow-xl shadow1">
       <div
-        className="absolute top-[10px] left-2 cursor-pointer w-9 h-9 rounded-full hover:bg-gray-100 flex justify-center items-center"
+        className="absolute top-[10px] left-2 cursor-pointer w-9 h-9 rounded-full overflow-hidden hover--overlay flex justify-center items-center"
         onClick={() => {
           setHideMenu();
         }}
@@ -64,7 +64,7 @@ const SearchMenu: React.FC<Props> = ({ query, setHideMenu, setInputText }) => {
       )}
       {!query && history.length > 0 && (
         <>
-          <h1 className="text-lg font-bold ml-4">Recent</h1>
+          <h1 className="text-lg font-bold ml-4 dark:text-[#E0E2E7]">Recent</h1>
           <div className="p-2 overflow-auto max-h-[320px] custom-scrollbar">
             {history.map((item) => {
               return (

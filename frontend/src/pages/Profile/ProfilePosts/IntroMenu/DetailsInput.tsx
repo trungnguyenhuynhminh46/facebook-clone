@@ -58,7 +58,7 @@ const DetailsInput: React.FC<Props> = ({
           <textarea
             name=""
             id=""
-            className="resize-none h-[80px] text-center py-2 px-3 placeholder:text-gray-500 focus:placeholder:text-gray-300 bg-gray-100 focus:bg-white outline-none border border-solid border-gray-300 focus:border-blue-600 rounded-lg font-semibold"
+            className="resize-none h-[80px] text-center py-2 px-3 placeholder:text-gray-500 focus:placeholder:text-gray-300 bg-gray-100 dark:bg-[#242526] focus:bg-white outline-none border border-solid border-gray-300 focus:border-blue-600 rounded-lg font-semibold dark:border-blue-500 dark:text-[#E4E6EB]"
             placeholder={placeholder}
             value={text}
             onChange={(e) => {
@@ -71,12 +71,16 @@ const DetailsInput: React.FC<Props> = ({
               }
             }}
           />
-          <p className="text-[12px] text-gray-500 ml-auto">
+          <p className="text-[12px] text-gray-500 dark:text-[#b0b3b8] ml-auto">
             <span>{max}</span> characters remaining
           </p>
           <div className="h-[36px] flex justify-between items-stretch">
-            <p className="flex gap-1 items-center">
-              <img src="/icons/public.png" className="scale-[65%]" alt="" />
+            <p className="flex gap-1 items-center dark:text-[#E4E6EB]">
+              <img
+                src="/icons/public.png"
+                className="scale-[65%] dark:invert"
+                alt=""
+              />
               Public
             </p>
             <div className="flex gap-1 items-stretch">
@@ -105,7 +109,7 @@ const DetailsInput: React.FC<Props> = ({
           <select
             name=""
             id=""
-            className="w-full h-[36px] focus-visible:outline-none text-[15px] leading-[20px] text-[#1c1e21] pl-2 pr-5 border border-solid border-[#ccd0d5] rounded-[4px]"
+            className="w-full h-[36px] focus-visible:outline-none text-[15px] leading-[20px] text-[#1c1e21] pl-2 pr-5 border border-solid border-[#ccd0d5] dark:border-[#b0b3b8] rounded-[4px] dark:bg-[#242526] dark:text-[#E4E6EB]"
             value={text}
             onChange={(e) => {
               setText(e.target.value);

@@ -106,7 +106,7 @@ const EmojiPickerBackground: React.FC<Props> = ({
         ref={inputRef}
         placeholder={`What's on your mind, ${currentUser.first_name}`}
         className={classNames(
-          "w-full border-none outline-none pt-3 resize-none",
+          "w-full border-none outline-none pt-3 resize-none bg-transparent dark:text-[#E4E6EB]",
           {
             "absolute top-1/2 -translate-y-1/2 text-center text-[30px] font-bold bg-transparent max-w-[80%]":
               coverState,
@@ -171,6 +171,7 @@ const EmojiPickerBackground: React.FC<Props> = ({
               onEmojiSelect={handleEmojiSelect}
               setShowEmojiPicker={setShowEmojiPicker}
               containerId="emoji-picker"
+              theme={document.body.className}
             />
           )}
         </div>
@@ -259,6 +260,7 @@ const EmojiPickerBackground: React.FC<Props> = ({
                 onEmojiSelect={handleEmojiSelect}
                 setShowEmojiPicker={setShowEmojiPicker}
                 containerId="emoji-picker"
+                theme={document.body.className}
               />
             )}
           </div>

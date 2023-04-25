@@ -23,14 +23,14 @@ const SettingsMenu: React.FC<Props> = ({ menu, menuRef, onEnter, setMenu }) => {
       <div className="w-full" ref={menuRef}>
         <div className="flex items-center p-2 pt-1">
           <div
-            className="cursor-pointer w-9 h-9 rounded-full hover:bg-gray-100 flex justify-center items-center"
+            className="cursor-pointer w-9 h-9 rounded-full flex justify-center items-center hover--overlay relative overflow-hidden"
             onClick={() => {
               setMenu(0);
             }}
           >
             <Return />
           </div>
-          <h2 className="text-2xl font-bold leading-7 pl-[10px]">
+          <h2 className="text-2xl font-bold leading-7 pl-[10px] dark:text-[#E7E9ED]">
             Settings & privacy
           </h2>
         </div>

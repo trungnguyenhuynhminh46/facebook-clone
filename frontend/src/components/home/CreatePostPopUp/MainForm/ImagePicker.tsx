@@ -62,16 +62,16 @@ const ImagePicker: React.FC<Props> = ({
     }
   };
   return (
-    <div className="relative rounded-lg border border-solid border-gray-300 p-2 group">
+    <div className="relative rounded-lg border border-solid border-gray-300 dark:border-[#ffffff23] p-2 group">
       <div
-        className="cursor-pointer absolute top-4 right-4 w-[28.8px] h-[28.8px] bg-white border border-solid border-gray-400 hover:bg-gray-100 rounded-full flex justify-center items-center z-20"
+        className="cursor-pointer absolute top-4 right-4 w-[28.8px] h-[28.8px] bg-white border border-solid border-gray-400 hover--overlay overflow-hidden dark:bg-[#3E4042] dark:border-none rounded-full flex justify-center items-center z-20"
         onClick={() => {
           setImagesList([]);
           setShowPrev(false);
           setError("");
         }}
       >
-        <i className="exit_icon"></i>
+        <i className="exit_icon scale-[80%] dark:invert"></i>
       </div>
       {/* If there is/are image(s) */}
       {!!imagesList && !!imagesList.length && (
@@ -84,7 +84,7 @@ const ImagePicker: React.FC<Props> = ({
             </button> */}
             <label
               htmlFor="pc-img-picker"
-              className="cursor-pointer py-2 px-3 rounded-lg bg-gray-50 hover:bg-gray-100 active:bg-gray-200 flex gap-2 items-center text-black"
+              className="cursor-pointer py-2 px-3 rounded-lg bg-gray-50 relative hover--overlay overflow-hidden dark:bg-white flex gap-2 items-center text-black"
             >
               <input
                 type="file"
@@ -131,7 +131,7 @@ const ImagePicker: React.FC<Props> = ({
       {(!imagesList || imagesList.length === 0) && (
         <label
           htmlFor="pc-img-picker"
-          className="rounded-lg mb-2 bg-gray-50 flex flex-col gap-1 justify-center items-center hover:bg-gray-100 active:bg-gray-300 h-[190px] cursor-pointer"
+          className="rounded-lg mb-2 bg-gray-50 flex flex-col gap-1 justify-center items-center relative hover--overlay overflow-hidden dark:bg-[#323436] h-[190px] cursor-pointer"
         >
           <input
             type="file"
@@ -142,15 +142,19 @@ const ImagePicker: React.FC<Props> = ({
             accept="image/jpeg, image/png, image/gif, image/webp"
             onChange={handleUploadImages}
           />
-          <div className="w-10 h-10 rounded-full bg-gray-200 flex justify-center items-center">
-            <i className="addPhoto_icon"></i>
+          <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-[#47494B] flex justify-center items-center">
+            <i className="addPhoto_icon dark:invert"></i>
           </div>
-          <p className="text-lg font-semibold leading-4">Add photos/Videos</p>
-          <p className="text-sm text-gray-500">or drag and drop</p>
+          <p className="text-lg font-semibold leading-4 dark:text-[#E4E6EB]">
+            Add photos/Videos
+          </p>
+          <p className="text-sm text-gray-500 dark:text-[#B0B3B8]">
+            or drag and drop
+          </p>
         </label>
       )}
 
-      <div className="rounded-lg bg-gray-50 flex gap-3 justify-start items-center h-[72px] p-3">
+      <div className="rounded-lg bg-gray-50 flex gap-3 justify-start items-center h-[72px] p-3 dark:bg-[#323436]">
         {/* Mobile */}
         {/* <input
           type="file"
@@ -159,13 +163,13 @@ const ImagePicker: React.FC<Props> = ({
           multiple
           className="hidden"
         /> */}
-        <div className="w-10 h-10 rounded-full bg-gray-200 flex justify-center items-center">
-          <i className="phone_icon"></i>
+        <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-[#47494B] flex justify-center items-center">
+          <i className="phone_icon dark:invert"></i>
         </div>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-gray-500 dark:text-[#E4E6EB]">
           Add photos and videos from your mobile device
         </p>
-        <button className="py-2 px-3 bg-gray-200 rounded-lg font-medium ml-auto">
+        <button className="py-2 px-3 bg-gray-200 rounded-lg font-medium ml-auto dark:bg-[#5A5C5D] dark:text-[#E4E6EB]">
           Add
         </button>
       </div>

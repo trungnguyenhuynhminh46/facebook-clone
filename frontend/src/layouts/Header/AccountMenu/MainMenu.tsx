@@ -7,6 +7,7 @@ import { logout } from "@/store/slices/user";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { User } from "@/types/User.type";
+import MiniFooter from "@/components/MiniFooter";
 
 type Props = {
   menu: number;
@@ -34,10 +35,10 @@ const MainMenu: React.FC<Props> = ({
       onEnter={onEnter}
     >
       <div className="w-full" ref={menuRef}>
-        <div className="flex flex-col justify-start items-stretch rounded-lg shadow3 p-1 mb-4">
+        <div className="flex flex-col justify-start items-stretch rounded-lg shadow3 p-1 mb-4 dark:bg-[#232324]">
           <Link
             to={`/profile/${currentUser.email}`}
-            className="flex gap-2 items-center p-3 rounded-lg hover:bg-gray-100 active:bg-gray-200"
+            className="flex gap-2 items-center p-3 rounded-lg hover--overlay relative overflow-hidden"
           >
             <div className={menuStyles["account-menu_avatar"]}>
               <img
@@ -46,14 +47,14 @@ const MainMenu: React.FC<Props> = ({
                 className="w-full h-full object-cover"
               />
             </div>
-            <span className="text-[17px] font-semibold">
+            <span className="text-[17px] font-semibold dark:text-[#E7E9ED]">
               {currentUser?.username}
             </span>
           </Link>
           <div className="mx-3">
-            <div className="w-full h-[1.5px] my-1 bg-gray-300"></div>
+            <div className="w-full h-[1.5px] my-1 bg-gray-300 dark:bg-[#3E4042]"></div>
           </div>
-          <button className="py-1 px-3 rounded-lg hover:bg-gray-100 active:bg-gray-200 flex">
+          <button className="py-1 px-3 rounded-lg hover--overlay relative overflow-hidden flex">
             <span className="text-[15px] font-medium text-[var(--blue-color)]">
               See all profiles
             </span>
@@ -95,6 +96,9 @@ const MainMenu: React.FC<Props> = ({
           >
             Log Out
           </MenuItem>
+          <div className="px-3 mt-1">
+            <MiniFooter />
+          </div>
         </div>
       </div>
     </CSSTransition>

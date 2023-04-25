@@ -44,7 +44,7 @@ const PostButton: React.FC<Props> = ({ currentUser, post, setLocalPost }) => {
     }
   };
   return (
-    <div className="relative flex items-stretch gap-1 py-1 border-t border-b border-solid border-gray-300 mx-4">
+    <div className="relative flex items-stretch gap-1 py-1 border-t border-b border-solid border-gray-300 dark:border-[#3E4042] mx-4">
       {showReactions && (
         <PostReactions
           post={post}
@@ -55,7 +55,7 @@ const PostButton: React.FC<Props> = ({ currentUser, post, setLocalPost }) => {
         />
       )}
       <button
-        className="relative flex-1 flex justify-center items-center gap-2 py-2 rounded-md hover:bg-gray-100"
+        className="relative flex-1 flex justify-center items-center gap-2 py-2 rounded-md hover--overlay overflow-hidden"
         onMouseOver={() => {
           clearTimeout(timeOutId);
           setTimeOutId(
@@ -93,18 +93,18 @@ const PostButton: React.FC<Props> = ({ currentUser, post, setLocalPost }) => {
         )}
         {!currentReaction && (
           <>
-            <i className="like_icon"></i>
-            <span>Like</span>
+            <i className="like_icon dark:invert"></i>
+            <span className="dark:text-[#b0b3b8]">Like</span>
           </>
         )}
       </button>
-      <button className="flex-1 flex justify-center items-center gap-2 py-2 rounded-md hover:bg-gray-100">
-        <i className="comment_icon"></i>
-        <span>Comment</span>
+      <button className="relative flex-1 flex justify-center items-center gap-2 py-2 rounded-md hover--overlay overflow-hidden">
+        <i className="comment_icon dark:invert"></i>
+        <span className="dark:text-[#b0b3b8]">Comment</span>
       </button>
-      <button className="flex-1 flex justify-center items-center gap-2 py-2 rounded-md hover:bg-gray-100">
-        <i className="share_icon"></i>
-        <span>Share</span>
+      <button className="relative flex-1 flex justify-center items-center gap-2 py-2 rounded-md hover--overlay overflow-hidden">
+        <i className="share_icon dark:invert"></i>
+        <span className="dark:text-[#b0b3b8]">Share</span>
       </button>
     </div>
   );

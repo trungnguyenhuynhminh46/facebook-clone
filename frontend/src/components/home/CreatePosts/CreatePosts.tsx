@@ -16,7 +16,7 @@ const CreatePosts: React.FC<Props> = ({ currentUser, className = "" }) => {
   const [inputText, setInputText] = useState("");
   return (
     <div
-      className={`w-full relative py-3 px-4 rounded-lg bg-white flex flex-col items-stretch shadow2 ${className}`}
+      className={`w-full relative py-3 px-4 rounded-lg bg-white dark:bg-[#242526] flex flex-col items-stretch shadow2 ${className}`}
     >
       <div className="flex gap-3 items-center mb-2">
         <button className={CreatePostsStyle["avatar"]}>
@@ -27,7 +27,7 @@ const CreatePosts: React.FC<Props> = ({ currentUser, className = "" }) => {
           />
         </button>
         <button
-          className={CreatePostsStyle["open_create_post"]}
+          className={`${CreatePostsStyle["open_create_post"]} bg-[#3A3B3C] dark:text-[#B0B3B8]`}
           onClick={() => {
             setIsShown(true);
           }}
@@ -52,10 +52,10 @@ const CreatePosts: React.FC<Props> = ({ currentUser, className = "" }) => {
           />
         )}
       </div>
-      <div className="w-full h-[1px] bg-gray-200 my-2"></div>
+      <div className="w-full h-[0.8px] bg-gray-200 dark:bg-[rgba(255,255,255,.1)] my-2"></div>
       <div className="flex items-center">
         <div
-          className="flex-1 py-2 hover:bg-gray-200 text-[14px] text-gray-500 font-semibold flex justify-center items-center gap-2 rounded-lg transition-all duration-200 ease-linear cursor-pointer"
+          className="relative hover--overlay overflow-hidden flex-1 py-2 text-[14px] text-gray-500 dark:text-[#B0B3B8] font-semibold flex justify-center items-center gap-2 rounded-lg transition-all duration-200 ease-linear cursor-pointer"
           style={
             isSmallScreen
               ? {
@@ -72,7 +72,7 @@ const CreatePosts: React.FC<Props> = ({ currentUser, className = "" }) => {
           Live Video
         </div>
         <div
-          className="flex-1 py-2 hover:bg-gray-200 text-[14px] text-gray-500 font-semibold flex justify-center items-center gap-2 rounded-lg transition-all duration-200 ease-linear cursor-pointer"
+          className="relative hover--overlay overflow-hidden flex-1 py-2 text-[14px] text-gray-500 dark:text-[#B0B3B8] font-semibold flex justify-center items-center gap-2 rounded-lg transition-all duration-200 ease-linear cursor-pointer"
           style={
             isSmallScreen
               ? {
@@ -89,7 +89,7 @@ const CreatePosts: React.FC<Props> = ({ currentUser, className = "" }) => {
           Photo/Video
         </div>
         <div
-          className="flex-1 py-2 hover:bg-gray-200 text-[14px] text-gray-500 font-semibold flex justify-center items-center gap-2 rounded-lg transition-all duration-200 ease-linear cursor-pointer"
+          className="relative hover--overlay overflow-hidden flex-1 py-2 text-[14px] text-gray-500 dark:text-[#B0B3B8] font-semibold flex justify-center items-center gap-2 rounded-lg transition-all duration-200 ease-linear cursor-pointer"
           style={
             isSmallScreen
               ? {

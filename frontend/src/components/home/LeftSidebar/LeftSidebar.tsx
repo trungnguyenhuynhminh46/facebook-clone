@@ -19,16 +19,16 @@ const LeftSidebar = (props: Props) => {
       <div className="flex flex-col py-3 px-2">
         <Link
           to={`/profile/${user.email}`}
-          className="flex gap-3 items-center p-2 rounded-lg hover:bg-gray-200"
+          className="flex gap-3 items-center p-2 rounded-lg relative overflow-hidden hover--overlay"
         >
-          <div className="w-9 h-9 rounded-full border border-gray-100 overflow-hidden">
+          <div className="w-9 h-9 rounded-full border border-gray-100 dark:border-gray-700 overflow-hidden">
             <img
               src={user.picture}
               alt=""
               className="w-full h-full object-cover"
             />
           </div>
-          <p className="text-[#050505] font-medium text-[15px]">
+          <p className="text-[#050505] dark:text-[#E4E6EB] font-medium text-[15px]">
             {user.username}
           </p>
         </Link>
@@ -37,16 +37,16 @@ const LeftSidebar = (props: Props) => {
             return (
               <button
                 key={index}
-                className="flex gap-3 items-center p-2 rounded-lg hover:bg-gray-200"
+                className="flex gap-3 items-center p-2 rounded-lg relative overflow-hidden hover--overlay"
               >
                 <div>
                   <img src={`/left/${item.img}.png`} alt="" />
                 </div>
                 <div className="flex flex-col gap-1">
-                  <p className="text-[#050505] font-medium text-[15px]">
+                  <p className="text-[#050505] dark:text-[#E4E6EB] font-medium text-[15px]">
                     {item.text}
                   </p>
-                  <p className={leftSideStyles["alert"]}>5 news</p>
+                  {/* <p className={leftSideStyles["alert"]}>5 news</p> */}
                 </div>
               </button>
             );
@@ -55,13 +55,13 @@ const LeftSidebar = (props: Props) => {
             <Link
               to={item.to}
               key={index}
-              className="flex gap-3 items-center p-2 rounded-lg hover:bg-gray-200"
+              className="flex gap-3 items-center p-2 rounded-lg relative overflow-hidden hover--overlay"
             >
               <div>
                 <img src={`/left/${item.img}.png`} alt="" />
               </div>
               <div className="flex flex-col gap-1">
-                <p className="text-[#050505] font-medium text-[15px]">
+                <p className="text-[#050505] dark:text-[#E4E6EB] font-medium text-[15px]">
                   {item.text}
                 </p>
                 <p className={leftSideStyles["alert"]}>5 news</p>
@@ -70,7 +70,7 @@ const LeftSidebar = (props: Props) => {
           );
         })}
         <button
-          className="cursor-pointer flex gap-3 items-center p-2 rounded-lg hover:bg-gray-200"
+          className="cursor-pointer flex gap-3 items-center p-2 rounded-lg relative overflow-hidden hover--overlay"
           onClick={() => {
             if (seeMore) {
               setSeeMore(false);
@@ -82,16 +82,20 @@ const LeftSidebar = (props: Props) => {
             }
           }}
         >
-          <div className="w-9 h-9 rounded-full bg-gray-300 overflow-hidden flex justify-center items-center">
-            {seeMore ? <ChevonDown /> : <ChevonUp />}
+          <div className="w-9 h-9 rounded-full bg-gray-300 dark:bg-[#3A3B3C] overflow-hidden flex justify-center items-center">
+            {seeMore ? (
+              <ChevonDown className="fill-[#65676B] dark:fill-[#b0b3b8] scale-125" />
+            ) : (
+              <ChevonUp className="fill-[#65676B] dark:fill-[#b0b3b8] scale-125" />
+            )}
           </div>
-          <p className="text-[#050505] font-medium text-[15px]">
+          <p className="text-[#050505] dark:text-[#E4E6EB] font-medium text-[15px]">
             {seeMore ? "See more" : "See less"}
           </p>
         </button>
       </div>
       {/* Shortcut */}
-      <div className="h-[1px] w-auto bg-gray-300 my-2 mx-4"></div>
+      <div className="h-[1px] w-auto bg-gray-300 dark:bg-gray-700 my-2 mx-4"></div>
       <p className="text-[var(--color-secondary)] font-semibold text-[17px] px-4 py-3">
         Your shortcuts
       </p>
@@ -99,22 +103,26 @@ const LeftSidebar = (props: Props) => {
         <a
           href="https://github.com/trungnguyenhuynhminh46"
           target="blank"
-          className="flex gap-3 items-center p-2 rounded-lg hover:bg-gray-200"
+          className="flex gap-3 items-center p-2 rounded-lg relative overflow-hidden hover--overlay"
         >
-          <div className="w-9 h-9 rounded-full border border-gray-100 overflow-hidden">
-            <img src="/icons/github.png" alt="" />
+          <div className="w-9 h-9 rounded-full border border-gray-100 dark:border-gray-700 overflow-hidden">
+            <img src="/icons/github.png" className="dark:invert" alt="" />
           </div>
-          <p className="text-[#050505] font-medium text-[15px]">Github</p>
+          <p className="text-[#050505] dark:text-[#E4E6EB] font-medium text-[15px]">
+            Github
+          </p>
         </a>
         <a
           href="https://www.facebook.com/trung.nguyenhuynhminh.33/"
           target="blank"
-          className="flex gap-3 items-center p-2 rounded-lg hover:bg-gray-200"
+          className="flex gap-3 items-center p-2 rounded-lg relative overflow-hidden hover--overlay"
         >
-          <div className="w-9 h-9 rounded-full border border-gray-100 overflow-hidden">
+          <div className="w-9 h-9 rounded-full border border-gray-100 dark:border-gray-700 overflow-hidden">
             <img src="/icons/icon.png" alt="" />
           </div>
-          <p className="text-[#050505] font-medium text-[15px]">Facebook</p>
+          <p className="text-[#050505] dark:text-[#E4E6EB] font-medium text-[15px]">
+            Facebook
+          </p>
         </a>
       </div>
       <p className="gap-2 px-4 mb-4">

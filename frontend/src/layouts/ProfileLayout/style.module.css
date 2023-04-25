@@ -1,5 +1,5 @@
 .menu-item {
-  @apply relative p-3 text-gray-500 font-medium rounded-lg hover:bg-gray-100;
+  @apply relative p-3 text-gray-500 dark:text-[#E4E6EB] font-medium rounded-lg hover:bg-gray-100;
 }
 .menu-item.active {
   @apply font-medium text-blue-500 hover:bg-transparent;

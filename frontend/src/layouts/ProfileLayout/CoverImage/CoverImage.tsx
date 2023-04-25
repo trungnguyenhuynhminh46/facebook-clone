@@ -41,19 +41,21 @@ const SelectUploadedCoverPopUp: React.FC<SelectUploadedCoverProps> = ({
   return ReactDom.createPortal(
     <div className="fixed inset-0 flex justify-center items-center z-20">
       {/* Background */}
-      <div className="absolute inset-0 bg-white opacity-80"></div>
+      <div className="absolute inset-0 bg-white dark:bg-[#242526] opacity-80"></div>
       {/* Form */}
-      <div className="relative flex-1 max-w-[548px] rounded-lg shadow2 bg-white overflow-hidden border border-solid border-gray-200 mx-4">
+      <div className="relative flex-1 max-w-[548px] rounded-lg shadow2 bg-white dark:bg-[#242526] overflow-hidden border border-solid border-gray-200 dark:border-[#3E4042] mx-4">
         {/* Header */}
-        <div className="w-full relative flex justify-center items-center border-b border-solid border-gray-300">
-          <h1 className="py-5 text-xl font-bold">Select photo</h1>
+        <div className="w-full relative flex justify-center items-center border-b border-solid border-gray-300 dark:border-[#3E4042]">
+          <h1 className="py-5 text-xl font-bold dark:text-[#E4E6EB]">
+            Select photo
+          </h1>
           <button
-            className="absolute top-1/2 -translate-y-1/2 right-4 flex justify-center items-center rounded-full bg-gray-200 p-2"
+            className="absolute top-1/2 -translate-y-1/2 right-4 flex justify-center items-center rounded-full bg-gray-200 dark:bg-[#4E4F50] p-2"
             onClick={() => {
               setShowSelectUploadedPhotos(false);
             }}
           >
-            <i className="exit_icon scale-80"></i>
+            <i className="exit_icon scale-80 dark:invert"></i>
           </button>
         </div>
         {/* Uploaded image */}
@@ -69,13 +71,18 @@ const SelectUploadedCoverPopUp: React.FC<SelectUploadedCoverProps> = ({
             />
           </div>
         )}
+        {!isLoading && (!data || data.imagesUrl.length === 0) && (
+          <div className="w-full flex justify-center items-center pt-8 pb-5 text-lg text-[#b0b3b8] ">
+            No cover picture is uploaded
+          </div>
+        )}
         {!isLoading && data && (
           <div className="w-full p-3 grid grid-cols-3 gap-1 sm:gap-2">
             {data.imagesUrl.map((image) => {
               return (
                 <button
                   key={image}
-                  className="relative w-full aspect-video border border-solid border-gray-200 hover--overlay rounded-md overflow-hidden"
+                  className="relative w-full aspect-video border border-solid border-gray-200 dark:border-[#3E4042] hover--overlay rounded-md overflow-hidden"
                   onClick={() => {
                     setImageUrl(image);
                     setShowSelectUploadedPhotos(false);
@@ -336,38 +343,42 @@ const CoverImage: React.FC<Props> = ({ isOwner, userInfo, currentUser }) => {
       </div>
       {showEditCoverPhotoMenu && isOwner && (
         <div
-          className="absolute right-8 bottom-[174px] md:bottom-[77px] w-[350px] bg-white rounded-lg shadow2 p-2 flex flex-col z-20"
+          className="absolute right-8 bottom-[240px] md:bottom-[108px] w-[350px] bg-white dark:bg-[#242526] rounded-lg shadow2 p-2 flex flex-col z-20"
           ref={menuRef}
         >
           <button
-            className="flex gap-2 items-center p-2 hover:bg-gray-200 rounded-lg transition-all duration-100 ease-linear"
+            className="flex gap-2 items-center p-2 hover--overlay overflow-hidden relative rounded-lg transition-all duration-100 ease-linear"
             onClick={() => {
               setShowSelectUploadedPhotos(true);
               setShowEditCoverPhotoMenu(false);
             }}
           >
-            <i className="photo_icon"></i>
-            <span className="font-semibold">Select photo</span>
+            <i className="photo_icon dark:invert"></i>
+            <span className="font-semibold dark:text-[#b0b3b8]">
+              Select photo
+            </span>
           </button>
           <button
-            className="flex gap-2 items-center p-2 hover:bg-gray-200 rounded-lg transition-all duration-100 ease-linear"
+            className="flex gap-2 items-center p-2 hover--overlay overflow-hidden relative rounded-lg transition-all duration-100 ease-linear"
             onClick={() => {
               inputRef.current && inputRef.current.click();
               setShowEditCoverPhotoMenu(false);
             }}
           >
-            <i className="upload_icon"></i>
-            <span className="font-semibold">Upload photo</span>
+            <i className="upload_icon dark:invert"></i>
+            <span className="font-semibold dark:text-[#b0b3b8]">
+              Upload photo
+            </span>
           </button>
-          <div className="h-[0.5px] bg-gray-300 my-1 mx-2"></div>
+          <div className="h-[0.5px] bg-gray-300 dark:bg-[#3E4042] my-1 mx-2"></div>
           <button
-            className="flex gap-2 items-center p-2 hover:bg-gray-200 rounded-lg transition-all duration-100 ease-linear"
+            className="flex gap-2 items-center p-2 hover--overlay overflow-hidden relative rounded-lg transition-all duration-100 ease-linear"
             onClick={() => {
               setShowEditCoverPhotoMenu(false);
             }}
           >
-            <i className="trash_icon"></i>
-            <span className="font-semibold">Remove</span>
+            <i className="trash_icon dark:invert"></i>
+            <span className="font-semibold dark:text-[#b0b3b8]">Remove</span>
           </button>
         </div>
       )}

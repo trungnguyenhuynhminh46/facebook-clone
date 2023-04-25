@@ -15,11 +15,13 @@ type ContactItemProps = {
 
 const ContactItem: React.FC<ContactItemProps> = ({ user }) => {
   return (
-    <button className="flex gap-3 items-center p-2 rounded-lg hover:bg-gray-200">
+    <button className="flex gap-3 items-center p-2 rounded-lg relative overflow-hidden hover--overlay">
       <div className="w-9 h-9 rounded-full border border-gray-100 overflow-hidden">
         <img src={user.picture} alt="" className="w-full h-full object-cover" />
       </div>
-      <p className="text-[#050505] font-medium text-[15px]">{user.username}</p>
+      <p className="text-[#050505] font-medium text-[15px] dark:text-[#E4E6EB]">
+        {user.username}
+      </p>
     </button>
   );
 };
@@ -39,12 +41,12 @@ const RightSidebar: React.FC<Props> = ({ currentUser }) => {
     >
       <div className="flex flex-col py-3 px-2">
         <div className="flex justify-between items-center">
-          <p className="text-[var(--color-secondary)] font-semibold text-[17px] px-4 py-3">
+          <p className="text-[var(--color-secondary)] dark:text-[#E4E6EB] font-semibold text-[17px] px-4 py-3">
             Contact
           </p>
           <div className="flex gap-1">
             <ToolTip title="New calls" placement="bottom-end" offset={[0, -4]}>
-              <button className="w-8 h-8 rounded-full cursor-pointer transition-all duration-100 ease-linear hover:bg-gray-300 flex justify-center items-center">
+              <button className="w-8 h-8 rounded-full cursor-pointer transition-all duration-100 ease-linear relative overflow-hidden hover--overlay flex justify-center items-center">
                 <NewRoom />
               </button>
             </ToolTip>
@@ -53,12 +55,12 @@ const RightSidebar: React.FC<Props> = ({ currentUser }) => {
               placement="bottom-end"
               offset={[0, -4]}
             >
-              <button className="w-8 h-8 rounded-full cursor-pointer transition-all duration-100 ease-linear hover:bg-gray-300 flex justify-center items-center">
+              <button className="w-8 h-8 rounded-full cursor-pointer transition-all duration-100 ease-linear relative overflow-hidden hover--overlay flex justify-center items-center">
                 <Search />
               </button>
             </ToolTip>
             <ToolTip title="Options" placement="bottom-end" offset={[0, -4]}>
-              <button className="w-8 h-8 rounded-full cursor-pointer transition-all duration-100 ease-linear hover:bg-gray-300 flex justify-center items-center">
+              <button className="w-8 h-8 rounded-full cursor-pointer transition-all duration-100 ease-linear relative overflow-hidden hover--overlay flex justify-center items-center">
                 <Dots />
               </button>
             </ToolTip>

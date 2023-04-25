@@ -1,11 +1,11 @@
 .menu-item {
-  @apply basis-full flex items-center justify-center gap-1 p-2 border-y-[4px] border-solid border-white hover:bg-gray-200 rounded-lg;
+  @apply basis-full flex items-center justify-center gap-2 p-2 border-y-[4px] border-solid border-white hover:bg-gray-200 rounded-lg;
 }
 .menu-item.active i {
   filter: invert(39%) sepia(57%) saturate(200%) saturate(200%) saturate(200%)
     saturate(200%) saturate(200%) saturate(147.75%) hue-rotate(202deg)
-    brightness(97%) contrast(96%);
+    brightness(97%) contrast(96%) !important;
 }
 .menu-item.active {
-  @apply border-t-transparent border-b-blue-500 rounded-b-none hover:bg-transparent text-blue-500;
+  @apply border-t-transparent border-b-blue-500 rounded-b-none hover:bg-transparent !text-blue-500;
 }

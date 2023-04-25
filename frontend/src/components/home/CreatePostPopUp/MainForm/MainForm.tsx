@@ -162,7 +162,7 @@ const MainForm: React.FC<Props> = ({
           id="emoji-picker"
         ></div>
         {err && (
-          <div className="absolute inset-0 bg-white opacity-90 z-40 flex items-center justify-center">
+          <div className="absolute inset-0 bg-white dark:bg-[#242526] opacity-90 z-40 flex items-center justify-center">
             <div className="flex gap-4 justify-center items-center mx-14">
               <span className="text-red-500 text-base">{err}</span>
               <button
@@ -177,20 +177,22 @@ const MainForm: React.FC<Props> = ({
           </div>
         )}
         <div
-          className="w-full bg-white shadow2 rounded-lg overflow-y-auto custom-scrollbar"
+          className="w-full bg-white dark:bg-[#242526] shadow2 rounded-lg overflow-y-auto custom-scrollbar"
           style={{
             maxHeight: "calc(100vh - 16px)",
           }}
         >
-          <div className="relative flex justify-center py-4 border-b border-solid border-gray-200">
-            <span className="text-xl font-semibold">Create Post</span>
+          <div className="relative flex justify-center py-4 border-b border-solid border-gray-200 dark:border-[#ffffff23]">
+            <span className="text-xl font-semibold dark:text-[#E4E6EB]">
+              Create Post
+            </span>
             <button
-              className="absolute right-4 top-1/2 -translate-y-1/2 w-9 h-9 bg-gray-200 hover:bg-gray-300 text-gray-500 flex justify-center items-center rounded-full"
+              className="absolute right-4 top-1/2 -translate-y-1/2 w-9 h-9 bg-gray-200 dark:bg-[#3A3B3C] hover--overlay overflow-hidden text-gray-500 flex justify-center items-center rounded-full"
               onClick={() => {
                 setIsShown(false);
               }}
             >
-              <i className="exit_icon scale-75"></i>
+              <i className="exit_icon scale-90 dark:invert"></i>
             </button>
           </div>
           <div className="flex flex-col items-stretch p-4">
@@ -203,25 +205,25 @@ const MainForm: React.FC<Props> = ({
                 />
               </button>
               <div className="flex flex-col flex-1">
-                <p className="text-[15px] font-semibold">
+                <p className="text-[15px] font-semibold dark:text-[#E4E6EB]">
                   {currentUser.username}
                 </p>
                 <div className="flex flex-start">
-                  <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-gray-200 cursor-pointer">
+                  <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-gray-200 dark:bg-[#3A3B3C] cursor-pointer">
                     {isSharedTo === "public" && (
                       <>
                         <img
                           src="/icons/public.png"
                           alt=""
-                          className="w-3 h-3 shrink-0"
+                          className="w-3 h-3 shrink-0 dark:invert"
                         />
-                        <span className="text-[12px] font-semibold">
+                        <span className="text-[12px] font-semibold dark:text-[#E4E6EB]">
                           Public
                         </span>
                       </>
                     )}
 
-                    <i className="arrowDown_icon shrink-0 mb-1"></i>
+                    <i className="arrowDown_icon shrink-0 mb-1 dark:invert"></i>
                   </div>
                 </div>
               </div>
@@ -250,7 +252,7 @@ const MainForm: React.FC<Props> = ({
               checkedOutAt={checkedOutAt}
             />
             <button
-              className="cursor-pointer w-full py-2 text-sm font-semibold flex justify-center items-center mt-4 rounded-lg text-white bg-[var(--blue-color)] disabled:text-gray-300 disabled:bg-gray-200 disabled:cursor-default"
+              className="cursor-pointer w-full py-2 text-sm font-semibold flex justify-center items-center mt-4 rounded-lg text-white bg-[var(--blue-color)] disabled:text-gray-300 disabled:bg-gray-200 dark:disabled:bg-[#4F5051] dark:disabled:text-gray-500 disabled:cursor-default"
               disabled={!(inputText.length > 0)}
               onClick={handleSubmitPost}
             >

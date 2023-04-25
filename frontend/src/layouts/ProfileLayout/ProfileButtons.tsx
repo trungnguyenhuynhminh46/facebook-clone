@@ -214,9 +214,11 @@ const ProfileButtons: React.FC<Props> = ({
           <button className="flex items-center justify-center gap-2 flex-grow h-9 bg-blue-600 text-white font-semibold rounded-md active:scale-95 active:bg-blue-700">
             <span>+</span> <span>Add to story</span>
           </button>
-          <button className="flex items-center justify-center gap-2 flex-grow h-9 rounded-md bg-gray-300 active:scale-95 active:bg-gray-300 text-black">
-            <i className="edit_icon"></i>
-            <span className="font-medium">Edit profile</span>
+          <button className="flex items-center justify-center gap-2 flex-grow h-9 rounded-md bg-gray-300 dark:bg-[#4E4F50] active:scale-95 active:bg-gray-300 text-black">
+            <i className="edit_icon dark:invert"></i>
+            <span className="font-medium dark:text-[#b0b3b8]">
+              Edit profile
+            </span>
           </button>
         </>
       )}

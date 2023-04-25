@@ -1,6 +1,11 @@
-function Menu() {
+import React from "react";
+interface Props {
+  className?: string;
+}
+
+const Menu: React.FC<Props> = ({ className = "fill-current" }) => {
   return (
-    <svg width="20" height="20" viewBox="0 0 44 44" fill="currentColor">
+    <svg width="20" height="20" viewBox="0 0 44 44" className={className}>
       <circle cx="7" cy="7" r="6"></circle>
       <circle cx="22" cy="7" r="6"></circle>
       <circle cx="37" cy="7" r="6"></circle>
@@ -12,6 +17,6 @@ function Menu() {
       <circle cx="37" cy="37" r="6"></circle>
     </svg>
   );
-}
+};
 
 export default Menu;

@@ -30,16 +30,7 @@
   background: rgb(96, 95, 95);
   opacity: 0.2;
 }
-.header-nav-item {
-  @apply relative h-[48px] flex justify-center items-center flex-1 rounded-xl;
-}
-.header-nav-item:hover {
-  @apply bg-[var(--bg-secondary)];
-}
-.header-nav-item.active:hover {
-  @apply bg-transparent;
-}
-.header-nav-item.active:after {
+.active:after {
   content: "";
   position: absolute;
   left: 0;

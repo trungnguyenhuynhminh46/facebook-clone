@@ -22,7 +22,7 @@ const AccountMenu: React.FC<Props> = () => {
   const [menuHeight, setMenuHeight] = useState(0);
   return (
     <div
-      className="fixed top-[52px] right-4 rounded-lg bg-white w-[360px] pt-3 px-2 shadow3 overflow-hidden transition-all duration-200 ease-linear overflow-y-auto custom-scrollbar"
+      className="fixed top-[52px] right-4 rounded-lg bg-white w-[360px] pt-3 px-2 shadow3 overflow-hidden transition-all duration-200 ease-linear overflow-y-auto custom-scrollbar dark:bg-[#232324]"
       style={
         menuHeight > 0
           ? {
@@ -30,7 +30,7 @@ const AccountMenu: React.FC<Props> = () => {
               maxHeight: "calc(100vh - 70px)",
             }
           : {
-              height: 408,
+              height: 444,
               maxHeight: "calc(100vh - 70px)",
             }
       }
@@ -40,7 +40,7 @@ const AccountMenu: React.FC<Props> = () => {
         menuRef={menu0}
         onEnter={() => {
           menu0.current?.offsetHeight &&
-            setMenuHeight(menu0.current?.offsetHeight + 12);
+            setMenuHeight(menu0.current?.offsetHeight + 22);
         }}
         currentUser={currentUser}
         setMenu={setMenu}

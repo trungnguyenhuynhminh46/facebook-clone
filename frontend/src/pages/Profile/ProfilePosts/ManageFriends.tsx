@@ -16,12 +16,12 @@ const ManageFriends: React.FC<Props> = (props) => {
   const thereIsNoFriends = !userInfo || userInfo?.friends?.length === 0;
 
   return (
-    <div className="rounded-lg bg-white w-full p-4 flex flex-col items-stretch gap-5">
+    <div className="rounded-lg bg-white dark:bg-[#242526] w-full p-4 flex flex-col items-stretch gap-5">
       <div className="flex justify-between items-center -mt-2 -mr-2">
         {/* <Link to={`/profile/${email}/photos`}>Photos</Link> */}
         <Link
           to="#"
-          className="text-2xl font-bold hover:underline transition-all duration-100"
+          className="text-2xl font-bold hover:underline transition-all duration-100 dark:text-[#E4E6EB]"
         >
           Friends
         </Link>
@@ -33,7 +33,7 @@ const ManageFriends: React.FC<Props> = (props) => {
         </Link>
       </div>
       {!thereIsNoFriends && (
-        <span className="-mt-6 -mb-2 text-gray-500">
+        <span className="-mt-6 -mb-2 text-gray-500 dark:text-[#b0b3b8]">
           {userInfo?.friends?.length} friends
         </span>
       )}
@@ -82,7 +82,7 @@ const ManageFriends: React.FC<Props> = (props) => {
                     </Link>
                     <Link
                       to={`/profile/${friend.email}`}
-                      className="text-sm font-bold hover:underline text-left"
+                      className="text-sm font-bold hover:underline text-left dark:text-[#E4E6EB]"
                     >
                       {friend.username}
                     </Link>

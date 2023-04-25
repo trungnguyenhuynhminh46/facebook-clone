@@ -16,12 +16,12 @@ const ManageImagesMenu: React.FC<Props> = ({ folder }) => {
   const isSpinning = isLoading || isFetching;
   const thereIsNoImage = !data || data?.imagesUrl?.length === 0;
   return (
-    <div className="rounded-lg bg-white w-full p-4 flex flex-col items-stretch gap-5">
+    <div className="rounded-lg bg-white dark:bg-[#242526] w-full p-4 flex flex-col items-stretch gap-5">
       <div className="flex justify-between items-center -mt-2 -mr-2">
         {/* <Link to={`/profile/${email}/photos`}>Photos</Link> */}
         <Link
           to={`#`}
-          className="text-2xl font-bold hover:underline transition-all duration-100"
+          className="text-2xl font-bold hover:underline transition-all duration-100 dark:text-[#E4E6EB]"
         >
           Photos
         </Link>
@@ -54,7 +54,7 @@ const ManageImagesMenu: React.FC<Props> = ({ folder }) => {
             return (
               <div
                 key={imageUrl}
-                className="w-full aspect-square relative group cursor-pointer"
+                className="w-full aspect-square relative group cursor-pointer rounded-md dark:bg-white"
               >
                 <div className="hidden absolute inset-0 bg-gray-800 opacity-10 group-hover:block"></div>
                 <img

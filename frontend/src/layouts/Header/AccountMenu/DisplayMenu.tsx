@@ -22,14 +22,14 @@ const DisplayMenu: React.FC<Props> = ({ menu, menuRef, onEnter, setMenu }) => {
       <div className="w-full" ref={menuRef}>
         <div className="flex items-center p-2 pt-1">
           <div
-            className="cursor-pointer w-9 h-9 rounded-full hover:bg-gray-100 flex justify-center items-center"
+            className="cursor-pointer w-9 h-9 rounded-full relative hover--overlay overflow-hidden flex justify-center items-center"
             onClick={() => {
               setMenu(0);
             }}
           >
             <Return />
           </div>
-          <h2 className="text-2xl font-bold leading-7 pl-[10px]">
+          <h2 className="text-2xl font-bold leading-7 pl-[10px] dark:text-[#E7E9ED]">
             Display & accessibility
           </h2>
         </div>
@@ -38,20 +38,20 @@ const DisplayMenu: React.FC<Props> = ({ menu, menuRef, onEnter, setMenu }) => {
         <div className="w-full mb-2">
           <div className="flex px-2">
             <div>
-              <div className="w-9 h-9 bg-gray-200 rounded-full flex justify-center items-center">
-                <i className="dark_filled_icon"></i>
+              <div className="w-9 h-9 bg-gray-200 dark:bg-[#3A3B3C] rounded-full flex justify-center items-center">
+                <i className="dark_filled_icon dark:invert"></i>
               </div>
             </div>
             <div className="flex flex-col">
-              <h4 className="font-semibold text-[17px] text-[var(--color-primary)] ml-3">
+              <h4 className="font-semibold text-[17px] text-[var(--color-primary)] dark:text-[#E7E9ED] ml-3">
                 Dark Mode
               </h4>
-              <p className="text-[15px] text-[var(--color-secondary)] ml-3 mb-1">
+              <p className="text-[15px] text-[var(--color-secondary)] dark:text-[#B0B3B8] ml-3 mb-1">
                 Adjust the appearance of Facebook to reduce glare and give your
                 eyes a break.
               </p>
-              <div className="flex items-center py-3 px-2 rounded-lg cursor-pointer transition-all duration-100 ease-linear hover:bg-gray-100">
-                <span className="text-[15px] text-[var(--color-primary)] font-semibold">
+              <div className="flex items-center py-3 px-2 rounded-lg cursor-pointer transition-all duration-100 ease-linear relative hover--overlay overflow-hidden">
+                <span className="text-[15px] text-[var(--color-primary)] dark:text-[#E7E9ED] font-semibold">
                   Off
                 </span>
                 <input
@@ -61,8 +61,8 @@ const DisplayMenu: React.FC<Props> = ({ menu, menuRef, onEnter, setMenu }) => {
                   className="ml-auto w-5 h-5"
                 />
               </div>
-              <div className="flex items-center py-3 px-2 rounded-lg cursor-pointer transition-all duration-100 ease-linear hover:bg-gray-100">
-                <span className="text-[15px] text-[var(--color-primary)] font-semibold">
+              <div className="flex items-center py-3 px-2 rounded-lg cursor-pointer transition-all duration-100 ease-linear relative hover--overlay overflow-hidden">
+                <span className="text-[15px] text-[var(--color-primary)] dark:text-[#E7E9ED] font-semibold">
                   On
                 </span>
                 <input
@@ -72,12 +72,12 @@ const DisplayMenu: React.FC<Props> = ({ menu, menuRef, onEnter, setMenu }) => {
                   className="ml-auto w-5 h-5"
                 />
               </div>
-              <div className="flex items-center py-3 px-2 rounded-lg cursor-pointer transition-all duration-100 ease-linear hover:bg-gray-100">
+              <div className="flex items-center py-3 px-2 rounded-lg cursor-pointer transition-all duration-100 ease-linear relative hover--overlay overflow-hidden">
                 <div className="flex flex-col">
-                  <span className="text-[15px] text-[var(--color-primary)] font-semibold">
+                  <span className="text-[15px] text-[var(--color-primary)] dark:text-[#E7E9ED] font-semibold">
                     Automatic
                   </span>
-                  <p className="text-[12px] text-[var(--color-secondary)]">
+                  <p className="text-[12px] text-[var(--color-secondary)] dark:text-[#B0B3B8]">
                     We’ll automatically adjust the display based on your
                     device’s system settings.
                   </p>
@@ -96,20 +96,20 @@ const DisplayMenu: React.FC<Props> = ({ menu, menuRef, onEnter, setMenu }) => {
         <div className="w-full mb-2">
           <div className="flex px-2">
             <div>
-              <div className="w-9 h-9 bg-gray-200 rounded-full flex justify-center items-center">
-                <i className="compact_icon"></i>
+              <div className="w-9 h-9 bg-gray-200 dark:bg-[#3A3B3C] rounded-full flex justify-center items-center">
+                <i className="compact_icon dark:invert"></i>
               </div>
             </div>
             <div className="flex flex-col">
-              <h4 className="font-semibold text-[17px] text-[var(--color-primary)] ml-3">
+              <h4 className="font-semibold text-[17px] text-[var(--color-primary)] dark:text-[#E7E9ED] ml-3">
                 Compact Mode
               </h4>
-              <p className="text-[15px] text-[var(--color-secondary)] ml-3 mb-1">
+              <p className="text-[15px] text-[var(--color-secondary)] dark:text-[#B0B3B8] ml-3 mb-1">
                 Make your font size smaller so more content can fit on the
                 screen.
               </p>
-              <div className="flex items-center py-3 px-2 rounded-lg cursor-pointer transition-all duration-100 ease-linear hover:bg-gray-100">
-                <span className="text-[15px] text-[var(--color-primary)] font-semibold">
+              <div className="flex items-center py-3 px-2 rounded-lg cursor-pointer transition-all duration-100 ease-linear relative hover--overlay overflow-hidden">
+                <span className="text-[15px] text-[var(--color-primary)] dark:text-[#E7E9ED] font-semibold">
                   Off
                 </span>
                 <input
@@ -119,8 +119,8 @@ const DisplayMenu: React.FC<Props> = ({ menu, menuRef, onEnter, setMenu }) => {
                   className="ml-auto w-5 h-5"
                 />
               </div>
-              <div className="flex items-center py-3 px-2 rounded-lg cursor-pointer transition-all duration-100 ease-linear hover:bg-gray-100">
-                <span className="text-[15px] text-[var(--color-primary)] font-semibold">
+              <div className="flex items-center py-3 px-2 rounded-lg cursor-pointer transition-all duration-100 ease-linear relative hover--overlay overflow-hidden">
+                <span className="text-[15px] text-[var(--color-primary)] dark:text-[#E7E9ED] font-semibold">
                   On
                 </span>
                 <input
@@ -137,20 +137,20 @@ const DisplayMenu: React.FC<Props> = ({ menu, menuRef, onEnter, setMenu }) => {
         <div className="w-full mb-2">
           <div className="flex px-2">
             <div>
-              <div className="w-9 h-9 bg-gray-200 rounded-full flex justify-center items-center">
-                <i className="preview_icon"></i>
+              <div className="w-9 h-9 bg-gray-200 dark:bg-[#3A3B3C] rounded-full flex justify-center items-center">
+                <i className="preview_icon dark:invert"></i>
               </div>
             </div>
             <div className="flex flex-col">
-              <h4 className="font-semibold text-[17px] text-[var(--color-primary)] ml-3">
+              <h4 className="font-semibold text-[17px] text-[var(--color-primary)] dark:text-[#E7E9ED] ml-3">
                 Show previews of links
               </h4>
-              <p className="text-[15px] text-[var(--color-secondary)] ml-3 mb-1">
+              <p className="text-[15px] text-[var(--color-secondary)] dark:text-[#B0B3B8] ml-3 mb-1">
                 Without opening a page to a person, event, or group, show info
                 and actions in a preview window.
               </p>
-              <div className="flex items-center py-3 px-2 rounded-lg cursor-pointer transition-all duration-100 ease-linear hover:bg-gray-100">
-                <span className="text-[15px] text-[var(--color-primary)] font-semibold">
+              <div className="flex items-center py-3 px-2 rounded-lg cursor-pointer transition-all duration-100 ease-linear relative hover--overlay overflow-hidden">
+                <span className="text-[15px] text-[var(--color-primary)] dark:text-[#E7E9ED] font-semibold">
                   Show preview when hovering pointer over link
                 </span>
                 <input
@@ -160,12 +160,12 @@ const DisplayMenu: React.FC<Props> = ({ menu, menuRef, onEnter, setMenu }) => {
                   className="ml-auto w-5 h-5 flex-shrink-0"
                 />
               </div>
-              <div className="flex items-center py-3 px-2 rounded-lg cursor-pointer transition-all duration-100 ease-linear hover:bg-gray-100">
+              <div className="flex items-center py-3 px-2 rounded-lg cursor-pointer transition-all duration-100 ease-linear relative hover--overlay overflow-hidden">
                 <div className="flex flex-col">
-                  <span className="text-[15px] text-[var(--color-primary)] font-semibold">
+                  <span className="text-[15px] text-[var(--color-primary)] dark:text-[#E7E9ED] font-semibold">
                     Show preview after clicking
                   </span>
-                  <p className="text-[12px] text-[var(--color-secondary)]">
+                  <p className="text-[12px] text-[var(--color-secondary)] dark:text-[#B0B3B8]">
                     Best when using a screen reader or magnifier. Links change
                     to buttons that open preview windows.
                   </p>
@@ -177,8 +177,8 @@ const DisplayMenu: React.FC<Props> = ({ menu, menuRef, onEnter, setMenu }) => {
                   className="ml-auto w-5 h-5 flex-shrink-0"
                 />
               </div>
-              <div className="flex items-center py-3 px-2 rounded-lg cursor-pointer transition-all duration-100 ease-linear hover:bg-gray-100">
-                <span className="text-[15px] text-[var(--color-primary)] font-semibold">
+              <div className="flex items-center py-3 px-2 rounded-lg cursor-pointer transition-all duration-100 ease-linear relative hover--overlay overflow-hidden">
+                <span className="text-[15px] text-[var(--color-primary)] dark:text-[#E7E9ED] font-semibold">
                   Dont't show preview
                 </span>
                 <input
