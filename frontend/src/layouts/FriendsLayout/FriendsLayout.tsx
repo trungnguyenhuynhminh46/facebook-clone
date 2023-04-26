@@ -129,22 +129,25 @@ const FriendsLayout = (props: Props) => {
   return (
     <div className="relative min-h-screen mt-14 flex">
       {/* Left */}
-      <div className="basis-[360px] bg-white shadow2 sticky top-14">
+      <div className="basis-[360px] bg-white dark:bg-[#242526] shadow2 sticky top-14">
         <div className="p-3 flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Friends</h1>
-          <div className="circle active:scale-95 cursor-pointer">
-            <i className="settings_filled_icon"></i>
+          <h1 className="text-2xl font-bold dark:text-[#E4E6EB]">Friends</h1>
+          <div className="circle active:scale-95 cursor-pointer dark:bg-[#4E4F50]">
+            <i className="settings_filled_icon dark:invert"></i>
           </div>
         </div>
         <div className="px-2">
           {leftSidebarMenuItems.map((item) => {
             if (!item.to) {
               return (
-                <div className="menu-item" key={item.id}>
+                <div
+                  className="menu-item hover--overlay overflow-hidden"
+                  key={item.id}
+                >
                   <div className="circle">
                     <i className={item.icon}></i>
                   </div>
-                  <h2 className="font-bold">{item.text}</h2>
+                  <h2 className="font-bold dark:text-[#E4E6EB]">{item.text}</h2>
                   {item.right_arrow && (
                     <div className="ml-auto absolute right-[10px] top-1/2 -translate-y-1/2">
                       <i className="right_icon"></i>
@@ -158,14 +161,17 @@ const FriendsLayout = (props: Props) => {
                 to={item?.to}
                 end
                 className={({ isActive }) => {
-                  return classNames("menu-item", { active: isActive });
+                  return classNames(
+                    "menu-item hover--overlay overflow-hidden",
+                    { active: isActive }
+                  );
                 }}
                 key={item.id}
               >
                 <div className="circle">
                   <i className={item.icon}></i>
                 </div>
-                <h2 className="font-bold">{item.text}</h2>
+                <h2 className="font-bold dark:text-[#E4E6EB]">{item.text}</h2>
                 {item.right_arrow && (
                   <div className="ml-auto absolute right-[10px] top-1/2 -translate-y-1/2">
                     <i className="right_icon"></i>

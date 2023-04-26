@@ -41,6 +41,12 @@ const userSlice = createSlice({
         state.user.search = newSearch;
       }
     },
+    updateDisplayMode: (state, action) => {
+      const { newDisplayMode } = action.payload;
+      if (state.user?.displayMode) {
+        state.user.displayMode = newDisplayMode;
+      }
+    },
   },
 });
 
@@ -51,6 +57,7 @@ export const {
   updateCoverImage,
   updateSavedPosts,
   updateSearch,
+  updateDisplayMode,
 } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -10,10 +10,10 @@ const NotFound = (props: Props) => {
     <div className="flex justify-center items-center h-screen">
       <div className="mt-14 flex flex-col items-center justify-center gap-2 max-w-[460px]">
         <NotfoundIcon className="w-[112px] h-auto" />
-        <h2 className="text-xl font-bold text-gray-600 mt-2">
+        <h2 className="text-xl font-bold text-gray-600 dark:text-[#E4E6EB] mt-2">
           This content isn't available right now
         </h2>
-        <p className="text-lg text-center text-gray-500 leading-5">
+        <p className="text-lg text-center text-gray-500 dark:text-[#b0b3b8] leading-5">
           When this happens, it's usually because the owner only shared it with
           a small group of people, changed who can see it or it's been deleted.
         </p>

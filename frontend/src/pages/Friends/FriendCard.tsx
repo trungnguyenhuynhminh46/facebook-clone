@@ -123,7 +123,7 @@ const FriendCard: React.FC<Props> = ({
     }
   };
   return (
-    <div className="border border-solid border-gray-300 rounded-lg bg-white overflow-hidden">
+    <div className="border border-solid border-gray-300 dark:border-[#3E4042] rounded-lg bg-white dark:bg-[#242526] overflow-hidden">
       <Link to={`/profile/${human.email}`}>
         <img
           src={human.picture}
@@ -135,7 +135,7 @@ const FriendCard: React.FC<Props> = ({
         {/* Name */}
         <Link
           to={`/profile/${human.email}`}
-          className="block font-semibold hover:underline"
+          className="block font-semibold hover:underline dark:text-[#E4E6EB]"
         >
           {human.username}
         </Link>
@@ -153,7 +153,7 @@ const FriendCard: React.FC<Props> = ({
                 })}
               </div>
               {/*  */}
-              <span className="font-light hover:underline text-gray-600 cursor-pointer">
+              <span className="font-light hover:underline text-gray-600 dark:text-[#b0b3b8] cursor-pointer">
                 {friends.length} mutual friends
               </span>
             </>

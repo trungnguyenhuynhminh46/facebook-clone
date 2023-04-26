@@ -23,7 +23,7 @@ const FriendsHome = (props: Props) => {
         >
           See all
         </Link>
-        <h1 className="mb-4 text-2xl font-bold">Friends</h1>
+        <h1 className="mb-4 text-2xl font-bold dark:text-[#E4E6EB]">Friends</h1>
         {friends && friends.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-2 mb-5">
             {friends.slice(0, 10).map((friend) => {
@@ -51,7 +51,9 @@ const FriendsHome = (props: Props) => {
         >
           See all
         </Link>
-        <h1 className="mb-4 text-2xl font-bold">Received requests</h1>
+        <h1 className="mb-4 text-2xl font-bold dark:text-[#E4E6EB]">
+          Received requests
+        </h1>
         {receivedRequests && receivedRequests.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-2 mb-5">
             {receivedRequests.slice(0, 10).map((receivedRequest) => {
@@ -81,7 +83,9 @@ const FriendsHome = (props: Props) => {
         >
           See all
         </Link>
-        <h1 className="mb-4 text-2xl font-bold">Sent requests</h1>
+        <h1 className="mb-4 text-2xl font-bold dark:text-[#E4E6EB]">
+          Sent requests
+        </h1>
         {sentRequests && sentRequests.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-2 mb-5">
             {sentRequests.slice(0, 10).map((sentRequest) => {

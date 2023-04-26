@@ -24,6 +24,7 @@ const {
   saveSearchedUserToHistory,
   deleteSearchedUserFromHistory,
   getSearchHistory,
+  changeDisplayMode,
 } = require("../controllers/user");
 // Middlewares
 const authorizationMiddleware = require("../middleware/auth");
@@ -76,5 +77,6 @@ router.delete(
   deleteSearchedUserFromHistory
 );
 router.get("/getSearchHistory", authorizationMiddleware, getSearchHistory);
+router.post("/changeDisplayMode", authorizationMiddleware, changeDisplayMode);
 
 module.exports = router;

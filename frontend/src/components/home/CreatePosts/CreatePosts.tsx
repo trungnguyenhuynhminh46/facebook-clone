@@ -27,7 +27,7 @@ const CreatePosts: React.FC<Props> = ({ currentUser, className = "" }) => {
           />
         </button>
         <button
-          className={`${CreatePostsStyle["open_create_post"]} bg-[#3A3B3C] dark:text-[#B0B3B8]`}
+          className={`${CreatePostsStyle["open_create_post"]} dark:bg-[#3A3B3C] dark:text-[#B0B3B8]`}
           onClick={() => {
             setIsShown(true);
           }}

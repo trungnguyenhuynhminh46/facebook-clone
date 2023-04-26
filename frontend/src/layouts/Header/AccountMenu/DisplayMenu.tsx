@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { Return } from "@/svg";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCurrentUser } from "@/store/selectors/user";
+import { useChangeDisplayModeMutation } from "@/store/api/usersApi";
+import Cookies from "js-cookie";
+import { updateDisplayMode } from "@/store/slices/user";
 
 type Props = {
   menu: number;
@@ -10,6 +15,51 @@ type Props = {
 };
 
 const DisplayMenu: React.FC<Props> = ({ menu, menuRef, onEnter, setMenu }) => {
+  const dispatch = useDispatch();
+  const [changeDisplayMode, { isLoading: isChangingDisplayMode }] =
+    useChangeDisplayModeMutation();
+  const currentUser = useSelector(selectCurrentUser);
+  const [theme, setTheme] = useState<string>(currentUser.displayMode);
+  useEffect(() => {
+    // console.log("OK");
+    (async () => {
+      if (isChangingDisplayMode) {
+        return;
+      }
+      try {
+        // Update database
+        const { newDisplayMode } = await changeDisplayMode({
+          displayMode: theme,
+        }).unwrap();
+        // Update store, cookie
+        Cookies.set(
+          "user",
+          JSON.stringify({
+            ...currentUser,
+            displayMode: newDisplayMode,
+          })
+        );
+        dispatch(updateDisplayMode({ newDisplayMode }));
+        // Change theme
+        if (newDisplayMode === "light") {
+          document.documentElement.classList.remove("dark");
+        }
+        if (newDisplayMode === "dark") {
+          document.documentElement.classList.add("dark");
+        }
+        if (newDisplayMode === "auto") {
+          if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            document.documentElement.classList.add("dark");
+          } else {
+            document.documentElement.classList.remove("dark");
+          }
+        }
+      } catch (err: any) {
+        console.log(err);
+      }
+    })();
+  }, [theme]);
+
   return (
     <CSSTransition
       in={menu === 3}
@@ -58,7 +108,13 @@ const DisplayMenu: React.FC<Props> = ({ menu, menuRef, onEnter, setMenu }) => {
                   type="radio"
                   name="dark"
                   id="dark-off"
-                  className="ml-auto w-5 h-5"
+                  checked={theme === "light"}
+                  onChange={() => {
+                    if (!isChangingDisplayMode) {
+                      setTheme("light");
+                    }
+                  }}
+                  className="z-[1] ml-auto w-5 h-5"
                 />
               </div>
               <div className="flex items-center py-3 px-2 rounded-lg cursor-pointer transition-all duration-100 ease-linear relative hover--overlay overflow-hidden">
@@ -69,7 +125,13 @@ const DisplayMenu: React.FC<Props> = ({ menu, menuRef, onEnter, setMenu }) => {
                   type="radio"
                   name="dark"
                   id="dark-on"
-                  className="ml-auto w-5 h-5"
+                  checked={theme === "dark"}
+                  onChange={() => {
+                    if (!isChangingDisplayMode) {
+                      setTheme("dark");
+                    }
+                  }}
+                  className="z-[1] ml-auto w-5 h-5"
                 />
               </div>
               <div className="flex items-center py-3 px-2 rounded-lg cursor-pointer transition-all duration-100 ease-linear relative hover--overlay overflow-hidden">
@@ -86,7 +148,13 @@ const DisplayMenu: React.FC<Props> = ({ menu, menuRef, onEnter, setMenu }) => {
                   type="radio"
                   name="dark"
                   id="dark-auto"
-                  className="ml-auto w-5 h-5 flex-shrink-0"
+                  checked={theme === "auto"}
+                  onChange={() => {
+                    if (!isChangingDisplayMode) {
+                      setTheme("auto");
+                    }
+                  }}
+                  className="z-[1] ml-auto w-5 h-5 flex-shrink-0"
                 />
               </div>
             </div>
@@ -116,7 +184,7 @@ const DisplayMenu: React.FC<Props> = ({ menu, menuRef, onEnter, setMenu }) => {
                   type="radio"
                   name="compact"
                   id="compact-off"
-                  className="ml-auto w-5 h-5"
+                  className="z-[1] ml-auto w-5 h-5"
                 />
               </div>
               <div className="flex items-center py-3 px-2 rounded-lg cursor-pointer transition-all duration-100 ease-linear relative hover--overlay overflow-hidden">
@@ -127,7 +195,7 @@ const DisplayMenu: React.FC<Props> = ({ menu, menuRef, onEnter, setMenu }) => {
                   type="radio"
                   name="compact"
                   id="compact-on"
-                  className="ml-auto w-5 h-5"
+                  className="z-[1] ml-auto w-5 h-5"
                 />
               </div>
             </div>
@@ -157,7 +225,7 @@ const DisplayMenu: React.FC<Props> = ({ menu, menuRef, onEnter, setMenu }) => {
                   type="radio"
                   name="preview"
                   id="preview-hover"
-                  className="ml-auto w-5 h-5 flex-shrink-0"
+                  className="z-[1] ml-auto w-5 h-5 flex-shrink-0"
                 />
               </div>
               <div className="flex items-center py-3 px-2 rounded-lg cursor-pointer transition-all duration-100 ease-linear relative hover--overlay overflow-hidden">
@@ -174,7 +242,7 @@ const DisplayMenu: React.FC<Props> = ({ menu, menuRef, onEnter, setMenu }) => {
                   type="radio"
                   name="preview"
                   id="preview-click"
-                  className="ml-auto w-5 h-5 flex-shrink-0"
+                  className="z-[1] ml-auto w-5 h-5 flex-shrink-0"
                 />
               </div>
               <div className="flex items-center py-3 px-2 rounded-lg cursor-pointer transition-all duration-100 ease-linear relative hover--overlay overflow-hidden">
@@ -185,7 +253,7 @@ const DisplayMenu: React.FC<Props> = ({ menu, menuRef, onEnter, setMenu }) => {
                   type="radio"
                   name="preview"
                   id="preview-none"
-                  className="ml-auto w-5 h-5"
+                  className="z-[1] ml-auto w-5 h-5"
                 />
               </div>
             </div>

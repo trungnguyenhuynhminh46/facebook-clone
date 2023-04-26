@@ -171,6 +171,11 @@ const userSchema = mongoose.Schema(
         },
       },
     ],
+    displayMode: {
+      type: String,
+      enum: ["dark", "light", "auto"],
+      default: "light",
+    },
   },
   {
     timestamps: true,

@@ -48,6 +48,7 @@ const register = async (req, res) => {
       verified: user.verified,
       savedPosts: user.savedPosts,
       search: user.search,
+      displayMode: user.displayMode,
     },
   });
 };
@@ -96,6 +97,7 @@ const verify = async (req, res) => {
       verified: user.verified,
       savedPosts: user.savedPosts,
       search: user.search,
+      displayMode: user.displayMode,
     },
   });
 };
@@ -138,6 +140,7 @@ const login = async (req, res) => {
       verified: user.verified,
       savedPosts: user.savedPosts,
       search: user.search,
+      displayMode: user.displayMode,
     },
   });
 };
@@ -653,6 +656,7 @@ const toggleSavePost = async (req, res) => {
   return res.status(StatusCodes.OK).json({
     savedPosts: user.savedPosts,
     search: user.search,
+    displayMode: user.displayMode,
   });
 };
 const searchUser = async (req, res) => {
@@ -727,6 +731,23 @@ const getSearchHistory = async (req, res) => {
   const search = currentUser.search;
   return res.status(StatusCodes.OK).json({ search });
 };
+const changeDisplayMode = async (req, res) => {
+  const { displayMode } = req.body;
+  const userId = req.user.id;
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new customError(`No user with id ${userId} is founded!`);
+  }
+  const valid = ["light", "dark", "auto"];
+  if (!valid.includes(displayMode)) {
+    throw new customError(`Display mode can only be light, dark or auto`);
+  }
+  user.displayMode = displayMode;
+  user.save();
+  return res.status(StatusCodes.OK).json({
+    newDisplayMode: displayMode,
+  });
+};
 
 module.exports = {
   register,
@@ -752,4 +773,5 @@ module.exports = {
   saveSearchedUserToHistory,
   deleteSearchedUserFromHistory,
   getSearchHistory,
+  changeDisplayMode,
 };

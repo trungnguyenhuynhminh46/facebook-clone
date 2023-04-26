@@ -27,7 +27,7 @@ const ManageImagesMenu: React.FC<Props> = ({ folder }) => {
         </Link>
         <Link
           to="#"
-          className="p-2 text-blue-500 hover:bg-gray-100 rounded-md transition-all duration-200"
+          className="p-2 text-blue-500 hover--overlay relative overflow-hidden rounded-md transition-all duration-200"
         >
           See all photos
         </Link>

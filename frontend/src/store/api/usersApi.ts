@@ -326,6 +326,20 @@ export const usersApi = apiSlice.injectEndpoints({
         };
       },
     }),
+    changeDisplayMode: builder.mutation<
+      {
+        newDisplayMode: string;
+      },
+      { displayMode: string }
+    >({
+      query(body) {
+        return {
+          url: `/user/changeDisplayMode`,
+          method: "POST",
+          body,
+        };
+      },
+    }),
   }),
 });
 
@@ -346,4 +360,5 @@ export const {
   useGetSearchHistoryQuery,
   useSaveSearchedUserToHistoryMutation,
   useDeleteSearchedUserFromHistoryMutation,
+  useChangeDisplayModeMutation,
 } = usersApi;

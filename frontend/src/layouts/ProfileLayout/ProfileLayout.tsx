@@ -17,6 +17,7 @@ import CoverImage from "./CoverImage";
 import UserImage from "./UserImage";
 import ProfileButtons from "./ProfileButtons";
 import { Link } from "react-router-dom";
+import Skeleton from "react-loading-skeleton";
 
 type ContextProfileLayout = {
   data: {
@@ -87,6 +88,7 @@ const ProfileLayout = (props: Props) => {
               <div className="relative w-full max-w-[1094px] mx-auto mt-14">
                 {/* Cover image edit */}
                 <CoverImage
+                  userInfoIsLoading={userInfoIsLoading}
                   isOwner={isOwner}
                   userInfo={data.userInfo}
                   currentUser={currentUser}
@@ -94,63 +96,77 @@ const ProfileLayout = (props: Props) => {
                 {/* User info */}
                 <div className="relative px-4 max-w-[1032px] mx-auto">
                   {/* User avatar */}
-                  <UserImage isOwner={isOwner} userInfo={data.userInfo} />
+                  <UserImage
+                    userInfoIsLoading={userInfoIsLoading}
+                    isOwner={isOwner}
+                    userInfo={data.userInfo}
+                  />
                   {/* User info */}
-                  <div className="flex flex-col gap-1 items-center pt-[100px] md:items-start md:ml-[200px] md:pt-6 min-h-[128px]">
-                    <h1 className="text-3xl font-bold dark:text-[#E4E6EB]">
-                      {data.userInfo.username}
-                    </h1>
-                    {data.userInfo.details.otherName && (
-                      <span className="tracking-wide text-xl text-gray-500 font-semibold dark:text-[#b0b3b8]">
-                        ({data.userInfo.details.otherName})
-                      </span>
-                    )}
-                    {friends && friends.length > 0 && (
-                      // _id username picture email
-                      <>
-                        <span className="text-[#65676B] font-medium -mt-1 mb-2 dark:text-[#b0b3b8]">
-                          {friends.length} friends
+                  {userInfoIsLoading && (
+                    <div className="flex flex-col gap-1 items-center pt-[100px] md:items-start md:ml-[200px] md:pt-6 min-h-[128px]">
+                      <Skeleton className="w-[200px] h-6" />
+                      <Skeleton className="w-[160px] h-6" />
+                      <Skeleton className="w-[100px] h-6" />
+                    </div>
+                  )}
+                  {!userInfoIsLoading && (
+                    <div className="flex flex-col gap-1 items-center pt-[100px] md:items-start md:ml-[200px] md:pt-6 min-h-[128px]">
+                      <h1 className="text-3xl font-bold dark:text-[#E4E6EB]">
+                        {data.userInfo.username}
+                      </h1>
+                      {data.userInfo.details.otherName && (
+                        <span className="tracking-wide text-xl text-gray-500 font-semibold dark:text-[#b0b3b8]">
+                          ({data.userInfo.details.otherName})
                         </span>
-                        <div className="flex">
-                          {friends.length <= 6 &&
-                            friends.slice(0, 6).map((friend) => {
-                              return (
-                                <Link
-                                  to={`/profile/${friend.email}`}
-                                  key={friend._id}
-                                  className="relative w-8 h-8 border-[2px] border-solid border-gray-100 dark:border-black rounded-full cursor-pointer -ml-[8px] overflow-hidden"
-                                >
-                                  <img
-                                    src={friend.picture}
-                                    alt=""
-                                    className={`w-full h-full object-cover`}
-                                  />
-                                </Link>
-                              );
-                            })}
-                          {friends.length > 6 && (
-                            <div className="relative w-8 h-8 border-[2px] border-solid border-gray-100 rounded-full cursor-pointer -ml-[8px] overflow-hidden">
-                              <img
-                                src={friends[6].picture}
-                                alt=""
-                                className={`w-full h-full object-cover`}
-                              />
-                              <div className="absolute inset-0 flex justify-center items-center z-[9] bg-gray-800 opacity-80">
-                                <Dots width="16" height="16" />
+                      )}
+                      {friends && friends.length > 0 && (
+                        // _id username picture email
+                        <>
+                          <span className="text-[#65676B] font-medium -mt-1 mb-2 dark:text-[#b0b3b8]">
+                            {friends.length} friends
+                          </span>
+                          <div className="flex">
+                            {friends.length <= 6 &&
+                              friends.slice(0, 6).map((friend) => {
+                                return (
+                                  <Link
+                                    to={`/profile/${friend.email}`}
+                                    key={friend._id}
+                                    className="relative w-8 h-8 border-[2px] border-solid border-gray-100 dark:border-black rounded-full cursor-pointer -ml-[8px] overflow-hidden"
+                                  >
+                                    <img
+                                      src={friend.picture}
+                                      alt=""
+                                      className={`w-full h-full object-cover`}
+                                    />
+                                  </Link>
+                                );
+                              })}
+                            {friends.length > 6 && (
+                              <div className="relative w-8 h-8 border-[2px] border-solid border-gray-100 rounded-full cursor-pointer -ml-[8px] overflow-hidden">
+                                <img
+                                  src={friends[6].picture}
+                                  alt=""
+                                  className={`w-full h-full object-cover`}
+                                />
+                                <div className="absolute inset-0 flex justify-center items-center z-[9] bg-gray-800 opacity-80">
+                                  <Dots width="16" height="16" />
+                                </div>
                               </div>
-                            </div>
-                          )}
-                        </div>
-                      </>
-                    )}
-                    {(!friends || friends.length === 0) && (
-                      <span className="px-3 tracking-wide text-lg text-gray-500 font-semibold">
-                        No friends available
-                      </span>
-                    )}
-                  </div>
+                            )}
+                          </div>
+                        </>
+                      )}
+                      {(!friends || friends.length === 0) && (
+                        <span className="px-3 tracking-wide text-lg text-gray-500 font-semibold">
+                          No friends available
+                        </span>
+                      )}
+                    </div>
+                  )}
                   {/* Buttons */}
                   <ProfileButtons
+                    userInfoIsLoading={userInfoIsLoading}
                     isOwner={isOwner}
                     relationship={relationship}
                     userInfo={data.userInfo}

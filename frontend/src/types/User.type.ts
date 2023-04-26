@@ -23,4 +23,5 @@ export interface User {
     };
     savedAt: Date;
   }[];
+  displayMode: string;
 }

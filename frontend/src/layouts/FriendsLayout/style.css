@@ -1,8 +1,9 @@
 .menu-item {
-  @apply relative cursor-pointer flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100;
+  @apply relative cursor-pointer flex items-center gap-2 p-2 rounded-lg;
 }
-.menu-item.active {
-  @apply bg-gray-100;
+.menu-item.active::after {
+  content: "";
+  @apply absolute inset-0 bg-gray-400 opacity-10;
 }
 .menu-item.active .circle {
   @apply !bg-blue-500;

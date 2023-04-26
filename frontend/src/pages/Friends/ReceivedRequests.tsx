@@ -9,7 +9,9 @@ const ReceivedRequests = (props: Props) => {
     useContextFriendsLayout();
   return (
     <div className="w-full">
-      <h1 className="mb-4 text-2xl font-bold">Received requests</h1>
+      <h1 className="mb-4 text-2xl font-bold dark:text-[#E4E6EB]">
+        Received requests
+      </h1>
       {receivedRequests && receivedRequests.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-2 mb-5">
           {receivedRequests.map((receivedRequest) => {
