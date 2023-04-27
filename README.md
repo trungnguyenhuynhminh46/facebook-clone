@@ -2,6 +2,11 @@
 
 This project is my effort to rebuild one of the most popular social media platforms - Facebook. The project uses the MERN stack (MongoDB, Express.js, React.js, Node.js, and Socket.io). The project is still in the process of completion. 🚀
 
+## Account to test
+
+Email: trungnguyenhuynhminh46@gmail.com
+Password: secret
+
 ## Demo
 
 https://facebook-clone-ed1c2euop-trungnguyenhuynhminh46.vercel.app/
