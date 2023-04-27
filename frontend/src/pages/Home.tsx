@@ -65,7 +65,7 @@ const Home: React.FC<Props> = () => {
         <div className="mx-4">
           <Stories currentUser={user} stories={stories} />
           <CreatePosts currentUser={user} className="mt-4 mb-3" />
-          {(!posts || posts.length === 0) && (
+          {(!posts || posts.length === 0) && !isLoading && !isFetching && (
             <div className="text-center py-4 text-xl font-bold text-gray-400">
               No posts available yet
             </div>

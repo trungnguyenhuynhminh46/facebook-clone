@@ -281,7 +281,7 @@ const PostCreateComment: React.FC<Props> = ({
                   onEmojiSelect={handleEmojiSelect}
                   setShowEmojiPicker={setShowEmojiPicker}
                   containerId={`comment-emoji-${post._id}`}
-                  theme={document.body.className}
+                  theme={document.documentElement.className}
                 />
               )}
             </div>

@@ -24,5 +24,6 @@ dist-ssr
 *.sw?
 .env
 note.txt
+ideas.txt
 frontend_note.txt
 backend_note.txt

@@ -14,7 +14,6 @@ import { selectCurrentUser } from "@/store/selectors/user";
 import Skeleton from "react-loading-skeleton";
 
 type Props = {
-  userInfoIsLoading: boolean;
   isOwner: boolean;
   relationship:
     | {
@@ -47,7 +46,6 @@ type Props = {
 };
 
 const ProfileButtons: React.FC<Props> = ({
-  userInfoIsLoading,
   isOwner,
   relationship,
   userInfo,
@@ -212,17 +210,7 @@ const ProfileButtons: React.FC<Props> = ({
   };
   return (
     <div className="w-full flex gap-2 mt-5 mx-auto md:max-w-[350px] md:absolute md:right-4 md:mt-1 md:-translate-y-full md:flex-col lg:max-w-[350px] lg:flex-row">
-      {userInfoIsLoading && (
-        <>
-          <div className="flex-grow h-9">
-            <Skeleton width="100%" height="100%" />
-          </div>
-          <div className="flex-grow h-9">
-            <Skeleton width="100%" height="100%" />
-          </div>
-        </>
-      )}
-      {isOwner && !userInfoIsLoading && (
+      {isOwner && (
         <>
           <button className="flex items-center justify-center gap-2 flex-grow h-9 bg-blue-600 text-white font-semibold rounded-md active:scale-95 active:bg-blue-700">
             <span>+</span> <span>Add to story</span>
@@ -235,7 +223,7 @@ const ProfileButtons: React.FC<Props> = ({
           </button>
         </>
       )}
-      {!isOwner && !userInfoIsLoading && (
+      {!isOwner && (
         <>
           {/* Your request is sent  */}
           {localRelationship && localRelationship.sentRequest && (

@@ -171,7 +171,7 @@ const EmojiPickerBackground: React.FC<Props> = ({
               onEmojiSelect={handleEmojiSelect}
               setShowEmojiPicker={setShowEmojiPicker}
               containerId="emoji-picker"
-              theme={document.body.className}
+              theme={document.documentElement.className}
             />
           )}
         </div>
@@ -260,7 +260,7 @@ const EmojiPickerBackground: React.FC<Props> = ({
                 onEmojiSelect={handleEmojiSelect}
                 setShowEmojiPicker={setShowEmojiPicker}
                 containerId="emoji-picker"
-                theme={document.body.className}
+                theme={document.documentElement.className}
               />
             )}
           </div>

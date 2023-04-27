@@ -17,7 +17,6 @@ import ReactDom from "react-dom";
 import Skeleton from "react-loading-skeleton";
 
 type Props = {
-  userInfoIsLoading: boolean;
   isOwner: boolean;
   userInfo?: any;
   currentUser: any;
@@ -102,12 +101,7 @@ const SelectUploadedCoverPopUp: React.FC<SelectUploadedCoverProps> = ({
   );
 };
 
-const CoverImage: React.FC<Props> = ({
-  userInfoIsLoading,
-  isOwner,
-  userInfo,
-  currentUser,
-}) => {
+const CoverImage: React.FC<Props> = ({ isOwner, userInfo, currentUser }) => {
   const dispatch = useDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -261,7 +255,7 @@ const CoverImage: React.FC<Props> = ({
         }
         {
           // Without image url
-          !error && !imageUrl && !userInfoIsLoading && (
+          !error && !imageUrl && (
             <img
               src={
                 userInfo.cover ||
@@ -272,9 +266,7 @@ const CoverImage: React.FC<Props> = ({
             />
           )
         }
-        {userInfoIsLoading && (
-          <Skeleton className="w-full h-full object-cover z-[0]" />
-        )}
+
         {
           // With image url
           !error && imageUrl && (
@@ -338,7 +330,7 @@ const CoverImage: React.FC<Props> = ({
 
         <div className="absolute left-0 right-0 bottom-0 h-[80px]">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black h-[80px] opacity-40"></div>
-          {isOwner && !userInfoIsLoading && (
+          {isOwner && (
             <button
               className="absolute top-1/2 -translate-y-1/2 right-8 px-3 py-2 rounded-lg active:scale-95 flex gap-2 items-center text-[14px] font-semibold bg-gradient-to-b from-white to-gray-100 active:from-slate-200 active:to-gray-300"
               onClick={() => {
