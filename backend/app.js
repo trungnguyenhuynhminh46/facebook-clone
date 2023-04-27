@@ -51,6 +51,10 @@ readdirSync("./routes").map((fileName) => {
   app.use(`/${base}`, require(`./routes/${fileName}`));
 });
 
+app.get("/health", async (req, res) => {
+  return res.status(200).json("OK");
+});
+
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
